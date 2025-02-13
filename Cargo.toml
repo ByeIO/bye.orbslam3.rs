@@ -1,0 +1,11 @@
+[package]
+name = "bye_orbslam3_rs"
+version = "0.1.0"
+edition = "2021"
+exclude = ["git"]
+
+[dependencies]
+# 线性代数
+nalgebra = "0.33.2"
+# 序列化
+serde = { version = "1.0.217", features = ["derive"] }
