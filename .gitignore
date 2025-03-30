@@ -1,0 +1,3 @@
+# 忽略大文件
+target/*
+assets/DeepSeek-R1-Distill-Qwen-1.5B-Q2_K.llamafile

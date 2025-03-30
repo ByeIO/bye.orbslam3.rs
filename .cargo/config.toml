@@ -1,0 +1,19 @@
+# 默认构建目标平台
+[build]
+target = "aarch64-apple-darwin"
+
+[target.aarch64-unknown-linux-gnu]
+# gcc的链接bug:`__emutls_get_address`
+# rustflags = ["-Clink-args=-lgcc_s"]
+rustflags = [
+   # 强制静态链接 libgcc
+  # "-Clink-args=-static-libgcc" 
+]
+# rustflags = ["-Clink-args=-lgcc_eh"]
+
+# 使用本地库
+# [source.crates-io]
+# replace-with = "vendored-sources"
+
+# [source.vendored-sources]
+# directory = "vendor"
