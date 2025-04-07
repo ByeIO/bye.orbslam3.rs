@@ -1,0 +1,57 @@
+warning: `oktree` (bench "benchmark") generated 1 warning
+    Finished `bench` profile [optimized] target(s) in 0.23s
+     Running unittests src\lib.rs (target\release\deps\oktree-d18a0bf0eb4a257c.exe)
+
+running 13 tests
+test bevy_integration::tests::intersect_volume ... ignored
+test bevy_integration::tests::intersects_volume ... ignored
+test bevy_integration::tests::test_ray_intersection ... ignored
+test bounding::tests::test_aabb_constructor ... ignored
+test bounding::tests::test_aabb_contains ... ignored
+test bounding::tests::test_ispower2 ... ignored
+test tests::test_65536 ... ignored
+test tests::test_constructors ... ignored
+test tests::test_insert ... ignored
+test tests::test_insert_remove ... ignored
+test tests::test_iterator ... ignored
+test tests::test_remove ... ignored
+test tests::test_to_vec ... ignored
+
+test result: ok. 0 passed; 0 failed; 13 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches\benchmark.rs (target\release\deps\benchmark-dd3a8455683eaeee.exe)
+Gnuplot not found, using plotters backend
+main/octree insert      time:   [7.2431 ms 7.2980 ms 7.3557 ms]
+                        change: [-9.9618% -7.5500% -5.2564%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 7 outliers among 100 measurements (7.00%)
+  6 (6.00%) high mild
+  1 (1.00%) high severe
+Benchmarking main/octree remove: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 10.0s. You may wish to increase target time to 17.7s, enable flat sampling, or reduce sample count to 50.
+main/octree remove      time:   [3.5506 ms 3.6261 ms 3.7001 ms]
+                        change: [-51.150% -46.421% -40.788%] (p = 0.00 < 0.05)
+                        Performance has improved.
+main/octree find        time:   [5.5770 ms 5.6335 ms 5.6921 ms]
+                        change: [-33.700% -29.984% -26.025%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high mild
+main/octree ray cast    time:   [19.001 ms 19.110 ms 19.221 ms]
+                        change: [-24.917% -21.430% -17.776%] (p = 0.00 < 0.05)
+                        Performance has improved.
+main/octree sphere intersect
+                        time:   [4.6761 ms 4.7059 ms 4.7348 ms]
+                        change: [+1.5711% +2.5875% +3.5691%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) low mild
+main/octree aabb intersect
+                        time:   [4.3103 ms 4.4650 ms 4.6386 ms]
+                        change: [-0.2312% +3.4190% +7.3663%] (p = 0.08 > 0.05)
+                        No change in performance detected.
+Found 12 outliers among 100 measurements (12.00%)
+  1 (1.00%) high mild
+  11 (11.00%) high severe
+
+PS C:\Users\johna\prog\oktree>

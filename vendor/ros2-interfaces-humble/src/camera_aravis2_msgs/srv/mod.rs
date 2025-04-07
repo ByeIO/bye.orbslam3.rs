@@ -1,4 +1,0 @@
-mod calculate_white_balance;
-pub use calculate_white_balance::CalculateWhiteBalance;
-pub use calculate_white_balance::CalculateWhiteBalanceRequest;
-pub use calculate_white_balance::CalculateWhiteBalanceResponse;

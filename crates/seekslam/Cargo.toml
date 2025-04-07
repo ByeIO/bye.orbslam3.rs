@@ -1,0 +1,11 @@
+[package]
+name = "seekslam"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+keywords.workspace = true
+description = "SeekSLAM总入口"
+
+[dependencies]
+# 图像分割
+seekslam_segment = { path = "../seekslam_segment", version = "*" }

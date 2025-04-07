@@ -1,8 +1,0 @@
-mod station_manager_control_protocol;
-pub use station_manager_control_protocol::StationManagerControlProtocol;
-pub use station_manager_control_protocol::StationManagerControlProtocolRequest;
-pub use station_manager_control_protocol::StationManagerControlProtocolResponse;
-mod station_manager_station_protocol;
-pub use station_manager_station_protocol::StationManagerStationProtocol;
-pub use station_manager_station_protocol::StationManagerStationProtocolRequest;
-pub use station_manager_station_protocol::StationManagerStationProtocolResponse;

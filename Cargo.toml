@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["crates/seekslam_segment"]
+members = [ "crates/seekslam", "crates/seekslam_depth","crates/seekslam_segment"]
 
 [workspace.package]
 name = "bye_deepseek_mcp_discovery_slam_rs"
@@ -27,3 +27,24 @@ ros2-interfaces-humble = "0.0.1"
 log = { version = "0.4.27", features = ["std"] }
 # prototxt文件读取
 protokit = "0.2.0"
+# onnx运行时
+wonnx = "0.5.1"
+# 线性代数
+nalgebra = { version = "0.33.2", features = ["rand"] }
+# 随机数
+rand = "0.9.0"
+# 图像处理
+image = "0.25.6"
+imageproc = "0.25.0"
+# 图优化
+factrs = "0.2.0"
+
+[workspace.dev-dependencies]
+# ORB角点检测
+bye_orb_rs = { version = "0.1.1", path = "./static/bye_orb_rs" }
+# 词袋
+bye_abow_rs = { version = "0.1.0", path = "./static/bye_abow_rs" }
+# 八叉树占据地图
+bye_octomap_rs = { version = "0.1.1", path = "./static/bye_octomap_rs" }
+# 点云处理
+bye_pcl_rs = { version = "0.1.3", path="./static/bye_pcl_rs" }

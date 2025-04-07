@@ -1,4 +1,0 @@
-mod get_interactive_markers;
-pub use get_interactive_markers::GetInteractiveMarkers;
-pub use get_interactive_markers::GetInteractiveMarkersRequest;
-pub use get_interactive_markers::GetInteractiveMarkersResponse;

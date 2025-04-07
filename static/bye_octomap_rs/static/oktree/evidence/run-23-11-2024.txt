@@ -1,0 +1,62 @@
+PS C:\Users\johna\prog\oktree> cargo bench --all-features
+   Compiling oktree v0.3.0 (C:\Users\johna\prog\oktree)
+    Finished `bench` profile [optimized] target(s) in 3.92s
+     Running unittests src\lib.rs (target\release\deps\oktree-7f91195e99a78bfc.exe)
+
+running 15 tests
+test bevy_integration::tests::intersect_volume ... ignored
+test bevy_integration::tests::intersects_volume ... ignored
+test bevy_integration::tests::test_ray_intersection ... ignored
+test bounding::tests::test_aabb_constructor ... ignored
+test bounding::tests::test_aabb_contains ... ignored
+test bounding::tests::test_ispower2 ... ignored
+test pool::tests::test_non_clonable_compile ... ignored
+test tests::test_65536 ... ignored
+test tests::test_constructors ... ignored
+test tests::test_insert ... ignored
+test tests::test_insert_remove ... ignored
+test tests::test_iterator ... ignored
+test tests::test_remove ... ignored
+test tests::test_to_vec ... ignored
+test tests::test_volumes ... ignored
+
+test result: ok. 0 passed; 0 failed; 15 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running benches\benchmark.rs (target\release\deps\benchmark-9977778c92f6172b.exe)
+Gnuplot not found, using plotters backend
+main/octree insert      time:   [15.311 ms 15.443 ms 15.576 ms]
+                        change: [-30.588% -29.863% -29.090%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+main/octree remove      time:   [1.1309 ms 1.1406 ms 1.1506 ms]
+                        change: [-4.4377% -3.2102% -1.9262%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  4 (4.00%) high mild
+  1 (1.00%) high severe
+main/octree find        time:   [6.3793 ms 6.4730 ms 6.5699 ms]
+                        change: [+21.396% +23.800% +26.136%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+main/octree ray cast    time:   [24.317 ms 24.574 ms 24.843 ms]
+                        change: [-4.3418% -2.3329% -0.2967%] (p = 0.02 < 0.05)
+                        Change within noise threshold.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+main/octree sphere intersect
+                        time:   [5.1502 ms 5.3069 ms 5.4730 ms]
+                        change: [+1.1269% +4.5752% +8.1432%] (p = 0.01 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  2 (2.00%) high mild
+main/octree aabb intersect
+                        time:   [4.8533 ms 4.9930 ms 5.1423 ms]
+                        change: [-2.5442% +0.7256% +3.7385%] (p = 0.66 > 0.05)
+                        No change in performance detected.
+Found 14 outliers among 100 measurements (14.00%)
+  13 (13.00%) high mild
+  1 (1.00%) high severe
+
+PS C:\Users\johna\prog\oktree>

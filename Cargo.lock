@@ -108,6 +108,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "seekslam"
+version = "0.0.1"
+dependencies = [
+ "seekslam_segment",
+]
+
+[[package]]
+name = "seekslam_depth"
+version = "0.0.1"
+
+[[package]]
 name = "seekslam_segment"
 version = "0.0.1"
 dependencies = [

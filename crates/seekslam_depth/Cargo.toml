@@ -1,0 +1,9 @@
+[package]
+name = "seekslam_depth"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "SeekSLAM的深度估计模块"
+keywords.workspace = true
+
+[dependencies]
