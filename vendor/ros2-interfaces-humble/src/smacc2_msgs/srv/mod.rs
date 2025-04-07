@@ -1,0 +1,4 @@
+mod smacc_get_transition_history;
+pub use smacc_get_transition_history::SmaccGetTransitionHistory;
+pub use smacc_get_transition_history::SmaccGetTransitionHistoryRequest;
+pub use smacc_get_transition_history::SmaccGetTransitionHistoryResponse;

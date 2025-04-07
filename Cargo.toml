@@ -38,6 +38,8 @@ image = "0.25.6"
 imageproc = "0.25.0"
 # 图优化
 factrs = "0.2.0"
+# wasm运行时
+wasmtime-cli = { version = "31.0.0", path="./static/wasmtime-cli-31.0.0" }
 
 # # 异步处理
 # futures = { version = "0.3" }

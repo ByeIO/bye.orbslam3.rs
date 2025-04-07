@@ -11,3 +11,4 @@ nnx infer ./assets/wonnx_data/models/opt-squeeze.onnx -i data=./assets/wonnx_dat
 nnx info ./assets/mnist/mnist.onnx >> result/nnx_cli.log
 # 测试
 cargo run --example mnist_onnx > result/mnist_onnx.log
+cargo run --example wasmtime_cli_version

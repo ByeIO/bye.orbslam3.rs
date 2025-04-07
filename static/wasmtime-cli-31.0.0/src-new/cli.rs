@@ -1,0 +1,180 @@
+//! 封装cli结构体
+
+//! The `wasmtime` command line tool.
+//!
+//! Primarily used to run WebAssembly modules.
+//! See `wasmtime --help` for usage.
+
+use anyhow::Result;
+use clap::Parser;
+
+/* start 封装wasmtime-cli */
+/// 可以使用例如`WasmtimeCli::run("run test.wasm")?;`达到命令行的`wasmtime run test.wasm`同样效果.
+/// 类似于std::process::Command执行shell命令的效果, 但是无需安装wasmtime.
+pub struct WasmtimeCli;
+impl WasmtimeCli {
+    pub fn run(command_line: &str) -> Result<()> {
+        let args = shell_words::split(command_line)?;
+        let full_args = std::iter::once("wasmtime".to_string()).chain(args);
+        let wasmtime = Wasmtime::try_parse_from(full_args)?;
+        wasmtime.execute()
+    }
+}
+/* end 封装wasmtime-cli */
+
+/// Wasmtime WebAssembly Runtime
+#[derive(Parser)]
+#[command(
+    name = "wasmtime",
+    version = version(),
+    after_help = "If a subcommand is not provided, the `run` subcommand will be used.\n\
+                  \n\
+                  Usage examples:\n\
+                  \n\
+                  Running a WebAssembly module with a start function:\n\
+                  \n  \
+                  wasmtime example.wasm
+                  \n\
+                  Passing command line arguments to a WebAssembly module:\n\
+                  \n  \
+                  wasmtime example.wasm arg1 arg2 arg3\n\
+                  \n\
+                  Invoking a specific function (e.g. `add`) in a WebAssembly module:\n\
+                  \n  \
+                  wasmtime --invoke add example.wasm 1 2\n",
+
+    // This option enables the pattern below where we ask clap to parse twice
+    // sorta: once where it's trying to find a subcommand and once assuming
+    // a subcommand doesn't get passed. Clap should then, apparently,
+    // fill in the `subcommand` if found and otherwise fill in the
+    // `RunCommand`.
+    args_conflicts_with_subcommands = true
+)]
+
+// 顶层命令
+pub struct Wasmtime {
+    #[cfg(not(feature = "run"))]
+    #[command(subcommand)]
+    subcommand: Subcommand,
+
+    #[cfg(feature = "run")]
+    #[command(subcommand)]
+    subcommand: Option<Subcommand>,
+    #[command(flatten)]
+    #[cfg(feature = "run")]
+    run: super::commands::RunCommand,
+}
+
+/// If WASMTIME_VERSION_INFO is set, use it, otherwise use CARGO_PKG_VERSION.
+pub fn version() -> &'static str {
+    option_env!("WASMTIME_VERSION_INFO").unwrap_or(env!("CARGO_PKG_VERSION"))
+}
+
+#[derive(Parser)]
+pub enum Subcommand {
+    /// Runs a WebAssembly module
+    #[cfg(feature = "run")]
+    Run(super::commands::RunCommand),
+
+    /// Controls Wasmtime configuration settings
+    #[cfg(feature = "cache")]
+    Config(super::commands::ConfigCommand),
+
+    /// Compiles a WebAssembly module.
+    #[cfg(feature = "compile")]
+    Compile(super::commands::CompileCommand),
+
+    /// Explore the compilation of a WebAssembly module to native code.
+    #[cfg(feature = "explore")]
+    Explore(super::commands::ExploreCommand),
+
+    /// Serves requests from a wasi-http proxy component.
+    #[cfg(feature = "serve")]
+    Serve(super::commands::ServeCommand),
+
+    /// Displays available Cranelift settings for a target.
+    #[cfg(feature = "cranelift")]
+    Settings(super::commands::SettingsCommand),
+
+    /// Runs a WebAssembly test script file
+    #[cfg(feature = "wast")]
+    Wast(super::commands::WastCommand),
+
+    /// Generate shell completions for the `wasmtime` CLI
+    #[cfg(feature = "completion")]
+    Completion(CompletionCommand),
+
+    /// Inspect `*.cwasm` files output from Wasmtime
+    #[cfg(feature = "objdump")]
+    Objdump(super::commands::ObjdumpCommand),
+}
+
+impl Wasmtime {
+    /// Executes the command.
+    pub fn execute(self) -> Result<()> {
+        #[cfg(feature = "run")]
+        let subcommand = self.subcommand.unwrap_or(Subcommand::Run(self.run));
+        #[cfg(not(feature = "run"))]
+        let subcommand = self.subcommand;
+
+        match subcommand {
+            #[cfg(feature = "run")]
+            Subcommand::Run(c) => c.execute(),
+
+            #[cfg(feature = "cache")]
+            Subcommand::Config(c) => c.execute(),
+
+            #[cfg(feature = "compile")]
+            Subcommand::Compile(c) => c.execute(),
+
+            #[cfg(feature = "explore")]
+            Subcommand::Explore(c) => c.execute(),
+
+            #[cfg(feature = "serve")]
+            Subcommand::Serve(c) => c.execute(),
+
+            #[cfg(feature = "cranelift")]
+            Subcommand::Settings(c) => c.execute(),
+
+            #[cfg(feature = "wast")]
+            Subcommand::Wast(c) => c.execute(),
+
+            #[cfg(feature = "completion")]
+            Subcommand::Completion(c) => c.execute(),
+
+            #[cfg(feature = "objdump")]
+            Subcommand::Objdump(c) => c.execute(),
+        }
+    }
+}
+
+/// Generate shell completion scripts for this CLI.
+///
+/// Shells have different paths for their completion scripts. Please refer to
+/// their documentation. For example, to generate completions for the fish
+/// shell, run the following command below:
+///
+///     wasmtime completion fish > ~/.config/fish/completions/wasmtime.fish
+///
+/// For a shell like zsh you can add this to your .zshrc or startup scripts:
+///
+///     eval "$(wasmtime completion zsh)"
+#[derive(Parser)]
+#[cfg(feature = "completion")]
+pub struct CompletionCommand {
+    /// The shell to generate completions for.
+    shell: clap_complete::Shell,
+}
+
+#[cfg(feature = "completion")]
+impl CompletionCommand {
+    pub fn execute(&self) -> Result<()> {
+        use clap::CommandFactory;
+
+        let mut cmd = Wasmtime::command();
+        let cli_name = cmd.get_name().to_owned();
+
+        clap_complete::generate(self.shell, &mut cmd, cli_name, &mut std::io::stdout());
+        Ok(())
+    }
+}

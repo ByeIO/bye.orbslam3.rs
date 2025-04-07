@@ -20,3 +20,5 @@ protokit.workspace = true
 wonnx.workspace = true
 nalgebra.workspace = true
 factrs.workspace = true
+# wasm运行时
+wasmtime-cli.workspace = true
