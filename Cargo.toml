@@ -1,13 +1,12 @@
 [workspace]
 resolver = "3"
-members = [ "crates/seekslam", "crates/seekslam_depth","crates/seekslam_segment"]
+members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_examples","crates/seekslam_segment"]
 
 [workspace.package]
-name = "bye_deepseek_mcp_discovery_slam_rs"
 version = "0.0.1"
 edition = "2024"
 authors = ["qsbye"]
-description = "基于MCP的探索式建图"
+description = "基于MCP的探索式建图框架"
 keywords = ["slam", "mcp", "deepseek", "onnx", "protobuf"]
 
 [workspace.dependencies]
@@ -18,7 +17,8 @@ chrono = "0.4.40"
 # Model Context Protocol协议定义
 rust-mcp-schema = { version = "0.2.2", path = "./static/rust-mcp-schema" }
 # Model Context Protocol开发工具
-rust-mcp-sdk = { version = "0.1.2", path = "./static/rust-mcp-sdk/crates/rust-mcp-sdk" }
+# rust-mcp-sdk = { version = "0.1.2", path = "./static/rust-mcp-sdk/crates/rust-mcp-sdk" }
+rust-mcp-sdk = { version = "0.1.2" }
 # 多线程框架
 tokio = { version = "1.44.1", features = ["full"] }
 # ros2接口
@@ -28,7 +28,7 @@ log = { version = "0.4.27", features = ["std"] }
 # prototxt文件读取
 protokit = "0.2.0"
 # onnx运行时
-wonnx = "0.5.1"
+wonnx = { version = "0.5.1", path = "./static/wonnx/wonnx" }
 # 线性代数
 nalgebra = { version = "0.33.2", features = ["rand"] }
 # 随机数
@@ -38,6 +38,21 @@ image = "0.25.6"
 imageproc = "0.25.0"
 # 图优化
 factrs = "0.2.0"
+
+# # 异步处理
+# futures = { version = "0.3" }
+# # 序列化
+# serde = { version = "1.0.219", features = ["derive", "serde_derive"] }
+# # 序列化json
+# serde_json = { version = "1.0.140" }
+# # 异步特性
+# async-trait = { version = "0.1.88" }
+# # 异步
+# strum = { version = "0.27.0", features = ["derive"] }
+# # 错误处理
+# thiserror = { version = "2.0.12" }
+# # 异步流
+# tokio-stream = { version = "0.1.17" }
 
 [workspace.dev-dependencies]
 # ORB角点检测

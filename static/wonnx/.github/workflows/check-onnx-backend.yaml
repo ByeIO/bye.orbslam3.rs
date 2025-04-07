@@ -1,0 +1,41 @@
+name: Check ONNX Backend using Python automated test
+
+on:
+  push:
+    branches: [master, staging]
+  pull_request:
+
+env:
+  RUST_BACKTRACE: 1
+  RUST_VERSION: 1.72
+
+jobs:
+  build_manylinux:
+    name: Build and Test ONNX Backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: install llvmpipe and lavapipe
+        run: |
+          sudo apt-get update -y -qq
+          sudo add-apt-repository ppa:oibaf/graphics-drivers -y
+          sudo apt-get update
+          sudo apt install -y libegl1-mesa libgl1-mesa-dri libxcb-xfixes0-dev mesa-vulkan-drivers
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          profile: minimal
+          override: true
+      - name: test
+        run: |
+          cd wonnx-py
+          python3 -m venv .env
+          source .env/bin/activate
+          pip install --upgrade pip
+          pip install maturin
+          pip install -r requirements.txt
+          maturin develop
+          WGPU_BACKEND=vulkan pytest tests/test_onnx_backend.py

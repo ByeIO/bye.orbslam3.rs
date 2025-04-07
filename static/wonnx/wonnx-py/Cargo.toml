@@ -1,0 +1,31 @@
+[package]
+name = "wonnx-py"
+version = "0.5.1"
+edition = "2018"
+authors = [
+    "haixuanTao <tao.xavier@outlook.com>",
+    "Tommy van der Vorst <tommy@pixelspark.nl>",
+]
+license = "MIT OR Apache-2.0"
+description = "Wonnx is an ONNX runtime based on wgpu aimed at being a universal GPU runtime, written in Rust."
+repository = "https://github.com/webonnx/wonnx.git"
+homepage = "https://github.com/webonnx/wonnx"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wonnx = { version = "^0.5.1" }
+protobuf = { version = "2.27.1", features = ["with-bytes"] }
+pyo3 = { version = "0.18.1", features = ["abi3-py37"] }
+pollster = "0.3.0"
+env_logger = "0.10.0"
+
+# prevents package from thinking it's in the workspace
+
+[lib]
+name = "wonnx"
+crate-type = ["cdylib"]
+
+[features]
+extension-module = ["pyo3/extension-module"]
+default = ["extension-module"]

@@ -1,4 +1,4 @@
-# 基于MCP(Model Context Protocol)和VLM(Vision Language Models)的室内探索式建图框架
+# (WIP)基于MCP(Model Context Protocol)和VLM(Vision Language Models)的室内探索式建图框架
 
 ## 使用说明
 

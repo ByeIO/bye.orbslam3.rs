@@ -1,0 +1,22 @@
+[package]
+name = "seekslam_examples"
+edition.workspace = true
+version.workspace = true
+authors.workspace = true
+description = "SeekSLAM例程"
+keywords.workspace = true
+
+[dependencies]
+image.workspace = true
+imageproc.workspace = true
+anyhow.workspace = true
+chrono.workspace = true
+rust-mcp-schema.workspace = true
+rust-mcp-sdk.workspace = true
+tokio.workspace = true
+ros2-interfaces-humble.workspace = true
+log.workspace = true
+protokit.workspace = true
+wonnx.workspace = true
+nalgebra.workspace = true
+factrs.workspace = true

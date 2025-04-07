@@ -1,0 +1,15 @@
+[workspace]
+members = [
+	"wonnx",
+	"wonnx-py",
+	"wonnx-cli",
+	"wonnx-preprocessing",
+	"wonnx-wasm"
+]
+
+default-members = ["wonnx", "wonnx-cli", "wonnx-preprocessing"]
+resolver = "2"
+
+[patch.crates-io]
+wonnx = { path = "./wonnx" }
+wonnx-preprocessing = { path = "./wonnx-preprocessing" }
