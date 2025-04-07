@@ -1,0 +1,19 @@
+[package]
+name = "protokit_examples"
+version = "0.2.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.MD"
+repository = "https://github.com/semtexzv/protokit"
+authors = ["<semtexzv@gmail.com>"]
+description = "Usable protocol buffers"
+
+build = "build.rs"
+publish = false
+
+
+[dependencies]
+protokit = { path = "../protokit", version = "0.2.0", features = ["textformat", "grpc"] }
+
+[build-dependencies]
+protokit_build = { path = "../protokit_build" }

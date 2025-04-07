@@ -1,0 +1,34 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.fmt]
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--all", "--", "--check"]
+
+[tasks.clippy]
+command = "cargo"
+args = ["clippy"]
+
+[tasks.test]
+install_crate = "nextest"
+command = "cargo"
+args = ["nextest", "run", "--no-tests=pass"]
+
+[tasks.doc-test]
+workspace = false
+command = "cargo"
+args = [
+    "test",
+    "--doc",
+    "-p",
+    "rust-mcp-macros",
+    "-p",
+    "rust-mcp-sdk",
+    "-p",
+    "rust-mcp-transport",
+]
+
+[tasks.clippy-fix]
+command = "cargo"
+args = ["clippy", "--fix", "--allow-dirty"]

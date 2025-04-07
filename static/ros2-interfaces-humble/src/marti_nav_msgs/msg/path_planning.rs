@@ -1,0 +1,76 @@
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct PathPlanning {
+    pub header: crate::std_msgs::msg::Header,
+    pub segment_type: i32,
+    pub length: f32,
+    pub start_speed: f32,
+    pub end_speed: f32,
+    pub startx: f32,
+    pub starty: f32,
+    pub endx: f32,
+    pub endy: f32,
+    pub theta0: f32,
+    pub a1: f32,
+    pub a2: f32,
+    pub k0: f32,
+    pub c1: f32,
+    pub c2: f32,
+    pub behavior: i32,
+    pub creep: i32,
+    pub acc: i32,
+    pub reverse: i32,
+    pub vehicle_track: i32,
+    pub transmitted: bool,
+    pub aux_transmitted: bool,
+    pub theta_end: f32,
+    pub k_end: f32,
+    pub seg_len: i32,
+    pub speed_limit: f32,
+    pub max_error: f32,
+    pub max_smooth: f32,
+    pub max_curv: f32,
+    pub possible_points: i32,
+    pub exit_segment: bool,
+}
+
+impl Default for PathPlanning {
+    fn default() -> Self {
+        PathPlanning {
+            header: crate::std_msgs::msg::Header::default(),
+            segment_type: 0,
+            length: 0.0,
+            start_speed: 0.0,
+            end_speed: 0.0,
+            startx: 0.0,
+            starty: 0.0,
+            endx: 0.0,
+            endy: 0.0,
+            theta0: 0.0,
+            a1: 0.0,
+            a2: 0.0,
+            k0: 0.0,
+            c1: 0.0,
+            c2: 0.0,
+            behavior: 0,
+            creep: 0,
+            acc: 0,
+            reverse: 0,
+            vehicle_track: 0,
+            transmitted: false,
+            aux_transmitted: false,
+            theta_end: 0.0,
+            k_end: 0.0,
+            seg_len: 0,
+            speed_limit: 0.0,
+            max_error: 0.0,
+            max_smooth: 0.0,
+            max_curv: 0.0,
+            possible_points: 0,
+            exit_segment: false,
+        }
+    }
+}
+
+impl ros2_client::Message for PathPlanning {}

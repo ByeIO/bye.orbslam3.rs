@@ -1,0 +1,18 @@
+[package]
+name = "fuzz"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.MD"
+repository = "https://github.com/semtexzv/protokit"
+authors = ["<semtexzv@gmail.com>"]
+
+
+publish = false
+
+[dependencies]
+protokit = { path = "../../protokit" }
+afl = "0.12.4"
+
+[build-dependencies]
+protokit_build = { path = "../../protokit_build" }

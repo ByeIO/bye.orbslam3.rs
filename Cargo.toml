@@ -1,0 +1,29 @@
+[workspace]
+resolver = "3"
+members = ["crates/seekslam_segment"]
+
+[workspace.package]
+name = "bye_deepseek_mcp_discovery_slam_rs"
+version = "0.0.1"
+edition = "2024"
+authors = ["qsbye"]
+description = "基于MCP的探索式建图"
+keywords = ["slam", "mcp", "deepseek", "onnx", "protobuf"]
+
+[workspace.dependencies]
+# 错误处理
+anyhow = "1.0.97"
+# 时间格式化
+chrono = "0.4.40"
+# Model Context Protocol协议定义
+rust-mcp-schema = { version = "0.2.2", path = "./static/rust-mcp-schema" }
+# Model Context Protocol开发工具
+rust-mcp-sdk = { version = "0.1.2", path = "./static/rust-mcp-sdk/crates/rust-mcp-sdk" }
+# 多线程框架
+tokio = { version = "1.44.1", features = ["full"] }
+# ros2接口
+ros2-interfaces-humble = "0.0.1"
+# 日志后端
+log = { version = "0.4.27", features = ["std"] }
+# prototxt文件读取
+protokit = "0.2.0"

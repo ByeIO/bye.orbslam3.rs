@@ -1,0 +1,9 @@
+[package]
+name = "seekslam_segment"
+version.workspace = true
+edition = "2024"
+description = "图像分割模块"
+
+[dependencies]
+# prototxt文件读取
+protokit.workspace = true

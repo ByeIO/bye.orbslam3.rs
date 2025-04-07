@@ -1,0 +1,37 @@
+[package]
+name = "protokit_proto"
+version = "0.2.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.MD"
+repository = "https://github.com/semtexzv/protokit"
+authors = ["<semtexzv@gmail.com>"]
+description = "Usable protocol buffers"
+
+[features]
+default = []
+descriptors = ["protokit_desc/descriptors"]
+
+[dependencies.protokit_textformat]
+path = "../protokit_textformat"
+version = "0.2.0"
+
+[dependencies.protokit_desc]
+path = "../protokit_desc"
+version = "0.2.0"
+
+[dependencies]
+nom = "7.1.1"
+nom_locate = "4.0.0"
+nom-supreme = "0.8.0"
+
+thiserror = "1"
+miette = { version = "5.5.0", default-features = false, features = ["fancy-no-backtrace"] }
+
+indexmap = "2"
+lex_core = { package = "lexical-core", version = "0.8.5", features = ["parse-integers", "power-of-two"] }
+lex_float = { package = "minimal-lexical", version = "0.2.1" }
+
+[dev-dependencies]
+tracing-subscriber = "0.3.11"
+glob = "0.3.0"

@@ -1,0 +1,23 @@
+[package]
+name = "conformance"
+version = "0.2.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.MD"
+repository = "https://github.com/semtexzv/protokit"
+authors = ["<semtexzv@gmail.com>"]
+
+build = "build.rs"
+publish = false
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+anyhow = "1"
+byteorder = "1.4.3"
+protokit = { path = "../../protokit", features = ["textformat"] }
+
+[build-dependencies]
+protokit_build = { path = "../../protokit_build", version = "0.2.0", features = ["protoc"] }
+

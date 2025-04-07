@@ -1,0 +1,22 @@
+[package]
+name = "hello-world-mcp-server-core"
+version = "0.1.3"
+edition = "2021"
+publish = false
+license = "MIT"
+
+
+[dependencies]
+rust-mcp-sdk = { workspace = true }
+rust-mcp-transport = { workspace = true }
+rust-mcp-macros = { workspace = true }
+rust-mcp-schema = { workspace = true }
+
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+
+[lints]
+workspace = true

@@ -1,0 +1,17 @@
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+name: CI / Tests on macOS
+
+permissions: read-all
+
+jobs:
+
+  test-on-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --no-fail-fast -- --test-threads=1

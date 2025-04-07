@@ -1,0 +1,18 @@
+mod object_stamped;
+pub use object_stamped::ObjectStamped;
+mod object_with_covariance_array_array;
+pub use object_with_covariance_array_array::ObjectWithCovarianceArrayArray;
+mod shape;
+pub use shape::Shape;
+mod object_with_covariance_stamped;
+pub use object_with_covariance_stamped::ObjectWithCovarianceStamped;
+mod object_detection;
+pub use object_detection::ObjectDetection;
+mod object_with_covariance;
+pub use object_with_covariance::ObjectWithCovariance;
+mod shape_array;
+pub use shape_array::ShapeArray;
+mod object_with_covariance_array;
+pub use object_with_covariance_array::ObjectWithCovarianceArray;
+mod object;
+pub use object::Object;

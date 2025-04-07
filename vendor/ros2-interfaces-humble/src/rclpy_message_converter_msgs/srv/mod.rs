@@ -1,0 +1,4 @@
+mod nested_uint8_array_test_service;
+pub use nested_uint8_array_test_service::NestedUint8ArrayTestService;
+pub use nested_uint8_array_test_service::NestedUint8ArrayTestServiceRequest;
+pub use nested_uint8_array_test_service::NestedUint8ArrayTestServiceResponse;

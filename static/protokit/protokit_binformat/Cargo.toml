@@ -1,0 +1,25 @@
+[package]
+name = "protokit_binformat"
+version = "0.2.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.MD"
+repository = "https://github.com/semtexzv/protokit"
+authors = ["<semtexzv@gmail.com>"]
+description = "Usable protocol buffers"
+
+[features]
+default = ["arena"]
+arena = ["bumpalo", "bumpalo/boxed", "bumpalo/collections"]
+
+[dependencies.derive]
+package = "protokit_derive"
+path = "../protokit_derive"
+version = "0.2.0"
+
+[dependencies]
+bytes = "1.5.0"
+indexmap = "2"
+thiserror = "1"
+
+bumpalo = { version = "3.13.0", optional = true, default_features = false }

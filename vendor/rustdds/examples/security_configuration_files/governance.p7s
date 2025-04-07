@@ -1,0 +1,68 @@
+MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----0793F24F1D3500E3B22E6166CF512EF7"
+
+This is an S/MIME signed message
+
+------0793F24F1D3500E3B22E6166CF512EF7
+Content-Type: text/plain
+
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="http://www.omg.org/spec/DDS-SECURITY/20170901/omg_shared_ca_governance.xsd">
+    <domain_access_rules>
+        <domain_rule>
+            <domains>
+                <id_range>
+                    <min>0</min>
+                    <max>100</max>
+                </id_range>
+            </domains>
+            <!-- This configuration sets all protection kinds to maximum level -->
+            <allow_unauthenticated_participants>false</allow_unauthenticated_participants>
+            <enable_join_access_control>true</enable_join_access_control>
+            <discovery_protection_kind>ENCRYPT_WITH_ORIGIN_AUTHENTICATION</discovery_protection_kind>
+            <liveliness_protection_kind>ENCRYPT_WITH_ORIGIN_AUTHENTICATION</liveliness_protection_kind>
+            <rtps_protection_kind>ENCRYPT_WITH_ORIGIN_AUTHENTICATION</rtps_protection_kind>
+            <topic_access_rules>
+                <topic_rule>
+                    <topic_expression>Square</topic_expression>
+                    <enable_discovery_protection>true</enable_discovery_protection>
+                    <enable_liveliness_protection>true</enable_liveliness_protection>
+                    <enable_read_access_control>true</enable_read_access_control>
+                    <enable_write_access_control>true</enable_write_access_control>
+                    <metadata_protection_kind>ENCRYPT_WITH_ORIGIN_AUTHENTICATION</metadata_protection_kind>
+                    <data_protection_kind>ENCRYPT</data_protection_kind>
+                </topic_rule>
+            </topic_access_rules>
+        </domain_rule>
+    </domain_access_rules>
+</dds>
+------0793F24F1D3500E3B22E6166CF512EF7
+Content-Type: application/x-pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+
+MIIDzwYJKoZIhvcNAQcCoIIDwDCCA7wCAQExDzANBglghkgBZQMEAgEFADALBgkq
+hkiG9w0BBwGgggHjMIIB3zCCAYWgAwIBAgIUZ15lOVw1lFhBNlKlgdqzkhBHDsww
+CgYIKoZIzj0EAwIwRDEdMBsGA1UECgwURXhhbXBsZSBPcmdhbml6YXRpb24xIzAh
+BgNVBAMMGnBlcm1pc3Npb25zX2NhX2NvbW1vbl9uYW1lMCAXDTI0MDMwODA4Mjk1
+MVoYDzQ3NjIwMjAyMDgyOTUxWjBEMR0wGwYDVQQKDBRFeGFtcGxlIE9yZ2FuaXph
+dGlvbjEjMCEGA1UEAwwacGVybWlzc2lvbnNfY2FfY29tbW9uX25hbWUwWTATBgcq
+hkjOPQIBBggqhkjOPQMBBwNCAAQwHk/PoxLxEP27ez5jzmof7KDXkcm9APMamnHe
+G1E4TbBNZr7FVn5MbsW+5HeklhPSAPC1FefXsOb4AcbO4T/xo1MwUTAdBgNVHQ4E
+FgQU1771sTC5VjQST2vWBFVoc6XwiRUwHwYDVR0jBBgwFoAU1771sTC5VjQST2vW
+BFVoc6XwiRUwDwYDVR0TAQH/BAUwAwEB/zAKBggqhkjOPQQDAgNIADBFAiBIb4Ro
+lJ6v4JYqORbipeqKCLV7TuNlayxv6962VSk3yQIhAIjkrqBU9QSO+EIP6bsK+jcc
+47gvd+cnf3/zPWJbNt21MYIBsDCCAawCAQEwXDBEMR0wGwYDVQQKDBRFeGFtcGxl
+IE9yZ2FuaXphdGlvbjEjMCEGA1UEAwwacGVybWlzc2lvbnNfY2FfY29tbW9uX25h
+bWUCFGdeZTlcNZRYQTZSpYHas5IQRw7MMA0GCWCGSAFlAwQCAQUAoIHkMBgGCSqG
+SIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDMwODA4Mjk1
+MVowLwYJKoZIhvcNAQkEMSIEILsmD3IAiSdc8ecU97iBACutVtUs1vIkAFJD9GA6
+2eFnMHkGCSqGSIb3DQEJDzFsMGowCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBFjAL
+BglghkgBZQMEAQIwCgYIKoZIhvcNAwcwDgYIKoZIhvcNAwICAgCAMA0GCCqGSIb3
+DQMCAgFAMAcGBSsOAwIHMA0GCCqGSIb3DQMCAgEoMAoGCCqGSM49BAMCBEcwRQIg
+IFxvwTkp1LSD4se94lKBNIuI3JINJdLcDkOuS8GL7DoCIQCtLq0gdAgK+qB1voxN
+TsFSIgqX1s0uBtgJhgUde2Qh6g==
+
+------0793F24F1D3500E3B22E6166CF512EF7--
+

@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = [
+    "tools/conformance",
+    "protokit",
+    "protokit_build",
+    "protokit_proto",
+    "protokit_grpc",
+    "protokit_desc",
+    "protokit_textformat",
+    "protokit_binformat",
+    "protokit_examples",
+    "protokit_derive",
+]
+
+exclude = ["tools/gendesc", "tools/fuzz"]
+
+[profile.release]
+codegen-units = 1

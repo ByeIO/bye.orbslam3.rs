@@ -1,0 +1,32 @@
+name: ReleasePR
+
+permissions:
+  pull-requests: write
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    # if: github.event.head_commit.committer.name != 'GitHub'
+    # needs: ci
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Release Please
+        uses: googleapis/release-please-action@v4
+        env:
+          ACTIONS_STEP_DEBUG: true
+        with:
+          token: ${{ secrets.RP_SECRET }}
+          config-file: .release-config.json
+          manifest-file: .release-manifest.json

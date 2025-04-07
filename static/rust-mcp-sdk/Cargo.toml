@@ -1,0 +1,72 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/rust-mcp-macros",
+    "crates/rust-mcp-sdk",
+    "crates/rust-mcp-transport",
+    "examples/simple-mcp-client",
+    "examples/simple-mcp-client-core",
+    "examples/hello-world-mcp-server",
+    "examples/hello-world-mcp-server-core",
+]
+
+
+[workspace.dependencies]
+# Workspace member crates
+rust-mcp-transport = { version = "0.1.1", path = "crates/rust-mcp-transport" }
+rust-mcp-sdk = { path = "crates/rust-mcp-sdk" }
+rust-mcp-macros = { version = "0.1.2", path = "crates/rust-mcp-macros" }
+
+# External crates
+rust-mcp-schema = { version = "0.2.2" }
+futures = { version = "0.3" }
+tokio = { version = "1.44.1", features = ["full"] }
+serde = { version = "1.0.219", features = ["derive", "serde_derive"] }
+serde_json = { version = "1.0.140" }
+async-trait = { version = "0.1.88" }
+strum = { version = "0.27.0", features = ["derive"] }
+thiserror = { version = "2.0.12" }
+tokio-stream = { version = "0.1.17" }
+
+
+# [workspace.dependencies.windows]
+
+[profile.dev]
+split-debuginfo = "unpacked"
+debug = 0
+# split-debuginfo="unpacked"
+strip = "debuginfo"
+codegen-units = 256
+
+# [profile.dev]
+# split-debuginfo = "unpacked"
+# debug = "limited"
+# codegen-units = 16
+# # opt-level = 0
+
+
+[profile.release]
+debug = "limited"
+lto = "thin"
+codegen-units = 1
+
+[profile.profiling]
+# profiler = true
+inherits = "release"
+debug = true
+
+[profile.release.package]
+# zed = { codegen-units = 16 }
+
+[profile.release-fast]
+inherits = "release"
+debug = "full"
+lto = false
+codegen-units = 16
+
+[workspace.lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+
+[workspace.metadata.cargo-machete]
+ignored = ["bindgen", "cbindgen", "prost_build", "serde"]
