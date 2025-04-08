@@ -1,116 +1,19 @@
-mod atty;
 mod buffer;
+mod target;
 
-use self::atty::{is_stderr, is_stdout};
 use self::buffer::BufferWriter;
-use std::{fmt, io, mem, sync::Mutex};
-
-pub(super) mod glob {
-    pub use super::*;
-}
+use std::{io, mem, sync::Mutex};
 
 pub(super) use self::buffer::Buffer;
 
-/// Log target, either `stdout`, `stderr` or a custom pipe.
-#[non_exhaustive]
-pub enum Target {
-    /// Logs will be sent to standard output.
-    Stdout,
-    /// Logs will be sent to standard error.
-    Stderr,
-    /// Logs will be sent to a custom pipe.
-    Pipe(Box<dyn io::Write + Send + 'static>),
-}
+pub use target::Target;
 
-impl Default for Target {
-    fn default() -> Self {
-        Target::Stderr
-    }
-}
-
-impl fmt::Debug for Target {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Self::Stdout => "stdout",
-                Self::Stderr => "stderr",
-                Self::Pipe(_) => "pipe",
-            }
-        )
-    }
-}
-
-/// Log target, either `stdout`, `stderr` or a custom pipe.
-///
-/// Same as `Target`, except the pipe is wrapped in a mutex for interior mutability.
-pub(super) enum WritableTarget {
-    /// Logs will be written to standard output.
-    #[allow(dead_code)]
-    WriteStdout,
-    /// Logs will be printed to standard output.
-    PrintStdout,
-    /// Logs will be written to standard error.
-    #[allow(dead_code)]
-    WriteStderr,
-    /// Logs will be printed to standard error.
-    PrintStderr,
-    /// Logs will be sent to a custom pipe.
-    Pipe(Box<Mutex<dyn io::Write + Send + 'static>>),
-}
-
-impl WritableTarget {
-    fn print(&self, buf: &Buffer) -> io::Result<()> {
-        use std::io::Write as _;
-
-        let buf = buf.as_bytes();
-        match self {
-            WritableTarget::WriteStdout => {
-                let stream = std::io::stdout();
-                let mut stream = stream.lock();
-                stream.write_all(buf)?;
-                stream.flush()?;
-            }
-            WritableTarget::PrintStdout => print!("{}", String::from_utf8_lossy(buf)),
-            WritableTarget::WriteStderr => {
-                let stream = std::io::stderr();
-                let mut stream = stream.lock();
-                stream.write_all(buf)?;
-                stream.flush()?;
-            }
-            WritableTarget::PrintStderr => eprint!("{}", String::from_utf8_lossy(buf)),
-            // Safety: If the target type is `Pipe`, `target_pipe` will always be non-empty.
-            WritableTarget::Pipe(pipe) => {
-                let mut stream = pipe.lock().unwrap();
-                stream.write_all(buf)?;
-                stream.flush()?;
-            }
-        }
-
-        Ok(())
-    }
-}
-
-impl fmt::Debug for WritableTarget {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Self::WriteStdout => "stdout",
-                Self::PrintStdout => "stdout",
-                Self::WriteStderr => "stderr",
-                Self::PrintStderr => "stderr",
-                Self::Pipe(_) => "pipe",
-            }
-        )
-    }
-}
 /// Whether or not to print styles to the target.
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[allow(clippy::exhaustive_enums)] // By definition don't need more
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, Default)]
 pub enum WriteStyle {
     /// Try to print styles, but don't force the issue.
+    #[default]
     Auto,
     /// Try very hard to print styles.
     Always,
@@ -118,30 +21,37 @@ pub enum WriteStyle {
     Never,
 }
 
-impl Default for WriteStyle {
-    fn default() -> Self {
-        WriteStyle::Auto
+#[cfg(feature = "color")]
+impl From<anstream::ColorChoice> for WriteStyle {
+    fn from(choice: anstream::ColorChoice) -> Self {
+        match choice {
+            anstream::ColorChoice::Auto => Self::Auto,
+            anstream::ColorChoice::Always => Self::Always,
+            anstream::ColorChoice::AlwaysAnsi => Self::Always,
+            anstream::ColorChoice::Never => Self::Never,
+        }
     }
 }
 
 #[cfg(feature = "color")]
-impl WriteStyle {
-    fn into_color_choice(self) -> ::termcolor::ColorChoice {
-        match self {
-            WriteStyle::Always => ::termcolor::ColorChoice::Always,
-            WriteStyle::Auto => ::termcolor::ColorChoice::Auto,
-            WriteStyle::Never => ::termcolor::ColorChoice::Never,
+impl From<WriteStyle> for anstream::ColorChoice {
+    fn from(choice: WriteStyle) -> Self {
+        match choice {
+            WriteStyle::Auto => anstream::ColorChoice::Auto,
+            WriteStyle::Always => anstream::ColorChoice::Always,
+            WriteStyle::Never => anstream::ColorChoice::Never,
         }
     }
 }
 
 /// A terminal target with color awareness.
+#[derive(Debug)]
 pub(crate) struct Writer {
     inner: BufferWriter,
 }
 
 impl Writer {
-    pub fn write_style(&self) -> WriteStyle {
+    pub(crate) fn write_style(&self) -> WriteStyle {
         self.inner.write_style()
     }
 
@@ -151,12 +61,6 @@ impl Writer {
 
     pub(super) fn print(&self, buf: &Buffer) -> io::Result<()> {
         self.inner.print(buf)
-    }
-}
-
-impl fmt::Debug for Writer {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.debug_struct("Writer").finish()
     }
 }
 
@@ -215,30 +119,27 @@ impl Builder {
         assert!(!self.built, "attempt to re-use consumed builder");
         self.built = true;
 
-        let color_choice = match self.write_style {
-            WriteStyle::Auto => {
-                if match &self.target {
-                    Target::Stderr => is_stderr(),
-                    Target::Stdout => is_stdout(),
-                    Target::Pipe(_) => false,
-                } {
-                    WriteStyle::Auto
-                } else {
-                    WriteStyle::Never
-                }
+        let color_choice = self.write_style;
+        #[cfg(feature = "auto-color")]
+        let color_choice = if color_choice == WriteStyle::Auto {
+            match &self.target {
+                Target::Stdout => anstream::AutoStream::choice(&io::stdout()).into(),
+                Target::Stderr => anstream::AutoStream::choice(&io::stderr()).into(),
+                Target::Pipe(_) => color_choice,
             }
-            color_choice => color_choice,
+        } else {
+            color_choice
         };
-        let color_choice = if self.is_test {
+        let color_choice = if color_choice == WriteStyle::Auto {
             WriteStyle::Never
         } else {
             color_choice
         };
 
         let writer = match mem::take(&mut self.target) {
-            Target::Stderr => BufferWriter::stderr(self.is_test, color_choice),
             Target::Stdout => BufferWriter::stdout(self.is_test, color_choice),
-            Target::Pipe(pipe) => BufferWriter::pipe(Box::new(Mutex::new(pipe))),
+            Target::Stderr => BufferWriter::stderr(self.is_test, color_choice),
+            Target::Pipe(pipe) => BufferWriter::pipe(Box::new(Mutex::new(pipe)), color_choice),
         };
 
         Writer { inner: writer }

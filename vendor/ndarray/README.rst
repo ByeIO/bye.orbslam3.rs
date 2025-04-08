@@ -11,7 +11,7 @@ __ https://docs.rs/ndarray/
 
 |build_status|_ |crates|_ |matrix-chat|_ |irc|_
 
-.. |build_status| image:: https://github.com/rust-ndarray/ndarray/workflows/Continuous%20integration/badge.svg?branch=master
+.. |build_status| image:: https://github.com/rust-ndarray/ndarray/actions/workflows/ci.yaml/badge.svg
    :alt: CI build status
 .. _build_status: https://github.com/rust-ndarray/ndarray/actions
 
@@ -65,8 +65,11 @@ your `Cargo.toml`.
   - This crate can be used without the standard library by disabling the
     default `std` feature. To do so, use this in your `Cargo.toml`:
 
-    [dependencies]
-    ndarray = { version = "0.x.y", default-features = false }
+    ::
+      
+      [dependencies]
+      ndarray = { version = "0.x.y", default-features = false }
+    
 
   - The `geomspace` `linspace` `logspace` `range` `std` `var` `var_axis` and `std_axis`
     methods are only available when `std` is enabled.
@@ -80,6 +83,10 @@ your `Cargo.toml`.
   - Enables parallel iterators, parallelized methods and ``par_azip!``.
   - Implies std
 
+- ``approx``
+
+  - Implementations of traits from version 0.5 of the [`approx`] crate.
+
 - ``blas``
 
   - Enable transparent BLAS support for matrix multiplication.
@@ -90,16 +97,20 @@ your `Cargo.toml`.
 
   - Enable the ``threading`` feature in the matrixmultiply package
 
+- ``portable-atomic-critical-section``
+
+  - Whether ``portable-atomic`` should use ``critical-section``
+
 How to use with cargo
 ---------------------
 
 ::
 
     [dependencies]
-    ndarray = "0.15.0"
+    ndarray = "0.16.0"
 
-How to enable blas integration
------------------------------
+How to enable BLAS integration
+------------------------------
 
 Blas integration is an optional add-on. Without BLAS, ndarray uses the
 ``matrixmultiply`` crate for matrix multiplication for ``f64`` and ``f32``
@@ -116,16 +127,16 @@ An example configuration using system openblas is shown below. Note that only
 end-user projects (not libraries) should select provider::
 
     [dependencies]
-    ndarray = { version = "0.15.0", features = ["blas"] }
-    blas-src = { version = "0.8", features = ["openblas"] }
+    ndarray = { version = "0.16.0", features = ["blas"] }
+    blas-src = { version = "0.10", features = ["openblas"] }
     openblas-src = { version = "0.10", features = ["cblas", "system"] }
 
 Using system-installed dependencies can save a long time building dependencies.
 An example configuration using (compiled) netlib is shown below anyway::
 
     [dependencies]
-    ndarray = { version = "0.15.0", features = ["blas"] }
-    blas-src = { version = "0.8.0", default-features = false, features = ["netlib"] }
+    ndarray = { version = "0.16.0", features = ["blas"] }
+    blas-src = { version = "0.10.0", default-features = false, features = ["netlib"] }
 
 When this is done, your program must also link to ``blas_src`` by using it or
 explicitly including it in your code::
@@ -138,6 +149,7 @@ there is no tight coupling to the ``blas-src`` version, so version selection is 
 =========== ============ ================ ==============
 ``ndarray`` ``blas-src`` ``openblas-src`` ``netlib-src``
 =========== ============ ================ ==============
+0.16        0.10         0.10             0.8
 0.15        0.8          0.10             0.8
 0.15        0.7          0.9              0.8
 0.14        0.6.1        0.9.0

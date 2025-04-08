@@ -26,3 +26,10 @@ docker run -it --rm openvino/onnxruntime_ep_ubuntu20:2024.4.0
 python3 -c "import onnxruntime;print(onnxruntime.__version__)"
 # python3 -c "import cv2;import numpy;"
 wasmtime ./assets/openvino_onnxruntime_wasi.wasm python3 -c "import onnxruntime;print(onnxruntime.__version__)"
+# 测试onnx模型
+cargo run --example tract_mobilenet_onnx > result/tract_mobilenet_onnx.log
+cargo run --example tract_depth_onnx > result/tract_depth_onnx.log
+# 优化模型
+onnxsim ./assets/ailia-models/depth_anything/depth_anything_v2_vits.onnx ./assets/ailia-models/depth_anything/depth_anything_v2_vits_simplified.onnx
+# 测试deno
+cargo run --example deno_hello > result/deno_hello.log

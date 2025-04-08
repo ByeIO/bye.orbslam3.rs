@@ -32,18 +32,18 @@
 //!
 //! Assumes the binary is `main`:
 //!
-//! ```{.bash}
+//! ```console
 //! $ RUST_LOG=error ./main
 //! [2017-11-09T02:12:24Z ERROR main] this is printed by default
 //! ```
 //!
-//! ```{.bash}
+//! ```console
 //! $ RUST_LOG=info ./main
 //! [2017-11-09T02:12:24Z ERROR main] this is printed by default
 //! [2017-11-09T02:12:24Z INFO main] the answer was: 12
 //! ```
 //!
-//! ```{.bash}
+//! ```console
 //! $ RUST_LOG=debug ./main
 //! [2017-11-09T02:12:24Z DEBUG main] this is a debug message
 //! [2017-11-09T02:12:24Z ERROR main] this is printed by default
@@ -52,7 +52,7 @@
 //!
 //! You can also set the log level on a per module basis:
 //!
-//! ```{.bash}
+//! ```console
 //! $ RUST_LOG=main=info ./main
 //! [2017-11-09T02:12:24Z ERROR main] this is printed by default
 //! [2017-11-09T02:12:24Z INFO main] the answer was: 12
@@ -60,7 +60,7 @@
 //!
 //! And enable all logging:
 //!
-//! ```{.bash}
+//! ```console
 //! $ RUST_LOG=main ./main
 //! [2017-11-09T02:12:24Z DEBUG main] this is a debug message
 //! [2017-11-09T02:12:24Z ERROR main] this is printed by default
@@ -70,7 +70,7 @@
 //! If the binary name contains hyphens, you will need to replace
 //! them with underscores:
 //!
-//! ```{.bash}
+//! ```console
 //! $ RUST_LOG=my_app ./my-app
 //! [2017-11-09T02:12:24Z DEBUG my_app] this is a debug message
 //! [2017-11-09T02:12:24Z ERROR my_app] this is printed by default
@@ -88,14 +88,14 @@
 //! **By default all logging is disabled except for the `error` level**
 //!
 //! The **`RUST_LOG`** environment variable controls logging with the syntax:
-//! ```text
+//! ```console
 //! RUST_LOG=[target][=][level][,...]
 //! ```
 //! Or in other words, its a comma-separated list of directives.
 //! Directives can filter by **target**, by **level**, or both (using `=`).
 //!
 //! For example,
-//! ```text
+//! ```console
 //! RUST_LOG=data=debug,hardware=debug
 //! ```
 //!
@@ -201,9 +201,9 @@
 //! environment variable. It accepts the following values:
 //!
 //! * `auto` (default) will attempt to print style characters, but don't force the issue.
-//! If the console isn't available on Windows, or if TERM=dumb, for example, then don't print colors.
+//!   If the console isn't available on Windows, or if TERM=dumb, for example, then don't print colors.
 //! * `always` will always print style characters even if they aren't supported by the terminal.
-//! This includes emitting ANSI colors on Windows if the console API is unavailable.
+//!   This includes emitting ANSI colors on Windows if the console API is unavailable.
 //! * `never` will never print style characters.
 //!
 //! ## Tweaking the default format
@@ -259,26 +259,14 @@
 //! [gh-repo-examples]: https://github.com/rust-cli/env_logger/tree/main/examples
 //! [level-enum]: https://docs.rs/log/latest/log/enum.Level.html
 //! [log-crate-url]: https://docs.rs/log
-//! [`Builder`]: struct.Builder.html
-//! [`Builder::is_test`]: struct.Builder.html#method.is_test
-//! [`Env`]: struct.Env.html
-//! [`fmt`]: fmt/index.html
 
-#![doc(
-    html_logo_url = "https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png",
-    html_favicon_url = "https://www.rust-lang.org/static/images/favicon.ico"
-)]
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
-// When compiled for the rustc compiler itself we want to make sure that this is
-// an unstable crate
-#![cfg_attr(rustbuild, feature(staged_api, rustc_private))]
-#![cfg_attr(rustbuild, unstable(feature = "rustc_private", issue = "27812"))]
-#![deny(missing_debug_implementations, missing_docs)]
+#![warn(clippy::print_stderr)]
+#![warn(clippy::print_stdout)]
 
 mod logger;
 
-pub mod filter;
 pub mod fmt;
 
-pub use self::fmt::glob::*;
+pub use self::fmt::{Target, TimestampPrecision, WriteStyle};
 pub use self::logger::*;

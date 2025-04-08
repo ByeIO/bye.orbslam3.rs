@@ -24,3 +24,7 @@ factrs.workspace = true
 wasmtime-cli.workspace = true
 # tract运行时(内含ndarray)
 tract-onnx.workspace = true
+# javascript/ESM运行时
+deno_cli.workspace = true
+# deno_lib.workspace = true
+# deno_core.workspace = true

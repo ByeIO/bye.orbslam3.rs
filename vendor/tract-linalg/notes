@@ -1,0 +1,18 @@
+# unit benches: raspi 1024 items
+ 
+  cargo dinghy -d laval bench --bench activations -- arm64simd_act_f32_32n/1024
+
+* empty: ~2us
+* noop100: 33us
+* add100:  53us -> payload: 20us
+* sub100:  54us -> payload: 20us
+* mul100:  54us -> payload: 20us
+* fma100:  77us
+
+add100:
+    1024 * 100 -> 100k ops -> 25k vops
+    25k ops in 53us -> 471 MFLOP/s
+
+    1 neon vector op / cycle
+    1.4G neon vecto op / second
+    1.4G * 4 = 5.6GFLOPS

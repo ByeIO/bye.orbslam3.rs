@@ -20,16 +20,16 @@ use core::{
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 #[cfg(feature = "zerocopy")]
-use zerocopy::{FromBytes, IntoBytes};
+use zerocopy::{AsBytes, FromBytes};
 
 pub(crate) mod convert;
 
 /// A 16-bit floating point type implementing the [`bfloat16`] format.
 ///
 /// The [`bfloat16`] floating point format is a truncated 16-bit version of the IEEE 754 standard
-/// `binary32`, a.k.a [`f32`]. [`struct@bf16`] has approximately the same dynamic range as [`f32`] by
-/// having a lower precision than [`struct@f16`][crate::f16]. While [`struct@f16`][crate::f16] has a precision of
-/// 11 bits, [`struct@bf16`] has a precision of only 8 bits.
+/// `binary32`, a.k.a [`f32`]. [`bf16`] has approximately the same dynamic range as [`f32`] by
+/// having a lower precision than [`f16`][crate::f16]. While [`f16`][crate::f16] has a precision of
+/// 11 bits, [`bf16`] has a precision of only 8 bits.
 ///
 /// [`bfloat16`]: https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
 #[allow(non_camel_case_types)]
@@ -40,21 +40,21 @@ pub(crate) mod convert;
     feature = "rkyv",
     derive(rkyv::Archive, rkyv::Serialize, rkyv::Deserialize)
 )]
-#[cfg_attr(feature = "rkyv", rkyv(resolver = Bf16Resolver))]
+#[cfg_attr(feature = "rkyv", archive(resolver = "Bf16Resolver"))]
 #[cfg_attr(feature = "bytemuck", derive(Zeroable, Pod))]
-#[cfg_attr(feature = "zerocopy", derive(IntoBytes, FromBytes))]
+#[cfg_attr(feature = "zerocopy", derive(AsBytes, FromBytes))]
 #[cfg_attr(kani, derive(kani::Arbitrary))]
 pub struct bf16(u16);
 
 impl bf16 {
-    /// Constructs a [`struct@bf16`] value from the raw bits.
+    /// Constructs a [`bf16`] value from the raw bits.
     #[inline]
     #[must_use]
     pub const fn from_bits(bits: u16) -> bf16 {
         bf16(bits)
     }
 
-    /// Constructs a [`struct@bf16`] value from a 32-bit floating point value.
+    /// Constructs a [`bf16`] value from a 32-bit floating point value.
     ///
     /// This operation is lossy. If the 32-bit value is too large to fit, ±∞ will result. NaN values
     /// are preserved. Subnormal values that are too tiny to be represented will result in ±0. All
@@ -65,7 +65,7 @@ impl bf16 {
         Self::from_f32_const(value)
     }
 
-    /// Constructs a [`struct@bf16`] value from a 32-bit floating point value.
+    /// Constructs a [`bf16`] value from a 32-bit floating point value.
     ///
     /// This function is identical to [`from_f32`][Self::from_f32] except it never uses hardware
     /// intrinsics, which allows it to be `const`. [`from_f32`][Self::from_f32] should be preferred
@@ -80,7 +80,7 @@ impl bf16 {
         bf16(convert::f32_to_bf16(value))
     }
 
-    /// Constructs a [`struct@bf16`] value from a 64-bit floating point value.
+    /// Constructs a [`bf16`] value from a 64-bit floating point value.
     ///
     /// This operation is lossy. If the 64-bit value is to large to fit, ±∞ will result. NaN values
     /// are preserved. 64-bit subnormal values are too tiny to be represented and result in ±0.
@@ -92,7 +92,7 @@ impl bf16 {
         Self::from_f64_const(value)
     }
 
-    /// Constructs a [`struct@bf16`] value from a 64-bit floating point value.
+    /// Constructs a [`bf16`] value from a 64-bit floating point value.
     ///
     /// This function is identical to [`from_f64`][Self::from_f64] except it never uses hardware
     /// intrinsics, which allows it to be `const`. [`from_f64`][Self::from_f64] should be preferred
@@ -108,7 +108,7 @@ impl bf16 {
         bf16(convert::f64_to_bf16(value))
     }
 
-    /// Converts a [`struct@bf16`] into the underlying bit representation.
+    /// Converts a [`bf16`] into the underlying bit representation.
     #[inline]
     #[must_use]
     pub const fn to_bits(self) -> u16 {
@@ -224,7 +224,7 @@ impl bf16 {
         bf16::from_bits(u16::from_ne_bytes(bytes))
     }
 
-    /// Converts a [`struct@bf16`] value into an [`f32`] value.
+    /// Converts a [`bf16`] value into an [`f32`] value.
     ///
     /// This conversion is lossless as all values can be represented exactly in [`f32`].
     #[inline]
@@ -233,7 +233,7 @@ impl bf16 {
         self.to_f32_const()
     }
 
-    /// Converts a [`struct@bf16`] value into an [`f32`] value.
+    /// Converts a [`bf16`] value into an [`f32`] value.
     ///
     /// This function is identical to [`to_f32`][Self::to_f32] except it never uses hardware
     /// intrinsics, which allows it to be `const`. [`to_f32`][Self::to_f32] should be preferred
@@ -246,7 +246,7 @@ impl bf16 {
         convert::bf16_to_f32(self.0)
     }
 
-    /// Converts a [`struct@bf16`] value into an [`f64`] value.
+    /// Converts a [`bf16`] value into an [`f64`] value.
     ///
     /// This conversion is lossless as all values can be represented exactly in [`f64`].
     #[inline]
@@ -255,7 +255,7 @@ impl bf16 {
         self.to_f64_const()
     }
 
-    /// Converts a [`struct@bf16`] value into an [`f64`] value.
+    /// Converts a [`bf16`] value into an [`f64`] value.
     ///
     /// This function is identical to [`to_f64`][Self::to_f64] except it never uses hardware
     /// intrinsics, which allows it to be `const`. [`to_f64`][Self::to_f64] should be preferred
@@ -649,7 +649,7 @@ impl bf16 {
 
     /// Alternate serialize adapter for serializing as a float.
     ///
-    /// By default, [`struct@bf16`] serializes as a newtype of [`u16`]. This is an alternate serialize
+    /// By default, [`bf16`] serializes as a newtype of [`u16`]. This is an alternate serialize
     /// implementation that serializes as an [`f32`] value. It is designed for use with
     /// `serialize_with` serde attributes. Deserialization from `f32` values is already supported by
     /// the default deserialize implementation.
@@ -675,7 +675,7 @@ impl bf16 {
 
     /// Alternate serialize adapter for serializing as a string.
     ///
-    /// By default, [`struct@bf16`] serializes as a newtype of [`u16`]. This is an alternate serialize
+    /// By default, [`bf16`] serializes as a newtype of [`u16`]. This is an alternate serialize
     /// implementation that serializes as a string value. It is designed for use with
     /// `serialize_with` serde attributes. Deserialization from string values is already supported
     /// by the default deserialize implementation.
@@ -702,87 +702,87 @@ impl bf16 {
         serializer.serialize_str(&self.to_string())
     }
 
-    /// Approximate number of [`struct@bf16`] significant digits in base 10
+    /// Approximate number of [`bf16`] significant digits in base 10
     pub const DIGITS: u32 = 2;
-    /// [`struct@bf16`]
+    /// [`bf16`]
     /// [machine epsilon](https://en.wikipedia.org/wiki/Machine_epsilon) value
     ///
     /// This is the difference between 1.0 and the next largest representable number.
     pub const EPSILON: bf16 = bf16(0x3C00u16);
-    /// [`struct@bf16`] positive Infinity (+∞)
+    /// [`bf16`] positive Infinity (+∞)
     pub const INFINITY: bf16 = bf16(0x7F80u16);
-    /// Number of [`struct@bf16`] significant digits in base 2
+    /// Number of [`bf16`] significant digits in base 2
     pub const MANTISSA_DIGITS: u32 = 8;
-    /// Largest finite [`struct@bf16`] value
+    /// Largest finite [`bf16`] value
     pub const MAX: bf16 = bf16(0x7F7F);
-    /// Maximum possible [`struct@bf16`] power of 10 exponent
+    /// Maximum possible [`bf16`] power of 10 exponent
     pub const MAX_10_EXP: i32 = 38;
-    /// Maximum possible [`struct@bf16`] power of 2 exponent
+    /// Maximum possible [`bf16`] power of 2 exponent
     pub const MAX_EXP: i32 = 128;
-    /// Smallest finite [`struct@bf16`] value
+    /// Smallest finite [`bf16`] value
     pub const MIN: bf16 = bf16(0xFF7F);
-    /// Minimum possible normal [`struct@bf16`] power of 10 exponent
+    /// Minimum possible normal [`bf16`] power of 10 exponent
     pub const MIN_10_EXP: i32 = -37;
-    /// One greater than the minimum possible normal [`struct@bf16`] power of 2 exponent
+    /// One greater than the minimum possible normal [`bf16`] power of 2 exponent
     pub const MIN_EXP: i32 = -125;
-    /// Smallest positive normal [`struct@bf16`] value
+    /// Smallest positive normal [`bf16`] value
     pub const MIN_POSITIVE: bf16 = bf16(0x0080u16);
-    /// [`struct@bf16`] Not a Number (NaN)
+    /// [`bf16`] Not a Number (NaN)
     pub const NAN: bf16 = bf16(0x7FC0u16);
-    /// [`struct@bf16`] negative infinity (-∞).
+    /// [`bf16`] negative infinity (-∞).
     pub const NEG_INFINITY: bf16 = bf16(0xFF80u16);
-    /// The radix or base of the internal representation of [`struct@bf16`]
+    /// The radix or base of the internal representation of [`bf16`]
     pub const RADIX: u32 = 2;
 
-    /// Minimum positive subnormal [`struct@bf16`] value
+    /// Minimum positive subnormal [`bf16`] value
     pub const MIN_POSITIVE_SUBNORMAL: bf16 = bf16(0x0001u16);
-    /// Maximum subnormal [`struct@bf16`] value
+    /// Maximum subnormal [`bf16`] value
     pub const MAX_SUBNORMAL: bf16 = bf16(0x007Fu16);
 
-    /// [`struct@bf16`] 1
+    /// [`bf16`] 1
     pub const ONE: bf16 = bf16(0x3F80u16);
-    /// [`struct@bf16`] 0
+    /// [`bf16`] 0
     pub const ZERO: bf16 = bf16(0x0000u16);
-    /// [`struct@bf16`] -0
+    /// [`bf16`] -0
     pub const NEG_ZERO: bf16 = bf16(0x8000u16);
-    /// [`struct@bf16`] -1
+    /// [`bf16`] -1
     pub const NEG_ONE: bf16 = bf16(0xBF80u16);
 
-    /// [`struct@bf16`] Euler's number (ℯ)
+    /// [`bf16`] Euler's number (ℯ)
     pub const E: bf16 = bf16(0x402Eu16);
-    /// [`struct@bf16`] Archimedes' constant (π)
+    /// [`bf16`] Archimedes' constant (π)
     pub const PI: bf16 = bf16(0x4049u16);
-    /// [`struct@bf16`] 1/π
+    /// [`bf16`] 1/π
     pub const FRAC_1_PI: bf16 = bf16(0x3EA3u16);
-    /// [`struct@bf16`] 1/√2
+    /// [`bf16`] 1/√2
     pub const FRAC_1_SQRT_2: bf16 = bf16(0x3F35u16);
-    /// [`struct@bf16`] 2/π
+    /// [`bf16`] 2/π
     pub const FRAC_2_PI: bf16 = bf16(0x3F23u16);
-    /// [`struct@bf16`] 2/√π
+    /// [`bf16`] 2/√π
     pub const FRAC_2_SQRT_PI: bf16 = bf16(0x3F90u16);
-    /// [`struct@bf16`] π/2
+    /// [`bf16`] π/2
     pub const FRAC_PI_2: bf16 = bf16(0x3FC9u16);
-    /// [`struct@bf16`] π/3
+    /// [`bf16`] π/3
     pub const FRAC_PI_3: bf16 = bf16(0x3F86u16);
-    /// [`struct@bf16`] π/4
+    /// [`bf16`] π/4
     pub const FRAC_PI_4: bf16 = bf16(0x3F49u16);
-    /// [`struct@bf16`] π/6
+    /// [`bf16`] π/6
     pub const FRAC_PI_6: bf16 = bf16(0x3F06u16);
-    /// [`struct@bf16`] π/8
+    /// [`bf16`] π/8
     pub const FRAC_PI_8: bf16 = bf16(0x3EC9u16);
-    /// [`struct@bf16`] 𝗅𝗇 10
+    /// [`bf16`] 𝗅𝗇 10
     pub const LN_10: bf16 = bf16(0x4013u16);
-    /// [`struct@bf16`] 𝗅𝗇 2
+    /// [`bf16`] 𝗅𝗇 2
     pub const LN_2: bf16 = bf16(0x3F31u16);
-    /// [`struct@bf16`] 𝗅𝗈𝗀₁₀ℯ
+    /// [`bf16`] 𝗅𝗈𝗀₁₀ℯ
     pub const LOG10_E: bf16 = bf16(0x3EDEu16);
-    /// [`struct@bf16`] 𝗅𝗈𝗀₁₀2
+    /// [`bf16`] 𝗅𝗈𝗀₁₀2
     pub const LOG10_2: bf16 = bf16(0x3E9Au16);
-    /// [`struct@bf16`] 𝗅𝗈𝗀₂ℯ
+    /// [`bf16`] 𝗅𝗈𝗀₂ℯ
     pub const LOG2_E: bf16 = bf16(0x3FB9u16);
-    /// [`struct@bf16`] 𝗅𝗈𝗀₂10
+    /// [`bf16`] 𝗅𝗈𝗀₂10
     pub const LOG2_10: bf16 = bf16(0x4055u16);
-    /// [`struct@bf16`] √2
+    /// [`bf16`] √2
     pub const SQRT_2: bf16 = bf16(0x3FB5u16);
 }
 
@@ -1332,7 +1332,7 @@ mod test {
     #[allow(unused_imports)]
     use core::cmp::Ordering;
     #[cfg(feature = "num-traits")]
-    use num_traits::{AsPrimitive, FromBytes, FromPrimitive, ToBytes, ToPrimitive};
+    use num_traits::{AsPrimitive, FromPrimitive, ToPrimitive};
     use quickcheck_macros::quickcheck;
 
     #[cfg(feature = "num-traits")]
@@ -1365,16 +1365,6 @@ mod test {
         assert_eq!(<bf16 as FromPrimitive>::from_i32(2).unwrap(), two);
         assert_eq!(<bf16 as FromPrimitive>::from_f32(2.0).unwrap(), two);
         assert_eq!(<bf16 as FromPrimitive>::from_f64(2.0).unwrap(), two);
-    }
-
-    #[cfg(feature = "num-traits")]
-    #[test]
-    fn to_and_from_bytes() {
-        let two = bf16::from_f32(2.0);
-        assert_eq!(<bf16 as ToBytes>::to_le_bytes(&two), [0, 64]);
-        assert_eq!(<bf16 as FromBytes>::from_le_bytes(&[0, 64]), two);
-        assert_eq!(<bf16 as ToBytes>::to_be_bytes(&two), [64, 0]);
-        assert_eq!(<bf16 as FromBytes>::from_be_bytes(&[64, 0]), two);
     }
 
     #[test]

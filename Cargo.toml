@@ -41,7 +41,12 @@ factrs = "0.2.0"
 # wasm运行时
 wasmtime-cli = { version = "31.0.0", path="./static/wasmtime-cli-31.0.0" }
 # tract运行时
-tract-onnx = { version = "0.21.11", features = ["getrandom-js"] }
+tract-onnx = { version = "0.21.11", features = ["getrandom-js"], path = "./static/tract-onnx"}
+# javascript/ESM运行时
+deno_cli = { version = "2.2.8", path = "./static/deno" }
+
+# deno_lib = "0.15.0"
+# deno_core = "0.343.0"
 
 # # 异步处理
 # futures = { version = "0.3" }

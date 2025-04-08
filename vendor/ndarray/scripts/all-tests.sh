@@ -6,17 +6,26 @@ set -e
 FEATURES=$1
 CHANNEL=$2
 
-cargo build --verbose --no-default-features
-# Testing both dev and release profiles helps find bugs, especially in low level code
-cargo test --verbose --no-default-features
-cargo test --release --verbose --no-default-features
-cargo build --verbose --features "$FEATURES"
-cargo test --verbose --features "$FEATURES"
-cargo test --manifest-path=ndarray-rand/Cargo.toml --no-default-features --verbose
-cargo test --manifest-path=ndarray-rand/Cargo.toml --features quickcheck --verbose
-cargo test --manifest-path=xtest-serialization/Cargo.toml --verbose
-cargo test --manifest-path=xtest-blas/Cargo.toml --verbose --features openblas-system
+QC_FEAT=--features=ndarray-rand/quickcheck
+
+# build check with no features
+cargo build -v --no-default-features
+
+# ndarray with no features
+cargo test -p ndarray -v --no-default-features
+# all with features
+cargo test -v --features "$FEATURES" $QC_FEAT
+# all with features and release (ignore test crates which is already optimized)
+cargo test -v -p ndarray -p ndarray-rand --release --features "$FEATURES" $QC_FEAT --lib --tests
+
+# BLAS tests
+cargo test -p ndarray --lib -v --features blas
+cargo test -p blas-mock-tests -v
+cargo test -p blas-tests -v --features blas-tests/openblas-system
+cargo test -p numeric-tests -v --features numeric-tests/test_blas
+
+# Examples
 cargo test --examples
-CARGO_TARGET_DIR=target/ cargo test --manifest-path=xtest-numeric/Cargo.toml --verbose
-CARGO_TARGET_DIR=target/ cargo test --manifest-path=xtest-numeric/Cargo.toml --verbose --features test_blas
+
+# Benchmarks
 ([ "$CHANNEL" != "nightly" ] || cargo bench --no-run --verbose --features "$FEATURES")
