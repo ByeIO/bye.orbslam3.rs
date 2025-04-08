@@ -1,0 +1,17 @@
+[package]
+name = "suite-unit"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tract-core.workspace = true
+infra = { path = "../infra" }
+
+[target.'cfg(not(target_family = "wasm"))'.dependencies]
+proptest.workspace = true
+
+[target.'cfg(target_family = "wasm")'.dependencies]
+# Wasm doesn't support the `fork` feature of proptest.
+proptest = { version = "1.0.0", default-features = false, features = ["std", "bit-set"] }

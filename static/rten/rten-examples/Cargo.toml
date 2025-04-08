@@ -1,0 +1,140 @@
+[package]
+name = "rten-examples"
+version = "0.3.0"
+edition = "2021"
+authors = ["Robert Knight"]
+description = "Examples for using the rten library"
+license = "MIT OR Apache-2.0"
+homepage = "https://github.com/robertknight/rten"
+repository = "https://github.com/robertknight/rten"
+
+[dependencies]
+fastrand = "2.0.2"
+hound = "3.5.1"
+image = { workspace = true }
+lexopt = "0.3.0"
+microfft = { version = "0.6.0", default-features = false, features = ["size-512"] }
+png = "0.17.6"
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+rten = { path = "../", features = ["mmap", "random"] }
+rten-generate = { path = "../rten-generate", features=["text-decoder"] }
+rten-imageio = { path = "../rten-imageio" }
+rten-imageproc = { path = "../rten-imageproc" }
+rten-tensor = { path = "../rten-tensor", features=["serde"] }
+rten-text = { path = "../rten-text" }
+smallvec = "1.13.2"
+
+[features]
+# Use AVX-512 instructions if available. Requires nightly Rust for AVX-512 intrinsics.
+avx512 = ["rten/avx512"]
+
+[lints.clippy]
+# Allows use of `..Default::default()` for future compatibility even when not
+# currently needed.
+needless_update = "allow"
+
+[package.metadata.release]
+release = false
+
+# Vision
+[[bin]]
+name = "clip"
+path = "src/clip.rs"
+
+[[bin]]
+name = "deeplab"
+path = "src/deeplab.rs"
+test = false
+
+[[bin]]
+name = "detr"
+path = "src/detr.rs"
+test = false
+
+[[bin]]
+name = "distilvit"
+path = "src/distilvit.rs"
+test = false
+
+[[bin]]
+name = "imagenet"
+path = "src/imagenet.rs"
+test = false
+
+[[bin]]
+name = "nougat"
+path = "src/nougat.rs"
+test = false
+
+[[bin]]
+name = "yolo"
+path = "src/yolo.rs"
+test = false
+
+[[bin]]
+name = "depth_anything"
+path = "src/depth_anything.rs"
+test = false
+
+[[bin]]
+name = "rmbg"
+path = "src/rmbg.rs"
+test = false
+
+[[bin]]
+name = "segment_anything"
+path = "src/segment_anything.rs"
+test = false
+
+[[bin]]
+name = "trocr"
+path = "src/trocr.rs"
+test = false
+
+# Text
+[[bin]]
+name = "bert_qa"
+path = "src/bert_qa.rs"
+test = false
+
+[[bin]]
+name = "gpt2"
+path = "src/gpt2.rs"
+test = false
+
+[[bin]]
+name = "modernbert"
+path = "src/modernbert.rs"
+test = false
+
+[[bin]]
+name = "jina_similarity"
+path = "src/jina_similarity.rs"
+test = false
+
+[[bin]]
+name = "qwen2_chat"
+path = "src/qwen2_chat.rs"
+test = false
+
+# Audio
+[[bin]]
+name = "piper"
+path = "src/piper.rs"
+test = false
+
+[[bin]]
+name = "silero"
+path = "src/silero.rs"
+test = false
+
+[[bin]]
+name = "wav2vec2"
+path = "src/wav2vec2.rs"
+test = false
+
+[[bin]]
+name = "whisper"
+path = "src/whisper.rs"
+test = false

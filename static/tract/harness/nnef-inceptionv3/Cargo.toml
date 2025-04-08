@@ -1,0 +1,17 @@
+[package]
+name = "nnef-inceptionv3"
+version = "0.20.7-pre"
+authors = ["Mathieu Poumeyrol <kali@zoy.org>"]
+license = "MIT OR Apache-2.0"
+edition = "2021"
+
+[dependencies]
+flate2.workspace = true
+image.workspace = true
+tract-core.workspace = true
+tract-nnef.workspace = true
+
+[dev-dependencies]
+dinghy-test.workspace = true
+env_logger.workspace = true
+log.workspace = true

@@ -1,0 +1,28 @@
+{
+  "name": "rten",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertknight/rten.git"
+  },
+  "keywords": [],
+  "author": "Robert Knight <robertknight@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/robertknight/rten/issues"
+  },
+  "homepage": "https://github.com/robertknight/rten#readme",
+  "devDependencies": {
+    "sharp": "^0.33.1"
+  },
+  "files": [
+    "dist/*",
+    "index.js"
+  ]
+}

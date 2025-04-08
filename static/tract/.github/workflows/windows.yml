@@ -1,0 +1,66 @@
+name: Windows unit tests
+
+on:
+#  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 3 * * *'
+
+
+env:
+  CARGO_INCREMENTAL: false
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+
+jobs:
+  windows:
+    strategy:
+      matrix:
+        os: [ windows-2022 ]
+        toolchain: [ gnu, msvc ]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: nick-invision/retry@v2
+      name: Install Rustup using win.rustup.rs
+      with:
+        timeout_minutes: 10
+        max_attempts: 8
+        shell: pwsh
+        command: |
+            # Disable the download progress bar which can cause perf issues
+            $ProgressPreference = "SilentlyContinue"
+            Invoke-WebRequest https://win.rustup.rs/ -OutFile rustup-init.exe
+            .\rustup-init.exe -y --default-host=x86_64-pc-windows-msvc --profile=minimal
+    - uses: nick-invision/retry@v2
+      name: Install the target
+      with:
+        timeout_minutes: 10
+        max_attempts: 8
+        shell: pwsh
+        command: |
+            rustup toolchain add stable-x86_64-pc-windows-${{matrix.toolchain}}
+            rustup default stable-x86_64-pc-windows-${{matrix.toolchain}}
+    - name: Install LLVM and Clang
+      uses: KyleMayes/install-llvm-action@v1
+      with:
+        version: "11.0"
+    - name: debug
+      run: dir "C:\\Program Files\\LLVM"
+    - name: debug lib
+      run: dir "C:\\Program Files\\LLVM\\lib"
+    - name: debug bin
+      run: dir "C:\\Program Files\\LLVM\\bin"
+    - name: top level cargo check
+      run: cargo check --workspace --exclude test-blas --exclude tract-metal --exclude test-metal
+      env:
+        LIBCLANG_PATH: "C:\\Program Files\\LLVM\\bin"
+    - name: data / linalg / core / nnef / onnx / onnx-opl
+      run: cargo test -p tract-data -p tract-linalg -p tract-core -p tract-nnef -p tract-onnx -p tract-onnx-opl
+    - name: Onnx test suite
+      run: |
+          cargo test --release -p test-onnx-core -p test-unit-core
+      env:
+        TRACT_LOG: info

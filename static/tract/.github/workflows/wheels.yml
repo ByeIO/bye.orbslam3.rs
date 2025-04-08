@@ -1,0 +1,92 @@
+name: Python wheels
+
+on:
+  schedule:
+    - cron:  '0 3 * * MON'
+  release:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: force publish to pypi
+        type: boolean
+      pypi_version_override:
+        description: override version id detection
+        type: string
+
+
+env:
+  CARGO_INCREMENTAL: false
+  PYPI_VERSION_OVERRIDE: ${{ inputs.pypi_version_override }}
+  CIBW_ENVIRONMENT_PASS_LINUX: "PYPI_VERSION_OVERRIDE"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+  MACOSX_DEPLOYMENT_TARGET: 10.12
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2019, macos-14]
+
+    steps:
+      - uses: actions/checkout@v4
+        
+      - name: Setup | Rust
+        uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: stable
+
+      - uses: actions/setup-python@v3
+
+      - name: Install rust toolchains
+        if: startsWith(matrix.os, 'macOS')
+        run: rustup target install x86_64-apple-darwin aarch64-apple-darwin
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+
+      - name: Build wheels
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 2
+          timeout_seconds: 54000 # 15 hours :/
+          command: python -m cibuildwheel --output-dir wheelhouse api/py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{github.run_id}}-${{matrix.os}}
+          path: ./wheelhouse/*.whl
+
+  make_sdist:
+    name: Make SDist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Build SDist
+      run: cd api/py ; pipx run build --sdist
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: wheels-${{github.run_id}}-src
+        path: api/py/dist/*.tar.gz
+
+  upload_all:
+    needs: [build_wheels, make_sdist]
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'release' && github.event.action == 'published') || inputs.publish
+
+    steps:
+    - uses: actions/download-artifact@v4.1.7
+      with:
+        pattern: wheels-${{github.run_id}}-*
+        merge-multiple: true
+        path: dist
+
+    - uses: pypa/gh-action-pypi-publish@v1.5.1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI }}
+        verbose: true

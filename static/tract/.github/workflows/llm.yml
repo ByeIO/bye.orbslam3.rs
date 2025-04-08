@@ -1,0 +1,64 @@
+name: Foundation LLM examples
+
+on:
+  #   pull_request:
+  schedule:
+    - cron:  '0 3 * * MON'
+  workflow_dispatch:
+
+env:
+  CARGO_INCREMENTAL: false
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+
+jobs:
+  cli: 
+    name: Build tract on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ macos, ubuntu ]
+    steps:
+      - uses: actions/checkout@v4
+      - run: cargo build -p tract --release --no-default-features
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tract-cli-${{matrix.os}}
+          path: ./target/release/tract
+
+  example:
+    name: ${{ matrix.os }} / ${{ matrix.model }} / ${{ matrix.q }}
+    needs: [ cli ]
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      matrix:
+        os: [ macos, ubuntu ]
+        model: [ OpenELM-270M, OpenELM-1_1B, TinyLlama_v1.1, llama-3.2 ]
+        q: [ f16f16, f32f32, q40f16, q40f32, q40ef16, q40ef32 ]
+      fail-fast: false
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4.1.7
+      with:
+        pattern: tract-cli-${{matrix.os}}
+
+    - name: Configure AWS Credentials
+      # if: github.repository == 'sonos/tract'
+      continue-on-error: false
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::567805100031:role/github-runner-tract-ci
+        aws-region: us-east-2
+
+    - name: Set the test id 
+      run: echo id=${{matrix.model}}-${{matrix.q}} >> "$GITHUB_ENV"
+
+    - name: Download and run
+      run: |
+        chmod +x tract-cli-${{matrix.os}}/tract
+        export TRACT_RUN=$GITHUB_WORKSPACE/tract-cli-${{matrix.os}}/tract
+        .travis/test-llm.sh ${{matrix.model}} ${{matrix.q}}

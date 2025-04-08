@@ -120,6 +120,10 @@ aria2 -c "https://storage.googleapis.com/ailia-models/segment-anything-2.1/image
 wget -c "https://storage.googleapis.com/ailia-models/segment-anything-2.1/image_encoder_hiera_t_2.1.onnx.prototxt"
 ```
 
+### onnx算子支持列表
+1. `wonnx`onnx运行时支持的算子[wonnx支持的算子op](docs/wonnx支持的算子op.md)
+2. `onnx` Opset 21定义的算子[onnx_opset21_算子](docs/onnx_opset21_算子.md)
+
 ## 开发说明
 ### 顶层目录说明
 ```sh

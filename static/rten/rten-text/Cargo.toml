@@ -1,0 +1,23 @@
+[package]
+name = "rten-text"
+version = "0.16.0"
+edition = "2021"
+authors = ["Robert Knight"]
+description = "Text tokenization and other ML pre/post-processing functions"
+license = "MIT OR Apache-2.0"
+homepage = "https://github.com/robertknight/rten"
+repository = "https://github.com/robertknight/rten"
+include = ["/src", "/README.md"]
+
+[lib]
+crate-type = ["lib"]
+
+[dependencies]
+fancy-regex = { version = "0.14.0", default-features = false, features = ["std", "unicode"] }
+unicode_categories = "0.1.1"
+unicode-normalization = "0.1.22"
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+rten-testing = { path = "../rten-testing" }

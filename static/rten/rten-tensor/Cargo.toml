@@ -1,0 +1,29 @@
+[package]
+name = "rten-tensor"
+version = "0.16.0"
+edition = "2021"
+authors = ["Robert Knight"]
+description = "Tensor library for the RTen machine learning runtime"
+license = "MIT OR Apache-2.0"
+homepage = "https://github.com/robertknight/rten"
+repository = "https://github.com/robertknight/rten"
+include = ["/src", "/README.md"]
+
+[dependencies]
+serde = { workspace = true, optional = true }
+smallvec = { version = "1.10.0", features=["union", "const_generics", "const_new"] }
+
+[dev-dependencies]
+rten-testing = { path = "../rten-testing" }
+serde_json = { workspace = true }
+
+[lib]
+crate-type = ["lib"]
+
+[lints.clippy]
+# See comments about `needless_range_loop` in root Cargo.toml.
+needless_range_loop = "allow"
+manual_memcpy = "allow"
+
+[features]
+serde = ["dep:serde"]

@@ -1,0 +1,24 @@
+{
+  "name": "rten-mobilenet-demo",
+  "version": "1.0.0",
+  "description": "RTen MobileNet image classification demo",
+  "main": "mobilenet.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertknight/rten.git"
+  },
+  "author": "Robert Knight <robertknight@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/robertknight/rten/issues"
+  },
+  "homepage": "https://github.com/robertknight/rten#readme",
+  "dependencies": {
+    "rten": "file:../../",
+    "sharp": "^0.33.1"
+  }
+}

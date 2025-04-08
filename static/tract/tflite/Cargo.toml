@@ -1,0 +1,16 @@
+[package]
+name = "tract-tflite"
+version = "0.21.12-pre"
+authors = ["Mathieu Poumeyrol <kali@zoy.org>"]
+license = "MIT OR Apache-2.0"
+description = "Tiny, no-nonsense, self contained, TensorFlow and ONNX inference"
+repository = "https://github.com/snipsco/tract"
+edition = "2021"
+
+[dependencies]
+derive-new.workspace = true
+flatbuffers.workspace = true
+tract-core.workspace = true
+
+[features]
+complex = []

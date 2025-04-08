@@ -1,0 +1,11 @@
+[package]
+name = "seekslam_onnx"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+keywords.workspace = true
+
+[dependencies]
+nalgebra.workspace = true
+rand.workspace = true

@@ -1,0 +1,23 @@
+[package]
+name = "tf-inceptionv3"
+version = "0.20.7-pre"
+authors = ["Mathieu Poumeyrol <kali@zoy.org>"]
+license = "MIT OR Apache-2.0"
+edition = "2021"
+
+[dependencies]
+image.workspace = true
+tract-tensorflow.workspace = true
+
+[features]
+conform = [ "tract-tensorflow/conform" ]
+
+[dev-dependencies]
+criterion.workspace = true
+dinghy-test.workspace = true
+env_logger.workspace = true
+log.workspace = true
+
+[[bench]]
+harness = false
+name = "inceptionv3"

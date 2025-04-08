@@ -1,0 +1,12 @@
+[package]
+name = "debug-utils"
+version = "0.20.7-pre"
+authors = ["Mathieu Poumeyrol <kali@zoy.org>"]
+edition = "2021"
+
+[workspace]
+members = []
+
+[dependencies]
+protobuf = "*"
+tract-onnx.workspace = true

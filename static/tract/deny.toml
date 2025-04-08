@@ -1,0 +1,54 @@
+
+# add whatever else we support.
+[graph]
+targets = [
+    { triple = "x86_64-unknown-linux-gnu" },
+    { triple = "x86_64-unknown-linux-musl" },
+    { triple = "x86_64-apple-darwin" },
+    { triple = "x86_64-pc-windows-msvc" },
+    { triple = "aarch64-linux-android" },
+    { triple = "aarch64-unknown-linux-gnu" },
+    { triple = "aarch64-unknown-linux-musl" },
+    { triple = "aarch64-apple-ios" },
+    { triple = "aarch64-apple-darwin" },
+    { triple = "armv7-unknown-linux-gnueabihf" },
+    { triple = "armv7-unknown-linux-musleabi" },
+    { triple = "arm-unknown-linux-gnueabihf" },
+    { triple = "wasm32-unknown-unknown" },
+]
+
+[advisories]
+git-fetch-with-cli = true
+yanked = "deny"
+ignore = [
+]
+
+[bans]
+multiple-versions = "deny"
+wildcards = "allow"
+deny = [
+    # List crates we don't want in our dependency tree here.
+]
+
+# Skip some multiple-versions checks, until they can be fixed.
+skip = [
+    { name = "itertools", version="<=0.12.1" },
+    { name = "regex-syntax", version="<8" },
+    { name = "syn", version="<2" },
+    { name = "windows-sys", version="<0.59" },
+]
+
+[sources]
+# trusted git sources.
+allow-git = [
+]
+
+[licenses]
+allow = [
+    "Apache-2.0",                     # https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)
+    "MIT",                            # https://tldrlegal.com/license/mit-license
+    "Unicode-3.0"                     # https://spdx.org/licenses/Unicode-3.0.html
+]
+
+clarify = [
+]

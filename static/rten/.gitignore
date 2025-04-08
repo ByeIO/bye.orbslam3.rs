@@ -1,0 +1,14 @@
+# Rus
+target/
+
+# JS
+node_modules/
+
+# Python
+__pycache__
+*.egg-info/
+dist/
+
+# Converted rten ML models
+*.rten
+/models/
