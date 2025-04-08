@@ -20,3 +20,8 @@ bun install -D onnxruntime-node
 wasmtime run ./assets/microsoft_onnxruntime_wasi.wasm -- python3 -c "import onnxruntime;print('ok')"
 wasmtime ./assets/c2w-net-proxy.wasm --invoke ./assets/microsoft_onnxruntime_wasi.wasm --net=socket python3
 c2w-net --invoke ./assets/microsoft_onnxruntime_wasi.wasm --net=socket python3
+wasmtime run ./assets/microsoft_onnxruntime_wasi.wasm -- python3 -c "import onnxruntime;print(onnxruntime.__version__)"
+# 1.7.0
+docker run -it --rm openvino/onnxruntime_ep_ubuntu20:2024.4.0
+python3 -c "import onnxruntime;print(onnxruntime.__version__)"
+# python3 -c "import cv2;import numpy;"

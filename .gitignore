@@ -9,6 +9,8 @@ assets/onnxruntime_web
 assets/microsoft_onnxruntime_wasi.wasm
 assets/onnxruntime_server_wasi.wasm
 assets/nodejs_wasi.wasm
+assets/openvino_onnxruntime_wasi.wasm
+assets/openvino_onnxruntime_docker.tar
 
 # 超多模型
 assets/ailia-models
