@@ -33,3 +33,6 @@ cargo run --example tract_depth_onnx > result/tract_depth_onnx.log
 onnxsim ./assets/ailia-models/depth_anything/depth_anything_v2_vits.onnx ./assets/ailia-models/depth_anything/depth_anything_v2_vits_simplified.onnx
 # 测试deno
 cargo run --example deno_hello > result/deno_hello.log
+cargo run --example deno_onnx_llm > result/deno_onnx_llm.log
+deno ./src/deno_onnx_llm.js
+node ./src/deno_onnx_llm.js

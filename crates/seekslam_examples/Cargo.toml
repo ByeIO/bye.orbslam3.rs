@@ -7,18 +7,29 @@ description = "SeekSLAM例程"
 keywords.workspace = true
 
 [dependencies]
+# 图像处理
 image.workspace = true
 imageproc.workspace = true
+# 错误处理
 anyhow.workspace = true
+# 系统时间
 chrono.workspace = true
+# mcp协议
 rust-mcp-schema.workspace = true
 rust-mcp-sdk.workspace = true
+# 异步框架
 tokio.workspace = true
+# ros2交互
 ros2-interfaces-humble.workspace = true
+# 日志后端
 log.workspace = true
+# protobufcc处理
 protokit.workspace = true
+# onnx运行时
 wonnx.workspace = true
+# 线性代数
 nalgebra.workspace = true
+# 因子图优化
 factrs.workspace = true
 # wasm运行时
 wasmtime-cli.workspace = true
@@ -26,5 +37,7 @@ wasmtime-cli.workspace = true
 tract-onnx.workspace = true
 # javascript/ESM运行时
 deno_cli.workspace = true
-# deno_lib.workspace = true
-# deno_core.workspace = true
+# 临时文件
+tempfile.workspace = true
+# 嵌入文件
+embed-file.workspace = true

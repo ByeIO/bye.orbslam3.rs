@@ -527,6 +527,11 @@ default-features = false
 [dependencies.zstd]
 version = "=0.13.2"
 
+[dependencies.serde_json]
+version = "1.0.85"
+
+# 开发依赖
+
 [dev-dependencies.deno_bench_util]
 version = "0.193.0"
 

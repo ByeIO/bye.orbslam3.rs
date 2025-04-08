@@ -4151,6 +4151,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "embed-file"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee3f30eec840a3d5da1c6821cf4f5b5a96a619b2fd0f022fc688c8793b369168"
+
+[[package]]
 name = "embedded-io"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9786,6 +9792,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "deno_cli",
+ "embed-file",
  "factrs",
  "image 0.25.6",
  "imageproc",
@@ -9795,6 +9802,7 @@ dependencies = [
  "ros2-interfaces-humble",
  "rust-mcp-schema 0.2.2",
  "rust-mcp-sdk",
+ "tempfile",
  "tokio",
  "tract-onnx",
  "wasmtime-cli",
@@ -10057,7 +10065,7 @@ version = "3.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da03fa3b94cc19e3ebfc88c4229c49d8f08cdbd1228870a45f0ffdf84988e14b"
 dependencies = [
- "dirs 4.0.0",
+ "dirs 5.0.1",
 ]
 
 [[package]]

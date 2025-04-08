@@ -1,2 +1,3 @@
 # 忽略大文件
 vendor/*
+assets/clip-image-vit-32-float32.onnx
