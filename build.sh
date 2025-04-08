@@ -25,3 +25,4 @@ wasmtime run ./assets/microsoft_onnxruntime_wasi.wasm -- python3 -c "import onnx
 docker run -it --rm openvino/onnxruntime_ep_ubuntu20:2024.4.0
 python3 -c "import onnxruntime;print(onnxruntime.__version__)"
 # python3 -c "import cv2;import numpy;"
+wasmtime ./assets/openvino_onnxruntime_wasi.wasm python3 -c "import onnxruntime;print(onnxruntime.__version__)"
