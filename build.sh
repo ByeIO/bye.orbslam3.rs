@@ -12,3 +12,11 @@ nnx info ./assets/mnist/mnist.onnx >> result/nnx_cli.log
 # 测试
 cargo run --example mnist_onnx > result/mnist_onnx.log
 cargo run --example wasmtime_cli_version
+# 下载onnxruntime_web
+bun init
+bun install -D onnxruntime-web
+bun install -D onnxruntime-node
+# 测试wasmtime运行onnxruntime
+wasmtime run ./assets/microsoft_onnxruntime_wasi.wasm -- python3 -c "import onnxruntime;print('ok')"
+wasmtime ./assets/c2w-net-proxy.wasm --invoke ./assets/microsoft_onnxruntime_wasi.wasm --net=socket python3
+c2w-net --invoke ./assets/microsoft_onnxruntime_wasi.wasm --net=socket python3

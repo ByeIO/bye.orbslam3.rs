@@ -1,0 +1,16 @@
+[package]
+name = "c2w-net-proxy-rs"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+keywords.workspace = true
+
+[dependencies]
+hyper = { version = "0.14", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+rustls = { version = "0.20" }
+rustls-pemfile = { version = "1.0" }
+rand = { version = "0.8" }
+rcgen = { version = "0.10" }
+chrono = { version = "0.4" }

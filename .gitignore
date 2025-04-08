@@ -5,6 +5,10 @@ files/ailia-models-master
 files/ailia-models-master.zip
 docs/axinc-ai_ailia-models.pdf
 files/onnxjs-demo-master.zip
+assets/onnxruntime_web
+assets/microsoft_onnxruntime_wasi.wasm
+assets/onnxruntime_server_wasi.wasm
+assets/nodejs_wasi.wasm
 
 # 超多模型
 assets/ailia-models

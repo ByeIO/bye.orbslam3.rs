@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_examples","crates/seekslam_segment"]
+members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_examples","crates/seekslam_segment", "files/c2w-net-proxy-rs"]
 
 [workspace.package]
 version = "0.0.1"
