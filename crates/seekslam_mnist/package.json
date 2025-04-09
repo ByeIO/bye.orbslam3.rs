@@ -1,0 +1,28 @@
+{
+  "name": "seekslam_mnist",
+  "module": "src/main.mjs",
+  "scripts": {
+    "build": "webpack --config webpack.config.mjs"
+  },
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "file-loader": "^6.2.0",
+    "onnxruntime-node": "^1.21.0",
+    "url-loader": "^4.1.1",
+    "wasm-loader": "^1.3.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "babel-loader": "^10.0.0",
+    "jpeg-js": "^0.4.4",
+    "onnxruntime-web": "^1.21.0",
+    "webpack": "^5.99.5"
+  }
+}

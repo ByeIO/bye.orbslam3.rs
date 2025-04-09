@@ -37,7 +37,23 @@ wasmtime-cli.workspace = true
 tract-onnx.workspace = true
 # javascript/ESM运行时
 deno_cli.workspace = true
+deno_cli.optional = true
 # 临时文件
 tempfile.workspace = true
 # 嵌入文件
 embed-file.workspace = true
+# onnxruntime(C绑定)
+ort.workspace = true
+
+[[example]]
+name = "deno_hello"
+bin = "./examples/deno_hello.rs"
+features = ["deno"]
+
+[[example]]
+name = "deno_onnx_llm"
+bin = "./examples/deno_onnx_llm.rs"
+features = ["deno"]
+
+[features]
+deno = ["deno_cli"]

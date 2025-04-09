@@ -5,6 +5,7 @@ edition.workspace = true
 authors.workspace = true
 description = "(WIP)使用nalgebra(纯rust)实现的onnx opset 22运行时"
 keywords = ["onnx", "rust", "nalgebra", "opset22", "runtime"]
+build = "build.rs"
 
 [dependencies]
 # 线性代数
@@ -13,3 +14,11 @@ nalgebra.workspace = true
 rand.workspace = true
 # 错误处理
 anyhow.workspace = true
+# protobuf处理
+prost.workspace = true
+
+[build-dependencies]
+# protobuf预处理
+prost-build.workspace = true
+# protobuf处理
+prost.workspace = true

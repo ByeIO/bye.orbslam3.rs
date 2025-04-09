@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_examples", "crates/seekslam_onnx","crates/seekslam_segment", "files/c2w-net-proxy-rs"]
+members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_examples", "crates/seekslam_mnist", "crates/seekslam_onnx","crates/seekslam_segment", "files/c2w-net-proxy-rs"]
 
 [workspace.package]
 version = "0.0.1"
@@ -27,6 +27,9 @@ ros2-interfaces-humble = "0.0.1"
 log = { version = "0.4.27", features = ["std"] }
 # prototxt文件读取
 protokit = "0.2.0"
+# protobuf处理
+prost = "0.13.5"
+prost-build = { version = "0.13.5", features = ["cleanup-markdown"] }
 # onnx运行时
 wonnx = { version = "0.5.1", path = "./static/wonnx/wonnx" }
 # 线性代数
@@ -48,6 +51,9 @@ deno_cli = { version = "2.2.8", path = "./static/deno" }
 tempfile = "3.19.1"
 # 嵌入文件
 embed-file = "0.2.0"
+# onnxruntime(C绑定)
+ort = "1.16.3"
+
 # # 异步处理
 # futures = { version = "0.3" }
 # # 序列化

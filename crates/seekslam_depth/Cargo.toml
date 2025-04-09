@@ -7,3 +7,14 @@ description = "SeekSLAM的深度估计模块"
 keywords.workspace = true
 
 [dependencies]
+# onnxruntime(C绑定)
+ort.workspace = true
+# 错误处理
+anyhow.workspace = true
+# 图像处理
+image.workspace = true
+imageproc.workspace = true
+# 线性代数
+nalgebra.workspace = true
+# 临时文件
+tempfile.workspace = true

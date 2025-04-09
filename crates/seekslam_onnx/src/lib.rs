@@ -1,14 +1,7 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+#![allow(unused)]
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+//! 详细说明[https://github.com/onnx/onnx/blob/main/docs/Operators.md]
+//! 详细说明[https://github.com/onnx/onnx/blob/main/docs/Operators-ml.md]
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+// onnx opset22
+pub mod opset22;
