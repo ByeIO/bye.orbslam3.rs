@@ -34,5 +34,8 @@ onnxsim ./assets/ailia-models/depth_anything/depth_anything_v2_vits.onnx ./asset
 # 测试deno
 cargo run --example deno_hello > result/deno_hello.log
 cargo run --example deno_onnx_llm > result/deno_onnx_llm.log
-deno ./src/deno_onnx_llm.js
-node ./src/deno_onnx_llm.js
+deno ./src/deno_onnx_node.js > result/deno_onnx_node.log
+deno ./assets/onnxruntime-web/deno_onnx_llm.js > result/deno_onnx_llm.log
+node ./assets/onnxruntime-web/deno_onnx_llm.js > result/deno_onnx_llm.log
+# 获取算子列表
+python get_onnx_ops.py > ../result/get_onnx_ops.log

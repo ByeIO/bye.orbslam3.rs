@@ -1,6 +1,6 @@
 # 默认构建目标平台
 [build]
-target = "aarch64-apple-darwin"
+# target = "aarch64-apple-darwin"
 
 [target.aarch64-unknown-linux-gnu]
 # gcc的链接bug:`__emutls_get_address`
