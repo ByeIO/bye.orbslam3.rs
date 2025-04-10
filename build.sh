@@ -98,3 +98,5 @@ cargo run --example ort_onnx_info > result/ort_onnx_info.log
 # 转换算子集
 python3 src/convert_mnist_onnx_opset.py
 RUST_BACKTRACE=1 cargo-zigbuild run --example ort_mnist > result/ort_mnist.log
+# 深度预测
+RUST_BACKTRACE=1 cargo-zigbuild run --example ort_depth > result/ort_depth.log
