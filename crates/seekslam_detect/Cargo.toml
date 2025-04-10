@@ -1,0 +1,11 @@
+[package]
+name = "seekslam_detect"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "SeekSLAM目标检测"
+keywords.workspace = true
+
+[dependencies]
+# YOLOv11
+yolo-rs.workspace = true

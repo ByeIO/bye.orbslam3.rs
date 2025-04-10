@@ -1,6 +1,8 @@
 [workspace]
 resolver = "3"
-members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_examples", "crates/seekslam_mnist", "crates/seekslam_onnx","crates/seekslam_segment", "files/c2w-net-proxy-rs"]
+members = [ "crates/seekslam", "crates/seekslam_depth", "crates/seekslam_detect", "crates/seekslam_examples", "crates/seekslam_mnist", "crates/seekslam_onnx","crates/seekslam_segment", "files/c2w-net-proxy-rs"]
+# 排除子工作区
+exclude = ["static/ort"]
 
 [workspace.package]
 version = "0.0.1"
@@ -34,6 +36,7 @@ prost-build = { version = "0.13.5", features = ["cleanup-markdown"] }
 wonnx = { version = "0.5.1", path = "./static/wonnx/wonnx" }
 # 线性代数
 nalgebra = { version = "0.33.2", features = ["rand"] }
+ndarray = "0.16.1"
 # 随机数
 rand = "0.9.0"
 # 图像处理
@@ -52,7 +55,9 @@ tempfile = "3.19.1"
 # 嵌入文件
 embed-file = "0.2.0"
 # onnxruntime(C绑定)
-ort = "1.16.3"
+ort = { version = "2.0.0-rc.9", path = "./static/ort", features = [] }
+# YOLOv11
+yolo-rs = "0.1.2"
 
 # # 异步处理
 # futures = { version = "0.3" }

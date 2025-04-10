@@ -1,0 +1,7 @@
+Name: torch-jit-export
+Description: 
+Produced by pytorch
+Inputs:
+    0 input: Tensor<f32>(1, 3, 224, 224)
+Outputs:
+    0 output: Tensor<f32>(1, 1000)

@@ -44,6 +44,7 @@ tempfile.workspace = true
 embed-file.workspace = true
 # onnxruntime(C绑定)
 ort.workspace = true
+ndarray = "0.16.1"
 
 [[example]]
 name = "deno_hello"

@@ -92,4 +92,9 @@ node dist/bundle.js
 # 使用deno静态打包
 deno compile --allow-all --include=./assets --output mnist_app src/main.mjs
 # 测试
-cargo run --example 
+alias car='docker run -it --rm -v /home/qsbye/Documents/ByeIO/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs:/home seekslam_mnist_build bash -c "cd /home/crates/seekslam_examples && $@"'
+docker run -it --rm -v /home/qsbye/Documents/ByeIO/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs:/home seekslam_mnist_build bash
+cargo run --example ort_onnx_info > result/ort_onnx_info.log
+# 转换算子集
+python3 src/convert_mnist_onnx_opset.py
+RUST_BACKTRACE=1 cargo-zigbuild run --example ort_mnist > result/ort_mnist.log

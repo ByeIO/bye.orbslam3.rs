@@ -1,0 +1,13 @@
+debug/
+target/
+Cargo.lock
+
+**/*.onnx
+**/*.ort
+tools/train-data/**/checkpoint
+!tests/data/**/*
+
+.venv*
+docs/.next
+docs/node_modules
+docs/out/
