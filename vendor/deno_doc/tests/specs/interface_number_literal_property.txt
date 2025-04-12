@@ -1,0 +1,97 @@
+# mod.ts
+export interface I {
+  1: string;
+  2?: number;
+}
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:1:1
+  | 
+1 | export interface I {
+  | ^
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:2:3
+  | 
+2 |   1: string;
+  |   ^
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:3:3
+  | 
+3 |   2?: number;
+  |   ^
+
+# output.txt
+Defined in file:///mod.ts:1:1
+
+interface I
+
+  1: string
+  2?: number
+
+
+# output.json
+[
+  {
+    "name": "I",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 1,
+      "col": 0,
+      "byteIndex": 0
+    },
+    "declarationKind": "export",
+    "kind": "interface",
+    "interfaceDef": {
+      "extends": [],
+      "constructors": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "1",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 2,
+            "col": 2,
+            "byteIndex": 23
+          },
+          "params": [],
+          "computed": false,
+          "optional": false,
+          "tsType": {
+            "repr": "string",
+            "kind": "keyword",
+            "keyword": "string"
+          },
+          "typeParams": []
+        },
+        {
+          "name": "2",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 3,
+            "col": 2,
+            "byteIndex": 36
+          },
+          "params": [],
+          "computed": false,
+          "optional": true,
+          "tsType": {
+            "repr": "number",
+            "kind": "keyword",
+            "keyword": "number"
+          },
+          "typeParams": []
+        }
+      ],
+      "callSignatures": [],
+      "indexSignatures": [],
+      "typeParams": []
+    }
+  }
+]

@@ -2,7 +2,7 @@
 $ 03_02_option_derive --help
 A simple to use, efficient, and full-featured Command Line Argument Parser
 
-Usage: 03_02_option_derive[EXE] --name <NAME>
+Usage: 03_02_option_derive[EXE] [OPTIONS]
 
 Options:
   -n, --name <NAME>  
@@ -10,27 +10,21 @@ Options:
   -V, --version      Print version
 
 $ 03_02_option_derive
-? 2
-error: the following required arguments were not provided:
-  --name <NAME>
-
-Usage: 03_02_option_derive[EXE] --name <NAME>
-
-For more information, try '--help'.
+name: None
 
 $ 03_02_option_derive --name bob
-name: "bob"
+name: Some("bob")
 
 $ 03_02_option_derive --name=bob
-name: "bob"
+name: Some("bob")
 
 $ 03_02_option_derive -n bob
-name: "bob"
+name: Some("bob")
 
 $ 03_02_option_derive -n=bob
-name: "bob"
+name: Some("bob")
 
 $ 03_02_option_derive -nbob
-name: "bob"
+name: Some("bob")
 
 ```

@@ -1,0 +1,121 @@
+~~ lineWidth: 55 ~~
+== should format ==
+type Type<T> = T   extends  string ?   number   :   boolean;
+
+[expect]
+type Type<T> = T extends string ? number : boolean;
+
+== should format when using newlines ==
+type Type<T> = T extends string ? number :
+    T extends number ? boolean :
+    T extends other ? string :
+    boolean;
+
+[expect]
+type Type<T> = T extends string ? number
+    : T extends number ? boolean
+    : T extends other ? string
+    : boolean;
+
+== should format an individual condition that goes over the limit ==
+type Type<T> = T extends string ? number
+    : T extends hereIsAVeryLongExtendsClause ? testingThis
+    : boolean;
+
+[expect]
+type Type<T> = T extends string ? number
+    : T extends hereIsAVeryLongExtendsClause
+        ? testingThis
+    : boolean;
+
+== should not line break before the extends keyword ==
+type Args<R> = R extends (messageArgs: string[]) => string[] ? A : [];
+
+[expect]
+type Args<R> = R extends
+    (messageArgs: string[]) => string[] ? A : [];
+
+== should format all as "multi-line" when going past line width ==
+type Type<T> = T extends string ? number : T extends number ? boolean : T extends other ? string : boolean;
+
+[expect]
+type Type<T> = T extends string ? number
+    : T extends number ? boolean
+    : T extends other ? string
+    : boolean;
+
+== should have object type indented in true type ==
+type T = U extends true ? {
+  prop1: string;
+  prop2: number;
+}
+  : true;
+type T = U extends testtesttttttttttttttttttttttaaaa ? {
+  prop1: string;
+  prop2: number;
+}
+  : true;
+
+[expect]
+type T = U extends true ? {
+        prop1: string;
+        prop2: number;
+    }
+    : true;
+type T = U extends testtesttttttttttttttttttttttaaaa
+    ? {
+        prop1: string;
+        prop2: number;
+    }
+    : true;
+
+== should support explanatory line comments ==
+type T = U extends true
+    // test
+    ? false
+    // other
+  : true;
+type T = U extends true // A
+    // B
+    ? false // C
+    // D
+    : true; // E
+type T = U extends true /* A */
+    /* B */ ? /* C */ false /* D */
+    /* E */ : /* F */ true;
+type T = U extends true
+    /* test */
+    ? false
+    /* test */
+  : true;
+
+
+[expect]
+type T = U extends true
+    // test
+    ? false
+    // other
+    : true;
+type T = U extends true // A
+    // B
+    ? false // C
+    // D
+    : true; // E
+type T = U extends true /* A */
+    /* B */ ? /* C */ false /* D */
+    /* E */ : /* F */ true;
+type T = U extends true
+    /* test */
+    ? false
+    /* test */
+    : true;
+
+== should handle comments ==
+type T = /* 0 */ U extends true /* 1 */
+    /* 2 */ ? /* 3 */ asdfasdf /* 4 */
+    /* 5 */ : /* 6 */ asdfasdfasdf /* 7 */; /* 8 */
+
+[expect]
+type T = /* 0 */ U extends true /* 1 */
+    /* 2 */ ? /* 3 */ asdfasdf /* 4 */
+    /* 5 */ : /* 6 */ asdfasdfasdf /* 7 */; /* 8 */

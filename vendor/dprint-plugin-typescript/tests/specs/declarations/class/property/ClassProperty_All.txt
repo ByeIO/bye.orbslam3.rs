@@ -1,0 +1,51 @@
+~~ lineWidth: 50 ~~
+== should format different kinds of class properties ==
+abstract class Test extends Base {
+    public static  readonly prop1: 2;
+    protected  abstract readonly prop2: number;
+    public override readonly  prop3: 2;
+    prop4! : string;
+    prop5?: string;
+    prop6   ;
+    "prop7"   : string;
+    8 : number;
+    ["9"] : number;
+    prop10   :   number  =   5;
+    someVeryLongProperty: string | number | stringg | number;
+    @dec
+    readonly propReadonly = 3;
+}
+
+[expect]
+abstract class Test extends Base {
+    public static readonly prop1: 2;
+    protected abstract readonly prop2: number;
+    public override readonly prop3: 2;
+    prop4!: string;
+    prop5?: string;
+    prop6;
+    "prop7": string;
+    8: number;
+    ["9"]: number;
+    prop10: number = 5;
+    someVeryLongProperty:
+        | string
+        | number
+        | stringg
+        | number;
+    @dec
+    readonly propReadonly = 3;
+}
+
+== should wrap an assignment that goes over the line width when sufficient ==
+class Test {
+    p = tttttttttttttttttttttttttttttttttttttttttttt;
+    testingThis = tttttttttttttttttttttttttttttttttt;
+}
+
+[expect]
+class Test {
+    p = tttttttttttttttttttttttttttttttttttttttttttt;
+    testingThis =
+        tttttttttttttttttttttttttttttttttt;
+}

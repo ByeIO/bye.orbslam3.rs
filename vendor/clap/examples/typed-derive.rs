@@ -19,7 +19,7 @@ struct Args {
 
     /// Allow human-readable durations
     #[arg(long)]
-    sleep: Option<jiff::SignedDuration>,
+    sleep: Option<humantime::Duration>,
 
     /// Hand-written parser for tuples
     #[arg(short = 'D', value_parser = parse_key_val::<String, i32>)]

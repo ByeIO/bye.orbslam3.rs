@@ -1,7 +1,3 @@
-#[cfg(feature = "logging")]
-use crate::log::warn;
-use crate::KeyLog;
-
 use alloc::vec::Vec;
 use core::fmt::{Debug, Formatter};
 use std::env::var_os;
@@ -11,6 +7,9 @@ use std::io;
 use std::io::Write;
 use std::sync::Mutex;
 
+use crate::KeyLog;
+use crate::log::warn;
+
 // Internal mutable state for KeyLogFile
 struct KeyLogFileInner {
     file: Option<File>,
@@ -19,14 +18,11 @@ struct KeyLogFileInner {
 
 impl KeyLogFileInner {
     fn new(var: Option<OsString>) -> Self {
-        let path = match &var {
-            Some(path) => path,
-            None => {
-                return Self {
-                    file: None,
-                    buf: Vec::new(),
-                };
-            }
+        let Some(path) = &var else {
+            return Self {
+                file: None,
+                buf: Vec::new(),
+            };
         };
 
         #[cfg_attr(not(feature = "logging"), allow(unused_variables))]
@@ -49,11 +45,11 @@ impl KeyLogFileInner {
     }
 
     fn try_write(&mut self, label: &str, client_random: &[u8], secret: &[u8]) -> io::Result<()> {
-        let mut file = match self.file {
+        let file = match &mut self.file {
             None => {
                 return Ok(());
             }
-            Some(ref f) => f,
+            Some(f) => f,
         };
 
         self.buf.truncate(0);
@@ -138,26 +134,32 @@ mod tests {
     fn test_env_var_is_not_set() {
         init();
         let mut inner = KeyLogFileInner::new(None);
-        assert!(inner
-            .try_write("label", b"random", b"secret")
-            .is_ok());
+        assert!(
+            inner
+                .try_write("label", b"random", b"secret")
+                .is_ok()
+        );
     }
 
     #[test]
     fn test_env_var_cannot_be_opened() {
         init();
         let mut inner = KeyLogFileInner::new(Some("/dev/does-not-exist".into()));
-        assert!(inner
-            .try_write("label", b"random", b"secret")
-            .is_ok());
+        assert!(
+            inner
+                .try_write("label", b"random", b"secret")
+                .is_ok()
+        );
     }
 
     #[test]
     fn test_env_var_cannot_be_written() {
         init();
         let mut inner = KeyLogFileInner::new(Some("/dev/full".into()));
-        assert!(inner
-            .try_write("label", b"random", b"secret")
-            .is_err());
+        assert!(
+            inner
+                .try_write("label", b"random", b"secret")
+                .is_err()
+        );
     }
 }

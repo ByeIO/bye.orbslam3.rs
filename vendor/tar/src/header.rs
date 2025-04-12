@@ -1,4 +1,4 @@
-#[cfg(all(unix, not(target_arch = "wasm32")))]
+#[cfg(unix)]
 use std::os::unix::prelude::*;
 #[cfg(windows)]
 use std::os::windows::prelude::*;
@@ -21,10 +21,8 @@ use crate::EntryType;
 ///
 /// This value, chosen after careful deliberation, corresponds to _Jul 23, 2006_,
 /// which is the date of the first commit for what would become Rust.
-#[cfg(all(any(unix, windows), not(target_arch = "wasm32")))]
+#[cfg(any(unix, windows))]
 const DETERMINISTIC_TIMESTAMP: u64 = 1153704088;
-
-pub(crate) const BLOCK_SIZE: u64 = 512;
 
 pub(crate) const GNU_SPARSE_HEADERS_COUNT: usize = 4;
 
@@ -34,7 +32,7 @@ pub(crate) const GNU_EXT_SPARSE_HEADERS_COUNT: usize = 21;
 #[repr(C)]
 #[allow(missing_docs)]
 pub struct Header {
-    bytes: [u8; BLOCK_SIZE as usize],
+    bytes: [u8; 512],
 }
 
 /// Declares the information that should be included when filling a Header
@@ -153,9 +151,7 @@ impl Header {
     /// extensions such as long path names, long link names, and setting the
     /// atime/ctime metadata attributes of files.
     pub fn new_gnu() -> Header {
-        let mut header = Header {
-            bytes: [0; BLOCK_SIZE as usize],
-        };
+        let mut header = Header { bytes: [0; 512] };
         unsafe {
             let gnu = cast_mut::<_, GnuHeader>(&mut header);
             gnu.magic = *b"ustar ";
@@ -173,9 +169,7 @@ impl Header {
     ///
     /// UStar is also the basis used for pax archives.
     pub fn new_ustar() -> Header {
-        let mut header = Header {
-            bytes: [0; BLOCK_SIZE as usize],
-        };
+        let mut header = Header { bytes: [0; 512] };
         unsafe {
             let gnu = cast_mut::<_, UstarHeader>(&mut header);
             gnu.magic = *b"ustar\0";
@@ -192,9 +186,7 @@ impl Header {
     /// format limits the path name limit and isn't able to contain extra
     /// metadata like atime/ctime.
     pub fn new_old() -> Header {
-        let mut header = Header {
-            bytes: [0; BLOCK_SIZE as usize],
-        };
+        let mut header = Header { bytes: [0; 512] };
         header.set_mtime(0);
         header
     }
@@ -284,12 +276,12 @@ impl Header {
     }
 
     /// Returns a view into this header as a byte array.
-    pub fn as_bytes(&self) -> &[u8; BLOCK_SIZE as usize] {
+    pub fn as_bytes(&self) -> &[u8; 512] {
         &self.bytes
     }
 
     /// Returns a view into this header as a byte array.
-    pub fn as_mut_bytes(&mut self) -> &mut [u8; BLOCK_SIZE as usize] {
+    pub fn as_mut_bytes(&mut self) -> &mut [u8; 512] {
         &mut self.bytes
     }
 
@@ -388,29 +380,14 @@ impl Header {
     /// use `Builder` methods to insert a long-name extension at the same time
     /// as the file content.
     pub fn set_path<P: AsRef<Path>>(&mut self, p: P) -> io::Result<()> {
-        self.set_path_inner(p.as_ref(), false)
+        self._set_path(p.as_ref())
     }
 
-    // Sets the truncated path for GNU header
-    //
-    // Same as set_path but skips some validations.
-    pub(crate) fn set_truncated_path_for_gnu_header<P: AsRef<Path>>(
-        &mut self,
-        p: P,
-    ) -> io::Result<()> {
-        self.set_path_inner(p.as_ref(), true)
-    }
-
-    fn set_path_inner(&mut self, path: &Path, is_truncated_gnu_long_path: bool) -> io::Result<()> {
+    fn _set_path(&mut self, path: &Path) -> io::Result<()> {
         if let Some(ustar) = self.as_ustar_mut() {
             return ustar.set_path(path);
         }
-        if is_truncated_gnu_long_path {
-            copy_path_into_gnu_long(&mut self.as_old_mut().name, path, false)
-        } else {
-            copy_path_into(&mut self.as_old_mut().name, path, false)
-        }
-        .map_err(|err| {
+        copy_path_into(&mut self.as_old_mut().name, path, false).map_err(|err| {
             io::Error::new(
                 err.kind(),
                 format!("{} when setting path for {}", err, self.path_lossy()),
@@ -773,7 +750,7 @@ impl Header {
         unimplemented!();
     }
 
-    #[cfg(all(unix, not(target_arch = "wasm32")))]
+    #[cfg(unix)]
     fn fill_platform_from(&mut self, meta: &fs::Metadata, mode: HeaderMode) {
         match mode {
             HeaderMode::Complete => {
@@ -1414,14 +1391,14 @@ impl GnuExtSparseHeader {
     }
 
     /// Returns a view into this header as a byte array.
-    pub fn as_bytes(&self) -> &[u8; BLOCK_SIZE as usize] {
-        debug_assert_eq!(mem::size_of_val(self), BLOCK_SIZE as usize);
+    pub fn as_bytes(&self) -> &[u8; 512] {
+        debug_assert_eq!(mem::size_of_val(self), 512);
         unsafe { mem::transmute(self) }
     }
 
     /// Returns a view into this header as a byte array.
-    pub fn as_mut_bytes(&mut self) -> &mut [u8; BLOCK_SIZE as usize] {
-        debug_assert_eq!(mem::size_of_val(self), BLOCK_SIZE as usize);
+    pub fn as_mut_bytes(&mut self) -> &mut [u8; 512] {
+        debug_assert_eq!(mem::size_of_val(self), 512);
         unsafe { mem::transmute(self) }
     }
 
@@ -1555,28 +1532,25 @@ fn copy_into(slot: &mut [u8], bytes: &[u8]) -> io::Result<()> {
     }
 }
 
-fn copy_path_into_inner(
-    mut slot: &mut [u8],
-    path: &Path,
-    is_link_name: bool,
-    is_truncated_gnu_long_path: bool,
-) -> io::Result<()> {
+/// Copies `path` into the `slot` provided
+///
+/// Returns an error if:
+///
+/// * the path is too long to fit
+/// * a nul byte was found
+/// * an invalid path component is encountered (e.g. a root path or parent dir)
+/// * the path itself is empty
+fn copy_path_into(mut slot: &mut [u8], path: &Path, is_link_name: bool) -> io::Result<()> {
     let mut emitted = false;
     let mut needs_slash = false;
-    let mut iter = path.components().peekable();
-    while let Some(component) = iter.next() {
+    for component in path.components() {
         let bytes = path2bytes(Path::new(component.as_os_str()))?;
         match (component, is_link_name) {
             (Component::Prefix(..), false) | (Component::RootDir, false) => {
                 return Err(other("paths in archives must be relative"));
             }
             (Component::ParentDir, false) => {
-                // If it's last component of a gnu long path we know that there might be more
-                // to the component than .. (the rest is stored elsewhere)
-                // Otherwise it's a clear error
-                if !is_truncated_gnu_long_path || iter.peek().is_some() {
-                    return Err(other("paths in archives must not have `..`"));
-                }
+                return Err(other("paths in archives must not have `..`"));
             }
             // Allow "./" as the path
             (Component::CurDir, false) if path.components().count() == 1 => {}
@@ -1613,32 +1587,6 @@ fn copy_path_into_inner(
     }
 }
 
-/// Copies `path` into the `slot` provided
-///
-/// Returns an error if:
-///
-/// * the path is too long to fit
-/// * a nul byte was found
-/// * an invalid path component is encountered (e.g. a root path or parent dir)
-/// * the path itself is empty
-fn copy_path_into(slot: &mut [u8], path: &Path, is_link_name: bool) -> io::Result<()> {
-    copy_path_into_inner(slot, path, is_link_name, false)
-}
-
-/// Copies `path` into the `slot` provided
-///
-/// Returns an error if:
-///
-/// * the path is too long to fit
-/// * a nul byte was found
-/// * an invalid path component is encountered (e.g. a root path or parent dir)
-/// * the path itself is empty
-///
-/// This is less restrictive version meant to be used for truncated GNU paths.
-fn copy_path_into_gnu_long(slot: &mut [u8], path: &Path, is_link_name: bool) -> io::Result<()> {
-    copy_path_into_inner(slot, path, is_link_name, true)
-}
-
 #[cfg(target_arch = "wasm32")]
 fn ends_with_slash(p: &Path) -> bool {
     p.to_string_lossy().ends_with('/')
@@ -1650,7 +1598,7 @@ fn ends_with_slash(p: &Path) -> bool {
     last == Some(b'/' as u16) || last == Some(b'\\' as u16)
 }
 
-#[cfg(all(unix, not(target_arch = "wasm32")))]
+#[cfg(unix)]
 fn ends_with_slash(p: &Path) -> bool {
     p.as_os_str().as_bytes().ends_with(&[b'/'])
 }
@@ -1677,7 +1625,7 @@ pub fn path2bytes(p: &Path) -> io::Result<Cow<[u8]>> {
         })
 }
 
-#[cfg(all(unix, not(target_arch = "wasm32")))]
+#[cfg(unix)]
 /// On unix this will never fail
 pub fn path2bytes(p: &Path) -> io::Result<Cow<[u8]>> {
     Ok(p.as_os_str().as_bytes()).map(Cow::Borrowed)
@@ -1706,7 +1654,7 @@ pub fn bytes2path(bytes: Cow<[u8]>) -> io::Result<Cow<Path>> {
     }
 }
 
-#[cfg(all(unix, not(target_arch = "wasm32")))]
+#[cfg(unix)]
 /// On unix this operation can never fail.
 pub fn bytes2path(bytes: Cow<[u8]>) -> io::Result<Cow<Path>> {
     use std::ffi::{OsStr, OsString};
@@ -1721,11 +1669,11 @@ pub fn bytes2path(bytes: Cow<[u8]>) -> io::Result<Cow<Path>> {
 pub fn bytes2path(bytes: Cow<[u8]>) -> io::Result<Cow<Path>> {
     Ok(match bytes {
         Cow::Borrowed(bytes) => {
-            Cow::Borrowed(Path::new(str::from_utf8(bytes).map_err(invalid_utf8)?))
+            Cow::Borrowed({ Path::new(str::from_utf8(bytes).map_err(invalid_utf8)?) })
         }
-        Cow::Owned(bytes) => Cow::Owned(PathBuf::from(
-            String::from_utf8(bytes).map_err(invalid_utf8)?,
-        )),
+        Cow::Owned(bytes) => {
+            Cow::Owned({ PathBuf::from(String::from_utf8(bytes).map_err(invalid_utf8)?) })
+        }
     })
 }
 

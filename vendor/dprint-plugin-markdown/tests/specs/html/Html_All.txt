@@ -1,0 +1,33 @@
+~~ lineWidth: 40 ~~
+!! should format html !!
+<dl>
+    <dt>Definition list</dt>
+    <dd>Testing</dd>
+    <dd>Testing</dd>
+<dd>Testing</dd>
+testing this out
+</dl>
+
+
+paragraph text
+
+[expect]
+<dl>
+    <dt>Definition list</dt>
+    <dd>Testing</dd>
+    <dd>Testing</dd>
+<dd>Testing</dd>
+testing this out
+</dl>
+
+paragraph text
+
+!! should handle inline html !!
+Some inline html <em>Testing</em> testing this out.
+
+Testing <b>test</b>.
+
+[expect]
+Some inline html <em>Testing</em> testing this out.
+
+Testing <b>test</b>.

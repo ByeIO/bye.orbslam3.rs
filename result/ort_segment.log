@@ -1,0 +1,312 @@
+   Compiling seekslam_examples v0.0.1 (/home/crates/seekslam_examples)
+error[E0433]: failed to resolve: could not find `distributions` in `rand`
+  --> crates/seekslam_examples/examples/ort_segment.rs:49:27
+   |
+49 |         let mut v = rand::distributions::Normal::new(0., std as f64).sample(&mut rng) as f32;
+   |                           ^^^^^^^^^^^^^ could not find `distributions` in `rand`
+   |
+help: there is an enum variant `core::intrinsics::mir::BasicBlock::Normal` and 6 others; try using the variant's enum
+   |
+49 |         let mut v = core::intrinsics::mir::BasicBlock::new(0., std as f64).sample(&mut rng) as f32;
+   |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+49 |         let mut v = core::num::FpCategory::new(0., std as f64).sample(&mut rng) as f32;
+   |                     ~~~~~~~~~~~~~~~~~~~~~
+49 |         let mut v = ort::execution_providers::qnn::QNNContextPriority::new(0., std as f64).sample(&mut rng) as f32;
+   |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+49 |         let mut v = std::intrinsics::mir::BasicBlock::new(0., std as f64).sample(&mut rng) as f32;
+   |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     and 2 other candidates
+
+warning: use of deprecated function `rand::thread_rng`: renamed to `rng`
+  --> crates/seekslam_examples/examples/ort_segment.rs:48:29
+   |
+48 |         let mut rng = rand::thread_rng();
+   |                             ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+error[E0121]: the placeholder `_` is not allowed within types on item signatures for return types
+  --> crates/seekslam_examples/examples/ort_segment.rs:45:73
+   |
+45 | fn trunc_normal(size: &[usize], std: f32, a: f32, b: f32) -> Array<f32, _> {
+   |                                                                         ^ not allowed in type signatures
+
+error[E0121]: the placeholder `_` is not allowed within types on item signatures for functions
+  --> crates/seekslam_examples/examples/ort_segment.rs:57:45
+   |
+57 | fn transform_coords(coords: &mut Array<f32, _>, orig_hw: (u32, u32)) {
+   |                                             ^ not allowed in type signatures
+   |
+help: use type parameters instead
+   |
+57 | fn transform_coords<T>(coords: &mut Array<f32, T>, orig_hw: (u32, u32)) {
+   |                    +++                         ~
+
+error[E0121]: the placeholder `_` is not allowed within types on item signatures for functions
+  --> crates/seekslam_examples/examples/ort_segment.rs:67:43
+   |
+67 | fn transform_boxes(boxes: &mut Array<f32, _>, orig_hw: (u32, u32)) {
+   |                                           ^ not allowed in type signatures
+   |
+help: use type parameters instead
+   |
+67 | fn transform_boxes<T>(boxes: &mut Array<f32, T>, orig_hw: (u32, u32)) {
+   |                   +++                        ~
+
+error[E0599]: no function or associated item named `stack` found for struct `ArrayBase` in the current scope
+   --> crates/seekslam_examples/examples/ort_segment.rs:101:12
+    |
+101 |     Array::stack(ndarray::Axis(0), &interpolated_masks).unwrap()
+    |            ^^^^^ function or associated item not found in `ArrayBase<OwnedRepr<_>, _>`
+    |
+note: if you're trying to build a new `ArrayBase<OwnedRepr<_>, _>` consider using one of the following associated functions:
+      ndarray::impl_constructors::<impl ArrayBase<S, Dim<[usize; 1]>>>::from_vec
+      ndarray::impl_constructors::<impl ArrayBase<S, Dim<[usize; 1]>>>::from_iter
+      ndarray::impl_constructors::<impl ArrayBase<S, Dim<[usize; 1]>>>::linspace
+      ndarray::impl_constructors::<impl ArrayBase<S, Dim<[usize; 1]>>>::range
+      and 13 others
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_constructors.rs:58:5
+    |
+58  |       pub fn from_vec(v: Vec<A>) -> Self
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+79  |       pub fn from_iter<I: IntoIterator<Item = A>>(iterable: I) -> Self
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+102 | /     pub fn linspace(start: A, end: A, n: usize) -> Self
+103 | |     where A: Float
+    | |__________________^
+...
+120 | /     pub fn range(start: A, end: A, step: A) -> Self
+121 | |     where A: Float
+    | |__________________^
+
+error[E0121]: the placeholder `_` is not allowed within types on item signatures for return types
+  --> crates/seekslam_examples/examples/ort_segment.rs:73:80
+   |
+73 | fn postprocess_masks(masks: &Array<f32, _>, orig_hw: (u32, u32)) -> Array<f32, _> {
+   |                                                                                ^ not allowed in type signatures
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:138:59
+    |
+138 |             Array::from_shape_vec(high_res_feats_0.len(), high_res_feats_0)?,
+    |             ---------------------                         ^^^^^^^^^^^^^^^^- help: try using a conversion method: `.to_vec()`
+    |             |                                             |
+    |             |                                             expected `Vec<_>`, found `&[f32]`
+    |             arguments to this function are incorrect
+    |
+    = note: expected struct `Vec<_>`
+            found reference `&[f32]`
+note: associated function defined here
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_constructors.rs:458:12
+    |
+458 |     pub fn from_shape_vec<Sh>(shape: Sh, v: Vec<A>) -> Result<Self, ShapeError>
+    |            ^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:139:59
+    |
+139 |             Array::from_shape_vec(high_res_feats_1.len(), high_res_feats_1)?,
+    |             ---------------------                         ^^^^^^^^^^^^^^^^- help: try using a conversion method: `.to_vec()`
+    |             |                                             |
+    |             |                                             expected `Vec<_>`, found `&[f32]`
+    |             arguments to this function are incorrect
+    |
+    = note: expected struct `Vec<_>`
+            found reference `&[f32]`
+note: associated function defined here
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_constructors.rs:458:12
+    |
+458 |     pub fn from_shape_vec<Sh>(shape: Sh, v: Vec<A>) -> Result<Self, ShapeError>
+    |            ^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:140:54
+    |
+140 |             Array::from_shape_vec(image_embed.len(), image_embed)?,
+    |             ---------------------                    ^^^^^^^^^^^- help: try using a conversion method: `.to_vec()`
+    |             |                                        |
+    |             |                                        expected `Vec<_>`, found `&[f32]`
+    |             arguments to this function are incorrect
+    |
+    = note: expected struct `Vec<_>`
+            found reference `&[f32]`
+note: associated function defined here
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_constructors.rs:458:12
+    |
+458 |     pub fn from_shape_vec<Sh>(shape: Sh, v: Vec<A>) -> Result<Self, ShapeError>
+    |            ^^^^^^^^^^^^^^
+
+error[E0121]: the placeholder `_` is not allowed within types on item signatures for return types
+   --> crates/seekslam_examples/examples/ort_segment.rs:119:76
+    |
+119 | ...DynamicImage) -> Result<(Array<f32, _>, Array<f32, _>, Array<f32, _>)> {
+    |                     -------------------^--------------^--------------^---
+    |                     |                  |              |              |
+    |                     |                  |              |              not allowed in type signatures
+    |                     |                  |              not allowed in type signatures
+    |                     |                  not allowed in type signatures
+    |                     help: replace with the correct return type: `Result<(ArrayBase<OwnedRepr<f32>, Dim<[usize; 1]>>, ArrayBase<OwnedRepr<f32>, Dim<[usize; 1]>>, ArrayBase<OwnedRepr<f32>, Dim<[usize; 1]>>), anyhow::Error>`
+
+warning: use of deprecated method `ndarray::impl_methods::<impl ndarray::ArrayBase<S, D>>::into_shape`: Use `.into_shape_with_order()` or `.to_shape()`
+   --> crates/seekslam_examples/examples/ort_segment.rs:170:25
+    |
+170 |             box_ = box_.into_shape((-1, 2, 2)).unwrap();
+    |                         ^^^^^^^^^^
+
+error[E0277]: the trait bound `usize: Neg` is not satisfied
+   --> crates/seekslam_examples/examples/ort_segment.rs:170:37
+    |
+170 |             box_ = box_.into_shape((-1, 2, 2)).unwrap();
+    |                                     ^^ the trait `Neg` is not implemented for `usize`
+    |
+    = help: the following other types implement trait `Neg`:
+              &f128
+              &f16
+              &f32
+              &f64
+              &i128
+              &i16
+              &i32
+              &i64
+            and 12 others
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:177:21
+    |
+177 |                 m = m.insert_axis(ndarray::Axis(0));
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 4, found one with a size of 5
+    |
+    = note: expected struct `Dim<[usize; 4]>`
+               found struct `Dim<[usize; 5]>`
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:161:28
+    |
+161 |                     lbls = lbls.insert_axis(ndarray::Axis(0));
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 2, found one with a size of 3
+    |
+    = note: expected struct `Dim<[usize; 2]>`
+               found struct `Dim<[usize; 3]>`
+
+error[E0599]: no method named `repeat` found for struct `ArrayBase` in the current scope
+   --> crates/seekslam_examples/examples/ort_segment.rs:196:85
+    |
+196 | ...).unwrap().repeat(box_coords.len_of(ndarray::Axis(0)), 0);
+    |               ^^^^^^ method not found in `ArrayBase<OwnedRepr<{float}>, Dim<[usize; 2]>>`
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:198:74
+    |
+198 | ..., &[box_coords, concat_coords]).unwrap();
+    |        ^^^^^^^^^^ expected `ArrayBase<ViewRepr<&_>, _>`, found `ArrayBase<OwnedRepr<...>, ...>`
+    |
+    = note: expected struct `ArrayBase<ViewRepr<&_>, _>`
+               found struct `ArrayBase<OwnedRepr<f32>, Dim<[usize; 3]>>`
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:228:56
+    |
+228 |         let masks = Array::from_shape_vec(masks.len(), masks)?;
+    |                     ---------------------              ^^^^^- help: try using a conversion method: `.to_vec()`
+    |                     |                                  |
+    |                     |                                  expected `Vec<_>`, found `&[f32]`
+    |                     arguments to this function are incorrect
+    |
+    = note: expected struct `Vec<_>`
+            found reference `&[f32]`
+note: associated function defined here
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_constructors.rs:458:12
+    |
+458 |     pub fn from_shape_vec<Sh>(shape: Sh, v: Vec<A>) -> Result<Self, ShapeError>
+    |            ^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+   --> crates/seekslam_examples/examples/ort_segment.rs:229:62
+    |
+229 |         let iou_pred = Array::from_shape_vec(iou_pred.len(), iou_pred)?;
+    |                        ---------------------                 ^^^^^^^^- help: try using a conversion method: `.to_vec()`
+    |                        |                                     |
+    |                        |                                     expected `Vec<_>`, found `&[f32]`
+    |                        arguments to this function are incorrect
+    |
+    = note: expected struct `Vec<_>`
+            found reference `&[f32]`
+note: associated function defined here
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_constructors.rs:458:12
+    |
+458 |     pub fn from_shape_vec<Sh>(shape: Sh, v: Vec<A>) -> Result<Self, ShapeError>
+    |            ^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `SliceInfo<[SliceInfoElem; 4], Dim<[usize; 4]>, Dim<[usize; 4]>>: SliceArg<Dim<[usize; 1]>>` is not satisfied
+   --> crates/seekslam_examples/examples/ort_segment.rs:231:41
+    |
+231 |         let low_res_masks = masks.slice(ndarray::s![.., 1.., .., ..]).to_owned();
+    |                                   ----- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |                                   |     |
+    |                                   |     unsatisfied trait bound
+    |                                   |     this tail expression is of type `SliceInfo<[SliceInfoElem; 4], Dim<[usize; 4]>, Dim<[usize; 4]>>`
+    |                                   required by a bound introduced by this call
+    |
+    = help: the trait `SliceArg<Dim<[usize; 1]>>` is not implemented for `SliceInfo<[SliceInfoElem; 4], Dim<[usize; 4]>, Dim<[usize; 4]>>`
+    = help: the following other types implement trait `SliceArg<D>`:
+              `SliceInfo<T, Dim<[usize; 0]>, Dout>` implements `SliceArg<Dim<[usize; 0]>>`
+              `SliceInfo<T, Dim<[usize; 1]>, Dout>` implements `SliceArg<Dim<[usize; 1]>>`
+              `SliceInfo<T, Dim<[usize; 2]>, Dout>` implements `SliceArg<Dim<[usize; 2]>>`
+              `SliceInfo<T, Dim<[usize; 3]>, Dout>` implements `SliceArg<Dim<[usize; 3]>>`
+              `SliceInfo<T, Dim<[usize; 4]>, Dout>` implements `SliceArg<Dim<[usize; 4]>>`
+              `SliceInfo<T, Dim<[usize; 5]>, Dout>` implements `SliceArg<Dim<[usize; 5]>>`
+              `SliceInfo<T, Dim<[usize; 6]>, Dout>` implements `SliceArg<Dim<[usize; 6]>>`
+              `SliceInfo<T, Din, Dout>` implements `SliceArg<Dim<IxDynImpl>>`
+note: required by a bound in `ndarray::impl_methods::<impl ArrayBase<S, D>>::slice`
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_methods.rs:478:12
+    |
+476 |     pub fn slice<I>(&self, info: I) -> ArrayView<'_, A, I::OutDim>
+    |            ----- required by a bound in this associated function
+477 |     where
+478 |         I: SliceArg<D>,
+    |            ^^^^^^^^^^^ required by this bound in `ndarray::impl_methods::<impl ArrayBase<S, D>>::slice`
+
+error[E0277]: the trait bound `SliceInfo<[SliceInfoElem; 2], Dim<[usize; 2]>, Dim<[usize; 2]>>: SliceArg<Dim<[usize; 1]>>` is not satisfied
+   --> crates/seekslam_examples/examples/ort_segment.rs:232:46
+    |
+232 |         let iou_predictions = iou_pred.slice(ndarray::s![.., 1..]).to_owned();
+    |                                        ----- ^^^^^^^^^^^^^^^^^^^^
+    |                                        |     |
+    |                                        |     unsatisfied trait bound
+    |                                        |     this tail expression is of type `SliceInfo<[SliceInfoElem; 2], Dim<[usize; 2]>, Dim<[usize; 2]>>`
+    |                                        required by a bound introduced by this call
+    |
+    = help: the trait `SliceArg<Dim<[usize; 1]>>` is not implemented for `SliceInfo<[SliceInfoElem; 2], Dim<[usize; 2]>, Dim<[usize; 2]>>`
+    = help: the following other types implement trait `SliceArg<D>`:
+              `SliceInfo<T, Dim<[usize; 0]>, Dout>` implements `SliceArg<Dim<[usize; 0]>>`
+              `SliceInfo<T, Dim<[usize; 1]>, Dout>` implements `SliceArg<Dim<[usize; 1]>>`
+              `SliceInfo<T, Dim<[usize; 2]>, Dout>` implements `SliceArg<Dim<[usize; 2]>>`
+              `SliceInfo<T, Dim<[usize; 3]>, Dout>` implements `SliceArg<Dim<[usize; 3]>>`
+              `SliceInfo<T, Dim<[usize; 4]>, Dout>` implements `SliceArg<Dim<[usize; 4]>>`
+              `SliceInfo<T, Dim<[usize; 5]>, Dout>` implements `SliceArg<Dim<[usize; 5]>>`
+              `SliceInfo<T, Dim<[usize; 6]>, Dout>` implements `SliceArg<Dim<[usize; 6]>>`
+              `SliceInfo<T, Din, Dout>` implements `SliceArg<Dim<IxDynImpl>>`
+note: required by a bound in `ndarray::impl_methods::<impl ArrayBase<S, D>>::slice`
+   --> /usr/local/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ndarray-0.16.1/src/impl_methods.rs:478:12
+    |
+476 |     pub fn slice<I>(&self, info: I) -> ArrayView<'_, A, I::OutDim>
+    |            ----- required by a bound in this associated function
+477 |     where
+478 |         I: SliceArg<D>,
+    |            ^^^^^^^^^^^ required by this bound in `ndarray::impl_methods::<impl ArrayBase<S, D>>::slice`
+
+error[E0121]: the placeholder `_` is not allowed within types on item signatures for return types
+   --> crates/seekslam_examples/examples/ort_segment.rs:152:29
+    |
+152 |     ) -> Result<(Array<f32, _>, Array<f32, _>, Array<f32, _>)> {
+    |                             ^              ^              ^ not allowed in type signatures
+    |                             |              |
+    |                             |              not allowed in type signatures
+    |                             not allowed in type signatures
+
+Some errors have detailed explanations: E0121, E0277, E0308, E0433, E0599.
+For more information about an error, try `rustc --explain E0121`.
+warning: `seekslam_examples` (example "ort_segment") generated 2 warnings
+error: could not compile `seekslam_examples` (example "ort_segment") due to 20 previous errors; 2 warnings emitted

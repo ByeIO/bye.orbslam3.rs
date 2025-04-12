@@ -1,44 +1,48 @@
-use parking_lot::Mutex;
-use wgt::Backend;
-
 use crate::{
-    id::{self, TypedId},
+    id::{Id, Marker},
+    lock::{rank, Mutex},
     Epoch, Index,
 };
-use std::{fmt::Debug, marker::PhantomData, sync::Arc};
+use std::{fmt::Debug, marker::PhantomData};
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+enum IdSource {
+    External,
+    Allocated,
+    None,
+}
 
 /// A simple structure to allocate [`Id`] identifiers.
 ///
-/// Calling [`alloc`] returns a fresh, never-before-seen id. Calling [`free`]
+/// Calling [`alloc`] returns a fresh, never-before-seen id. Calling [`release`]
 /// marks an id as dead; it will never be returned again by `alloc`.
 ///
-/// Use `IdentityManager::default` to construct new instances.
+/// `IdentityValues` returns `Id`s whose index values are suitable for use as
+/// indices into a `Vec<T>` that holds those ids' referents:
 ///
-/// `IdentityManager` returns `Id`s whose index values are suitable for use as
-/// indices into a `Storage<T>` that holds those ids' referents:
+/// - Every live id has a distinct index value. Every live id's index
+///   selects a distinct element in the vector.
 ///
-/// - Every live id has a distinct index value. Each live id's index selects a
-///   distinct element in the vector.
-///
-/// - `IdentityManager` prefers low index numbers. If you size your vector to
+/// - `IdentityValues` prefers low index numbers. If you size your vector to
 ///   accommodate the indices produced here, the vector's length will reflect
 ///   the highwater mark of actual occupancy.
 ///
-/// - `IdentityManager` reuses the index values of freed ids before returning
+/// - `IdentityValues` reuses the index values of freed ids before returning
 ///   ids with new index values. Freed vector entries get reused.
-///
-/// See the module-level documentation for an overview of how this
-/// fits together.
 ///
 /// [`Id`]: crate::id::Id
 /// [`Backend`]: wgt::Backend;
-/// [`alloc`]: IdentityManager::alloc
-/// [`free`]: IdentityManager::free
+/// [`alloc`]: IdentityValues::alloc
+/// [`release`]: IdentityValues::release
 #[derive(Debug)]
 pub(super) struct IdentityValues {
     free: Vec<(Index, Epoch)>,
     next_index: Index,
     count: usize,
+    // Sanity check: The allocation logic works under the assumption that we don't
+    // do a mix of allocating ids from here and providing ids manually for the same
+    // storage container.
+    id_source: IdSource,
 }
 
 impl IdentityValues {
@@ -46,28 +50,42 @@ impl IdentityValues {
     ///
     /// The backend is incorporated into the id, so that ids allocated with
     /// different `backend` values are always distinct.
-    pub fn alloc<I: TypedId>(&mut self, backend: Backend) -> I {
+    pub fn alloc<T: Marker>(&mut self) -> Id<T> {
+        assert!(
+            self.id_source != IdSource::External,
+            "Mix of internally allocated and externally provided IDs"
+        );
+        self.id_source = IdSource::Allocated;
+
         self.count += 1;
         match self.free.pop() {
-            Some((index, epoch)) => I::zip(index, epoch + 1, backend),
+            Some((index, epoch)) => Id::zip(index, epoch + 1),
             None => {
                 let index = self.next_index;
                 self.next_index += 1;
                 let epoch = 1;
-                I::zip(index, epoch, backend)
+                Id::zip(index, epoch)
             }
         }
     }
 
-    pub fn mark_as_used<I: TypedId>(&mut self, id: I) -> I {
+    pub fn mark_as_used<T: Marker>(&mut self, id: Id<T>) -> Id<T> {
+        assert!(
+            self.id_source != IdSource::Allocated,
+            "Mix of internally allocated and externally provided IDs"
+        );
+        self.id_source = IdSource::External;
+
         self.count += 1;
         id
     }
 
     /// Free `id`. It will never be returned from `alloc` again.
-    pub fn release<I: TypedId>(&mut self, id: I) {
-        let (index, epoch, _backend) = id.unzip();
-        self.free.push((index, epoch));
+    pub fn release<T: Marker>(&mut self, id: Id<T>) {
+        if let IdSource::Allocated = self.id_source {
+            let (index, epoch) = id.unzip();
+            self.free.push((index, epoch));
+        }
         self.count -= 1;
     }
 
@@ -77,110 +95,48 @@ impl IdentityValues {
 }
 
 #[derive(Debug)]
-pub struct IdentityManager<I: TypedId> {
+pub struct IdentityManager<T: Marker> {
     pub(super) values: Mutex<IdentityValues>,
-    _phantom: PhantomData<I>,
+    _phantom: PhantomData<T>,
 }
 
-impl<I: TypedId> IdentityManager<I> {
-    pub fn process(&self, backend: Backend) -> I {
-        self.values.lock().alloc(backend)
+impl<T: Marker> IdentityManager<T> {
+    pub fn process(&self) -> Id<T> {
+        self.values.lock().alloc()
     }
-    pub fn mark_as_used(&self, id: I) -> I {
+    pub fn mark_as_used(&self, id: Id<T>) -> Id<T> {
         self.values.lock().mark_as_used(id)
     }
-    pub fn free(&self, id: I) {
+    pub fn free(&self, id: Id<T>) {
         self.values.lock().release(id)
     }
 }
 
-impl<I: TypedId> IdentityManager<I> {
+impl<T: Marker> IdentityManager<T> {
     pub fn new() -> Self {
         Self {
-            values: Mutex::new(IdentityValues {
-                free: Vec::new(),
-                next_index: 0,
-                count: 0,
-            }),
+            values: Mutex::new(
+                rank::IDENTITY_MANAGER_VALUES,
+                IdentityValues {
+                    free: Vec::new(),
+                    next_index: 0,
+                    count: 0,
+                    id_source: IdSource::None,
+                },
+            ),
             _phantom: PhantomData,
         }
     }
 }
 
-/// A type that can produce [`IdentityManager`] filters for ids of type `I`.
-///
-/// See the module-level documentation for details.
-pub trait IdentityHandlerFactory<I: TypedId> {
-    type Input: Copy;
-    /// Create an [`IdentityManager<I>`] implementation that can
-    /// transform proto-ids into ids of type `I`.
-    /// It can return None if ids are passed from outside
-    /// and are not generated by wgpu
-    ///
-    /// [`IdentityManager<I>`]: IdentityManager
-    fn spawn(&self) -> Arc<IdentityManager<I>> {
-        Arc::new(IdentityManager::new())
-    }
-    fn autogenerate_ids() -> bool;
-    fn input_to_id(id_in: Self::Input) -> I;
-}
-
-/// A global identity handler factory based on [`IdentityManager`].
-///
-/// Each of this type's `IdentityHandlerFactory<I>::spawn` methods
-/// returns a `Mutex<IdentityManager<I>>`, which allocates fresh `I`
-/// ids itself, and takes `()` as its proto-id type.
-#[derive(Debug)]
-pub struct IdentityManagerFactory;
-
-impl<I: TypedId> IdentityHandlerFactory<I> for IdentityManagerFactory {
-    type Input = ();
-    fn autogenerate_ids() -> bool {
-        true
-    }
-
-    fn input_to_id(_id_in: Self::Input) -> I {
-        unreachable!("It should not be called")
-    }
-}
-
-/// A factory that can build [`IdentityManager`]s for all resource
-/// types.
-pub trait GlobalIdentityHandlerFactory:
-    IdentityHandlerFactory<id::AdapterId>
-    + IdentityHandlerFactory<id::DeviceId>
-    + IdentityHandlerFactory<id::PipelineLayoutId>
-    + IdentityHandlerFactory<id::ShaderModuleId>
-    + IdentityHandlerFactory<id::BindGroupLayoutId>
-    + IdentityHandlerFactory<id::BindGroupId>
-    + IdentityHandlerFactory<id::CommandBufferId>
-    + IdentityHandlerFactory<id::RenderBundleId>
-    + IdentityHandlerFactory<id::RenderPipelineId>
-    + IdentityHandlerFactory<id::ComputePipelineId>
-    + IdentityHandlerFactory<id::QuerySetId>
-    + IdentityHandlerFactory<id::BufferId>
-    + IdentityHandlerFactory<id::StagingBufferId>
-    + IdentityHandlerFactory<id::TextureId>
-    + IdentityHandlerFactory<id::TextureViewId>
-    + IdentityHandlerFactory<id::SamplerId>
-    + IdentityHandlerFactory<id::SurfaceId>
-{
-}
-
-impl GlobalIdentityHandlerFactory for IdentityManagerFactory {}
-
-pub type Input<G, I> = <G as IdentityHandlerFactory<I>>::Input;
-
 #[test]
 fn test_epoch_end_of_life() {
-    use id::TypedId as _;
-    let man = IdentityManager::<id::BufferId>::new();
-    let forced_id = man.mark_as_used(id::BufferId::zip(0, 1, Backend::Empty));
-    assert_eq!(forced_id.unzip().0, 0);
-    let id1 = man.process(Backend::Empty);
-    assert_eq!(id1.unzip(), (0, 1, Backend::Empty));
+    use crate::id;
+    let man = IdentityManager::<id::markers::Buffer>::new();
+    let id1 = man.process();
+    assert_eq!(id1.unzip(), (0, 1));
     man.free(id1);
-    let id2 = man.process(Backend::Empty);
+    let id2 = man.process();
     // confirm that the epoch 1 is no longer re-used
-    assert_eq!(id2.unzip(), (0, 2, Backend::Empty));
+    assert_eq!(id2.unzip(), (0, 2));
 }

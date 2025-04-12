@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "env_logger"
-version = "0.11.8"
+version = "0.11.6"
 build = false
 include = [
     "build.rs",
@@ -102,10 +102,9 @@ default = [
     "humantime",
     "regex",
 ]
-humantime = ["dep:jiff"]
-kv = ["log/kv"]
+humantime = ["dep:humantime"]
 regex = ["env_filter/regex"]
-unstable-kv = ["kv"]
+unstable-kv = ["log/kv"]
 
 [lib]
 name = "env_logger"
@@ -173,11 +172,9 @@ optional = true
 version = "0.1.0"
 default-features = false
 
-[dependencies.jiff]
-version = "0.2.3"
-features = ["std"]
+[dependencies.humantime]
+version = "2.0.0"
 optional = true
-default-features = false
 
 [dependencies.log]
 version = "0.4.21"

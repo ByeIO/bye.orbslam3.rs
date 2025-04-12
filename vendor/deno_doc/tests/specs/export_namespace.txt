@@ -1,0 +1,229 @@
+# mod.ts
+/** Namespace JSdoc */
+export namespace RootNs {
+    export const a = "a";
+
+    /** Nested namespace JSDoc */
+    export namespace NestedNs {
+      export enum Foo {
+        a = 1,
+        b = 2,
+        c = 3,
+      }
+    }
+}
+
+export namespace RootNs.OtherNs {
+  export class Other {}
+}
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:3:18
+  | 
+3 |     export const a = "a";
+  |                  ^
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:7:7
+  | 
+7 |       export enum Foo {
+  |       ^
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+  --> /mod.ts:15:8
+   | 
+15 | export namespace RootNs.OtherNs {
+   |        ^
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+  --> /mod.ts:16:3
+   | 
+16 |   export class Other {}
+   |   ^
+
+# output.txt
+Defined in file:///mod.ts:2:1
+
+namespace RootNs
+  Namespace JSdoc
+
+  const a: "a"
+  namespace NestedNs
+    Nested namespace JSDoc
+  namespace OtherNs
+
+
+# output.json
+[
+  {
+    "name": "RootNs",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 2,
+      "col": 0,
+      "byteIndex": 23
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "Namespace JSdoc"
+    },
+    "kind": "namespace",
+    "namespaceDef": {
+      "elements": [
+        {
+          "name": "a",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 3,
+            "col": 17,
+            "byteIndex": 66
+          },
+          "declarationKind": "export",
+          "kind": "variable",
+          "variableDef": {
+            "tsType": {
+              "repr": "a",
+              "kind": "literal",
+              "literal": {
+                "kind": "string",
+                "string": "a"
+              }
+            },
+            "kind": "const"
+          }
+        },
+        {
+          "name": "NestedNs",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 6,
+            "col": 4,
+            "byteIndex": 114
+          },
+          "declarationKind": "export",
+          "jsDoc": {
+            "doc": "Nested namespace JSDoc"
+          },
+          "kind": "namespace",
+          "namespaceDef": {
+            "elements": [
+              {
+                "name": "Foo",
+                "isDefault": false,
+                "location": {
+                  "filename": "file:///mod.ts",
+                  "line": 7,
+                  "col": 6,
+                  "byteIndex": 148
+                },
+                "declarationKind": "export",
+                "kind": "enum",
+                "enumDef": {
+                  "members": [
+                    {
+                      "name": "a",
+                      "init": {
+                        "repr": "1",
+                        "kind": "literal",
+                        "literal": {
+                          "kind": "number",
+                          "number": 1.0
+                        }
+                      },
+                      "location": {
+                        "filename": "file:///mod.ts",
+                        "line": 8,
+                        "col": 8,
+                        "byteIndex": 174
+                      }
+                    },
+                    {
+                      "name": "b",
+                      "init": {
+                        "repr": "2",
+                        "kind": "literal",
+                        "literal": {
+                          "kind": "number",
+                          "number": 2.0
+                        }
+                      },
+                      "location": {
+                        "filename": "file:///mod.ts",
+                        "line": 9,
+                        "col": 8,
+                        "byteIndex": 189
+                      }
+                    },
+                    {
+                      "name": "c",
+                      "init": {
+                        "repr": "3",
+                        "kind": "literal",
+                        "literal": {
+                          "kind": "number",
+                          "number": 3.0
+                        }
+                      },
+                      "location": {
+                        "filename": "file:///mod.ts",
+                        "line": 10,
+                        "col": 8,
+                        "byteIndex": 204
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "OtherNs",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 15,
+            "col": 7,
+            "byteIndex": 235
+          },
+          "declarationKind": "export",
+          "kind": "namespace",
+          "namespaceDef": {
+            "elements": [
+              {
+                "name": "Other",
+                "isDefault": false,
+                "location": {
+                  "filename": "file:///mod.ts",
+                  "line": 16,
+                  "col": 2,
+                  "byteIndex": 264
+                },
+                "declarationKind": "export",
+                "kind": "class",
+                "classDef": {
+                  "isAbstract": false,
+                  "constructors": [],
+                  "properties": [],
+                  "indexSignatures": [],
+                  "methods": [],
+                  "extends": null,
+                  "implements": [],
+                  "typeParams": [],
+                  "superTypeParams": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

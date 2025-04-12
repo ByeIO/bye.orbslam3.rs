@@ -1,127 +1,116 @@
-#[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq, ::core::fmt::Debug, ::core::clone::Clone)]
-pub struct IWCNConnectNotify(::windows_core::IUnknown);
+windows_core::imp::define_interface!(IWCNConnectNotify, IWCNConnectNotify_Vtbl, 0xc100be9f_d33a_4a4b_bf23_bbef4663d017);
+impl core::ops::Deref for IWCNConnectNotify {
+    type Target = windows_core::IUnknown;
+    fn deref(&self) -> &Self::Target {
+        unsafe { core::mem::transmute(self) }
+    }
+}
+windows_core::imp::interface_hierarchy!(IWCNConnectNotify, windows_core::IUnknown);
 impl IWCNConnectNotify {
-    pub unsafe fn ConnectSucceeded(&self) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).ConnectSucceeded)(::windows_core::Interface::as_raw(self)).ok()
+    pub unsafe fn ConnectSucceeded(&self) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).ConnectSucceeded)(windows_core::Interface::as_raw(self)).ok()
     }
-    pub unsafe fn ConnectFailed(&self, hrfailure: ::windows_core::HRESULT) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).ConnectFailed)(::windows_core::Interface::as_raw(self), hrfailure).ok()
+    pub unsafe fn ConnectFailed(&self, hrfailure: windows_core::HRESULT) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).ConnectFailed)(windows_core::Interface::as_raw(self), hrfailure).ok()
     }
-}
-::windows_core::imp::interface_hierarchy!(IWCNConnectNotify, ::windows_core::IUnknown);
-unsafe impl ::windows_core::Interface for IWCNConnectNotify {
-    type Vtable = IWCNConnectNotify_Vtbl;
-}
-unsafe impl ::windows_core::ComInterface for IWCNConnectNotify {
-    const IID: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xc100be9f_d33a_4a4b_bf23_bbef4663d017);
 }
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWCNConnectNotify_Vtbl {
-    pub base__: ::windows_core::IUnknown_Vtbl,
-    pub ConnectSucceeded: unsafe extern "system" fn(this: *mut ::core::ffi::c_void) -> ::windows_core::HRESULT,
-    pub ConnectFailed: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, hrfailure: ::windows_core::HRESULT) -> ::windows_core::HRESULT,
+    pub base__: windows_core::IUnknown_Vtbl,
+    pub ConnectSucceeded: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub ConnectFailed: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::HRESULT) -> windows_core::HRESULT,
 }
-#[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq, ::core::fmt::Debug, ::core::clone::Clone)]
-pub struct IWCNDevice(::windows_core::IUnknown);
+windows_core::imp::define_interface!(IWCNDevice, IWCNDevice_Vtbl, 0xc100be9c_d33a_4a4b_bf23_bbef4663d017);
+impl core::ops::Deref for IWCNDevice {
+    type Target = windows_core::IUnknown;
+    fn deref(&self) -> &Self::Target {
+        unsafe { core::mem::transmute(self) }
+    }
+}
+windows_core::imp::interface_hierarchy!(IWCNDevice, windows_core::IUnknown);
 impl IWCNDevice {
-    pub unsafe fn SetPassword(&self, r#type: WCN_PASSWORD_TYPE, pbpassword: &[u8]) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).SetPassword)(::windows_core::Interface::as_raw(self), r#type, pbpassword.len().try_into().unwrap(), ::core::mem::transmute(pbpassword.as_ptr())).ok()
+    pub unsafe fn SetPassword(&self, r#type: WCN_PASSWORD_TYPE, pbpassword: &[u8]) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).SetPassword)(windows_core::Interface::as_raw(self), r#type, pbpassword.len().try_into().unwrap(), core::mem::transmute(pbpassword.as_ptr())).ok()
     }
-    pub unsafe fn Connect<P0>(&self, pnotify: P0) -> ::windows_core::Result<()>
+    pub unsafe fn Connect<P0>(&self, pnotify: P0) -> windows_core::Result<()>
     where
-        P0: ::windows_core::IntoParam<IWCNConnectNotify>,
+        P0: windows_core::Param<IWCNConnectNotify>,
     {
-        (::windows_core::Interface::vtable(self).Connect)(::windows_core::Interface::as_raw(self), pnotify.into_param().abi()).ok()
+        (windows_core::Interface::vtable(self).Connect)(windows_core::Interface::as_raw(self), pnotify.param().abi()).ok()
     }
-    pub unsafe fn GetAttribute(&self, attributetype: WCN_ATTRIBUTE_TYPE, pbbuffer: &mut [u8], pdwbufferused: *mut u32) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).GetAttribute)(::windows_core::Interface::as_raw(self), attributetype, pbbuffer.len().try_into().unwrap(), ::core::mem::transmute(pbbuffer.as_ptr()), pdwbufferused).ok()
+    pub unsafe fn GetAttribute(&self, attributetype: WCN_ATTRIBUTE_TYPE, pbbuffer: &mut [u8], pdwbufferused: *mut u32) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).GetAttribute)(windows_core::Interface::as_raw(self), attributetype, pbbuffer.len().try_into().unwrap(), core::mem::transmute(pbbuffer.as_ptr()), pdwbufferused).ok()
     }
-    pub unsafe fn GetIntegerAttribute(&self, attributetype: WCN_ATTRIBUTE_TYPE) -> ::windows_core::Result<u32> {
-        let mut result__ = ::std::mem::zeroed();
-        (::windows_core::Interface::vtable(self).GetIntegerAttribute)(::windows_core::Interface::as_raw(self), attributetype, &mut result__).from_abi(result__)
+    pub unsafe fn GetIntegerAttribute(&self, attributetype: WCN_ATTRIBUTE_TYPE) -> windows_core::Result<u32> {
+        let mut result__ = core::mem::zeroed();
+        (windows_core::Interface::vtable(self).GetIntegerAttribute)(windows_core::Interface::as_raw(self), attributetype, &mut result__).map(|| result__)
     }
-    pub unsafe fn GetStringAttribute(&self, attributetype: WCN_ATTRIBUTE_TYPE, wszstring: &mut [u16]) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).GetStringAttribute)(::windows_core::Interface::as_raw(self), attributetype, wszstring.len().try_into().unwrap(), ::core::mem::transmute(wszstring.as_ptr())).ok()
+    pub unsafe fn GetStringAttribute(&self, attributetype: WCN_ATTRIBUTE_TYPE, wszstring: &mut [u16]) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).GetStringAttribute)(windows_core::Interface::as_raw(self), attributetype, wszstring.len().try_into().unwrap(), core::mem::transmute(wszstring.as_ptr())).ok()
     }
-    pub unsafe fn GetNetworkProfile(&self, wszprofile: &mut [u16]) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).GetNetworkProfile)(::windows_core::Interface::as_raw(self), wszprofile.len().try_into().unwrap(), ::core::mem::transmute(wszprofile.as_ptr())).ok()
+    pub unsafe fn GetNetworkProfile(&self, wszprofile: &mut [u16]) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).GetNetworkProfile)(windows_core::Interface::as_raw(self), wszprofile.len().try_into().unwrap(), core::mem::transmute(wszprofile.as_ptr())).ok()
     }
-    pub unsafe fn SetNetworkProfile<P0>(&self, pszprofilexml: P0) -> ::windows_core::Result<()>
+    pub unsafe fn SetNetworkProfile<P0>(&self, pszprofilexml: P0) -> windows_core::Result<()>
     where
-        P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
+        P0: windows_core::Param<windows_core::PCWSTR>,
     {
-        (::windows_core::Interface::vtable(self).SetNetworkProfile)(::windows_core::Interface::as_raw(self), pszprofilexml.into_param().abi()).ok()
+        (windows_core::Interface::vtable(self).SetNetworkProfile)(windows_core::Interface::as_raw(self), pszprofilexml.param().abi()).ok()
     }
-    pub unsafe fn GetVendorExtension(&self, pvendorextspec: *const WCN_VENDOR_EXTENSION_SPEC, pbbuffer: &mut [u8], pdwbufferused: *mut u32) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).GetVendorExtension)(::windows_core::Interface::as_raw(self), pvendorextspec, pbbuffer.len().try_into().unwrap(), ::core::mem::transmute(pbbuffer.as_ptr()), pdwbufferused).ok()
+    pub unsafe fn GetVendorExtension(&self, pvendorextspec: *const WCN_VENDOR_EXTENSION_SPEC, pbbuffer: &mut [u8], pdwbufferused: *mut u32) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).GetVendorExtension)(windows_core::Interface::as_raw(self), pvendorextspec, pbbuffer.len().try_into().unwrap(), core::mem::transmute(pbbuffer.as_ptr()), pdwbufferused).ok()
     }
-    pub unsafe fn SetVendorExtension(&self, pvendorextspec: *const WCN_VENDOR_EXTENSION_SPEC, pbbuffer: &[u8]) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).SetVendorExtension)(::windows_core::Interface::as_raw(self), pvendorextspec, pbbuffer.len().try_into().unwrap(), ::core::mem::transmute(pbbuffer.as_ptr())).ok()
+    pub unsafe fn SetVendorExtension(&self, pvendorextspec: *const WCN_VENDOR_EXTENSION_SPEC, pbbuffer: &[u8]) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).SetVendorExtension)(windows_core::Interface::as_raw(self), pvendorextspec, pbbuffer.len().try_into().unwrap(), core::mem::transmute(pbbuffer.as_ptr())).ok()
     }
-    pub unsafe fn Unadvise(&self) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).Unadvise)(::windows_core::Interface::as_raw(self)).ok()
+    pub unsafe fn Unadvise(&self) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).Unadvise)(windows_core::Interface::as_raw(self)).ok()
     }
-    pub unsafe fn SetNFCPasswordParams(&self, r#type: WCN_PASSWORD_TYPE, dwoobpasswordid: u32, pbpassword: ::core::option::Option<&[u8]>, pbremotepublickeyhash: ::core::option::Option<&[u8]>, pbdhkeyblob: ::core::option::Option<&[u8]>) -> ::windows_core::Result<()> {
-        (::windows_core::Interface::vtable(self).SetNFCPasswordParams)(
-            ::windows_core::Interface::as_raw(self),
+    pub unsafe fn SetNFCPasswordParams(&self, r#type: WCN_PASSWORD_TYPE, dwoobpasswordid: u32, pbpassword: Option<&[u8]>, pbremotepublickeyhash: Option<&[u8]>, pbdhkeyblob: Option<&[u8]>) -> windows_core::Result<()> {
+        (windows_core::Interface::vtable(self).SetNFCPasswordParams)(
+            windows_core::Interface::as_raw(self),
             r#type,
             dwoobpasswordid,
             pbpassword.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()),
-            ::core::mem::transmute(pbpassword.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())),
+            core::mem::transmute(pbpassword.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())),
             pbremotepublickeyhash.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()),
-            ::core::mem::transmute(pbremotepublickeyhash.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())),
+            core::mem::transmute(pbremotepublickeyhash.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())),
             pbdhkeyblob.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()),
-            ::core::mem::transmute(pbdhkeyblob.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())),
+            core::mem::transmute(pbdhkeyblob.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())),
         )
         .ok()
     }
 }
-::windows_core::imp::interface_hierarchy!(IWCNDevice, ::windows_core::IUnknown);
-unsafe impl ::windows_core::Interface for IWCNDevice {
-    type Vtable = IWCNDevice_Vtbl;
-}
-unsafe impl ::windows_core::ComInterface for IWCNDevice {
-    const IID: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xc100be9c_d33a_4a4b_bf23_bbef4663d017);
-}
 #[repr(C)]
-#[doc(hidden)]
 pub struct IWCNDevice_Vtbl {
-    pub base__: ::windows_core::IUnknown_Vtbl,
-    pub SetPassword: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, r#type: WCN_PASSWORD_TYPE, dwpasswordlength: u32, pbpassword: *const u8) -> ::windows_core::HRESULT,
-    pub Connect: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, pnotify: *mut ::core::ffi::c_void) -> ::windows_core::HRESULT,
-    pub GetAttribute: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, attributetype: WCN_ATTRIBUTE_TYPE, dwmaxbuffersize: u32, pbbuffer: *mut u8, pdwbufferused: *mut u32) -> ::windows_core::HRESULT,
-    pub GetIntegerAttribute: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, attributetype: WCN_ATTRIBUTE_TYPE, puinteger: *mut u32) -> ::windows_core::HRESULT,
-    pub GetStringAttribute: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, attributetype: WCN_ATTRIBUTE_TYPE, cchmaxstring: u32, wszstring: ::windows_core::PWSTR) -> ::windows_core::HRESULT,
-    pub GetNetworkProfile: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, cchmaxstringlength: u32, wszprofile: ::windows_core::PWSTR) -> ::windows_core::HRESULT,
-    pub SetNetworkProfile: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, pszprofilexml: ::windows_core::PCWSTR) -> ::windows_core::HRESULT,
-    pub GetVendorExtension: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, pvendorextspec: *const WCN_VENDOR_EXTENSION_SPEC, dwmaxbuffersize: u32, pbbuffer: *mut u8, pdwbufferused: *mut u32) -> ::windows_core::HRESULT,
-    pub SetVendorExtension: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, pvendorextspec: *const WCN_VENDOR_EXTENSION_SPEC, cbbuffer: u32, pbbuffer: *const u8) -> ::windows_core::HRESULT,
-    pub Unadvise: unsafe extern "system" fn(this: *mut ::core::ffi::c_void) -> ::windows_core::HRESULT,
-    pub SetNFCPasswordParams: unsafe extern "system" fn(this: *mut ::core::ffi::c_void, r#type: WCN_PASSWORD_TYPE, dwoobpasswordid: u32, dwpasswordlength: u32, pbpassword: *const u8, dwremotepublickeyhashlength: u32, pbremotepublickeyhash: *const u8, dwdhkeybloblength: u32, pbdhkeyblob: *const u8) -> ::windows_core::HRESULT,
+    pub base__: windows_core::IUnknown_Vtbl,
+    pub SetPassword: unsafe extern "system" fn(*mut core::ffi::c_void, WCN_PASSWORD_TYPE, u32, *const u8) -> windows_core::HRESULT,
+    pub Connect: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub GetAttribute: unsafe extern "system" fn(*mut core::ffi::c_void, WCN_ATTRIBUTE_TYPE, u32, *mut u8, *mut u32) -> windows_core::HRESULT,
+    pub GetIntegerAttribute: unsafe extern "system" fn(*mut core::ffi::c_void, WCN_ATTRIBUTE_TYPE, *mut u32) -> windows_core::HRESULT,
+    pub GetStringAttribute: unsafe extern "system" fn(*mut core::ffi::c_void, WCN_ATTRIBUTE_TYPE, u32, windows_core::PWSTR) -> windows_core::HRESULT,
+    pub GetNetworkProfile: unsafe extern "system" fn(*mut core::ffi::c_void, u32, windows_core::PWSTR) -> windows_core::HRESULT,
+    pub SetNetworkProfile: unsafe extern "system" fn(*mut core::ffi::c_void, windows_core::PCWSTR) -> windows_core::HRESULT,
+    pub GetVendorExtension: unsafe extern "system" fn(*mut core::ffi::c_void, *const WCN_VENDOR_EXTENSION_SPEC, u32, *mut u8, *mut u32) -> windows_core::HRESULT,
+    pub SetVendorExtension: unsafe extern "system" fn(*mut core::ffi::c_void, *const WCN_VENDOR_EXTENSION_SPEC, u32, *const u8) -> windows_core::HRESULT,
+    pub Unadvise: unsafe extern "system" fn(*mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub SetNFCPasswordParams: unsafe extern "system" fn(*mut core::ffi::c_void, WCN_PASSWORD_TYPE, u32, u32, *const u8, u32, *const u8, u32, *const u8) -> windows_core::HRESULT,
 }
-#[doc = "Required features: `\"Win32_UI_Shell_PropertiesSystem\"`"]
 #[cfg(feature = "Win32_UI_Shell_PropertiesSystem")]
-pub const PKEY_WCN_DeviceType_Category: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: ::windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 16 };
-#[doc = "Required features: `\"Win32_UI_Shell_PropertiesSystem\"`"]
+pub const PKEY_WCN_DeviceType_Category: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 16 };
 #[cfg(feature = "Win32_UI_Shell_PropertiesSystem")]
-pub const PKEY_WCN_DeviceType_SubCategory: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: ::windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 18 };
-#[doc = "Required features: `\"Win32_UI_Shell_PropertiesSystem\"`"]
+pub const PKEY_WCN_DeviceType_SubCategory: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 18 };
 #[cfg(feature = "Win32_UI_Shell_PropertiesSystem")]
-pub const PKEY_WCN_DeviceType_SubCategoryOUI: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: ::windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 17 };
-#[doc = "Required features: `\"Win32_UI_Shell_PropertiesSystem\"`"]
+pub const PKEY_WCN_DeviceType_SubCategoryOUI: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 17 };
 #[cfg(feature = "Win32_UI_Shell_PropertiesSystem")]
-pub const PKEY_WCN_SSID: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: ::windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 32 };
-pub const SID_WcnProvider: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xc100beca_d33a_4a4b_bf23_bbef4663d017);
-pub const WCNDeviceObject: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xc100bea7_d33a_4a4b_bf23_bbef4663d017);
+pub const PKEY_WCN_SSID: super::super::UI::Shell::PropertiesSystem::PROPERTYKEY = super::super::UI::Shell::PropertiesSystem::PROPERTYKEY { fmtid: windows_core::GUID::from_u128(0x88190b8b_4684_11da_a26a_0002b3988e81), pid: 32 };
+pub const SID_WcnProvider: windows_core::GUID = windows_core::GUID::from_u128(0xc100beca_d33a_4a4b_bf23_bbef4663d017);
 pub const WCN_API_MAX_BUFFER_SIZE: u32 = 2096u32;
-pub const WCN_E_AUTHENTICATION_FAILED: ::windows_core::HRESULT = ::windows_core::HRESULT(-2147206142i32);
-pub const WCN_E_CONNECTION_REJECTED: ::windows_core::HRESULT = ::windows_core::HRESULT(-2147206141i32);
-pub const WCN_E_PEER_NOT_FOUND: ::windows_core::HRESULT = ::windows_core::HRESULT(-2147206143i32);
-pub const WCN_E_PROTOCOL_ERROR: ::windows_core::HRESULT = ::windows_core::HRESULT(-2147206139i32);
-pub const WCN_E_SESSION_TIMEDOUT: ::windows_core::HRESULT = ::windows_core::HRESULT(-2147206140i32);
+pub const WCN_E_AUTHENTICATION_FAILED: windows_core::HRESULT = windows_core::HRESULT(0x80043C02_u32 as _);
+pub const WCN_E_CONNECTION_REJECTED: windows_core::HRESULT = windows_core::HRESULT(0x80043C03_u32 as _);
+pub const WCN_E_PEER_NOT_FOUND: windows_core::HRESULT = windows_core::HRESULT(0x80043C01_u32 as _);
+pub const WCN_E_PROTOCOL_ERROR: windows_core::HRESULT = windows_core::HRESULT(0x80043C05_u32 as _);
+pub const WCN_E_SESSION_TIMEDOUT: windows_core::HRESULT = windows_core::HRESULT(0x80043C04_u32 as _);
 pub const WCN_FLAG_AUTHENTICATED_VE: u32 = 2u32;
 pub const WCN_FLAG_DISCOVERY_VE: u32 = 1u32;
 pub const WCN_FLAG_ENCRYPTED_VE: u32 = 4u32;
@@ -133,7 +122,7 @@ pub const WCN_PASSWORD_TYPE_PIN: WCN_PASSWORD_TYPE = WCN_PASSWORD_TYPE(1i32);
 pub const WCN_PASSWORD_TYPE_PIN_REGISTRAR_SPECIFIED: WCN_PASSWORD_TYPE = WCN_PASSWORD_TYPE(2i32);
 pub const WCN_PASSWORD_TYPE_PUSH_BUTTON: WCN_PASSWORD_TYPE = WCN_PASSWORD_TYPE(0i32);
 pub const WCN_PASSWORD_TYPE_WFDS: WCN_PASSWORD_TYPE = WCN_PASSWORD_TYPE(4i32);
-pub const WCN_QUERY_CONSTRAINT_USE_SOFTAP: ::windows_core::PCWSTR = ::windows_core::w!("WCN.Discovery.SoftAP");
+pub const WCN_QUERY_CONSTRAINT_USE_SOFTAP: windows_core::PCWSTR = windows_core::w!("WCN.Discovery.SoftAP");
 pub const WCN_SESSION_STATUS_FAILURE_GENERIC: WCN_SESSION_STATUS = WCN_SESSION_STATUS(1i32);
 pub const WCN_SESSION_STATUS_FAILURE_TIMEOUT: WCN_SESSION_STATUS = WCN_SESSION_STATUS(2i32);
 pub const WCN_SESSION_STATUS_SUCCESS: WCN_SESSION_STATUS = WCN_SESSION_STATUS(0i32);
@@ -403,430 +392,223 @@ pub const WCN_VALUE_TRUE: WCN_VALUE_TYPE_BOOLEAN = WCN_VALUE_TYPE_BOOLEAN(1i32);
 pub const WCN_VALUE_VERSION_1_0: WCN_VALUE_TYPE_VERSION = WCN_VALUE_TYPE_VERSION(16i32);
 pub const WCN_VALUE_VERSION_2_0: WCN_VALUE_TYPE_VERSION = WCN_VALUE_TYPE_VERSION(32i32);
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_ATTRIBUTE_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_ATTRIBUTE_TYPE {}
-impl ::core::clone::Clone for WCN_ATTRIBUTE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_ATTRIBUTE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_ATTRIBUTE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_ATTRIBUTE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_ATTRIBUTE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_ATTRIBUTE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_ATTRIBUTE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_PASSWORD_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_PASSWORD_TYPE {}
-impl ::core::clone::Clone for WCN_PASSWORD_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_PASSWORD_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_PASSWORD_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_PASSWORD_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_PASSWORD_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_PASSWORD_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_PASSWORD_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_SESSION_STATUS(pub i32);
-impl ::core::marker::Copy for WCN_SESSION_STATUS {}
-impl ::core::clone::Clone for WCN_SESSION_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_SESSION_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_SESSION_STATUS {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_SESSION_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_SESSION_STATUS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_SESSION_STATUS {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_SESSION_STATUS").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_ASSOCIATION_STATE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_ASSOCIATION_STATE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_ASSOCIATION_STATE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_ASSOCIATION_STATE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_ASSOCIATION_STATE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_ASSOCIATION_STATE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_ASSOCIATION_STATE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_ASSOCIATION_STATE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_ASSOCIATION_STATE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_AUTHENTICATION_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_AUTHENTICATION_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_AUTHENTICATION_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_BOOLEAN(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_BOOLEAN {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_BOOLEAN {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_BOOLEAN {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_BOOLEAN {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_BOOLEAN {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_BOOLEAN {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_BOOLEAN {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_BOOLEAN").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_CONFIGURATION_ERROR(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_CONFIGURATION_ERROR {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_CONFIGURATION_ERROR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_CONFIGURATION_ERROR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_CONFIGURATION_ERROR {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_CONFIGURATION_ERROR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_CONFIGURATION_ERROR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_CONFIGURATION_ERROR {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_CONFIGURATION_ERROR").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_CONFIG_METHODS(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_CONFIG_METHODS {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_CONFIG_METHODS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_CONFIG_METHODS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_CONFIG_METHODS {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_CONFIG_METHODS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_CONFIG_METHODS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_CONFIG_METHODS {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_CONFIG_METHODS").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_CONNECTION_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_CONNECTION_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_CONNECTION_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_CONNECTION_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_CONNECTION_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_CONNECTION_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_CONNECTION_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_CONNECTION_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_CONNECTION_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_DEVICE_PASSWORD_ID(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_DEVICE_PASSWORD_ID {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_DEVICE_PASSWORD_ID").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_ENCRYPTION_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_ENCRYPTION_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_ENCRYPTION_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_ENCRYPTION_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_ENCRYPTION_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_ENCRYPTION_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_ENCRYPTION_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_ENCRYPTION_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_ENCRYPTION_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_MESSAGE_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_MESSAGE_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_MESSAGE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_MESSAGE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_MESSAGE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_MESSAGE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_MESSAGE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_MESSAGE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_MESSAGE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_REQUEST_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_REQUEST_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_REQUEST_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_REQUEST_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_REQUEST_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_REQUEST_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_REQUEST_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_REQUEST_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_REQUEST_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_RESPONSE_TYPE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_RESPONSE_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_RESPONSE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_RESPONSE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_RESPONSE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_RESPONSE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_RESPONSE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_RESPONSE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_RESPONSE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_RF_BANDS(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_RF_BANDS {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_RF_BANDS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_RF_BANDS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_RF_BANDS {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_RF_BANDS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_RF_BANDS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_RF_BANDS {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_RF_BANDS").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_VERSION(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_VERSION {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_VERSION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_VERSION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_VERSION {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_VERSION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_VERSION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_VERSION {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_VERSION").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE(pub i32);
-impl ::core::marker::Copy for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WCN_VALUE_TYPE_WI_FI_PROTECTED_SETUP_STATE").field(&self.0).finish()
     }
 }
+pub const WCNDeviceObject: windows_core::GUID = windows_core::GUID::from_u128(0xc100bea7_d33a_4a4b_bf23_bbef4663d017);
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {
     pub Category: u16,
     pub SubCategoryOUI: u32,
     pub SubCategory: u16,
 }
-impl ::core::marker::Copy for WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {}
-impl ::core::clone::Clone for WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {
+impl Default for WCN_VALUE_TYPE_PRIMARY_DEVICE_TYPE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WCN_VENDOR_EXTENSION_SPEC {
     pub VendorId: u32,
     pub SubType: u32,
     pub Index: u32,
     pub Flags: u32,
 }
-impl ::core::marker::Copy for WCN_VENDOR_EXTENSION_SPEC {}
-impl ::core::clone::Clone for WCN_VENDOR_EXTENSION_SPEC {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WCN_VENDOR_EXTENSION_SPEC {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for WCN_VENDOR_EXTENSION_SPEC {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("WCN_VENDOR_EXTENSION_SPEC").field("VendorId", &self.VendorId).field("SubType", &self.SubType).field("Index", &self.Index).field("Flags", &self.Flags).finish()
-    }
-}
-impl ::windows_core::TypeKind for WCN_VENDOR_EXTENSION_SPEC {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for WCN_VENDOR_EXTENSION_SPEC {
-    fn eq(&self, other: &Self) -> bool {
-        self.VendorId == other.VendorId && self.SubType == other.SubType && self.Index == other.Index && self.Flags == other.Flags
-    }
-}
-impl ::core::cmp::Eq for WCN_VENDOR_EXTENSION_SPEC {}
-impl ::core::default::Default for WCN_VENDOR_EXTENSION_SPEC {
+impl Default for WCN_VENDOR_EXTENSION_SPEC {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[cfg(feature = "implement")]
-::core::include!("impl.rs");
+core::include!("impl.rs");

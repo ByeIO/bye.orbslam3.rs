@@ -1,0 +1,87 @@
+!! should format !!
+-   [ ]  unchecked
+- [x] checked
+  - [ ]  nested unchecked
+  - [x] nested checked
+- [ ] other [link](test)
+
+[expect]
+- [ ] unchecked
+- [x] checked
+  - [ ] nested unchecked
+  - [x] nested checked
+- [ ] other [link](test)
+
+!! should handle html under task list !!
+- [ ] Testing this out.
+
+  <details>
+     <summary>❌ Failure Steps</summary>
+
+  1. Test 1
+  2. Test 2
+  </details>
+
+[expect]
+- [ ] Testing this out.
+
+  <details>
+     <summary>❌ Failure Steps</summary>
+
+  1. Test 1
+  2. Test 2
+  </details>
+
+!! should handle indented code block under task list !!
+- [ ] Testing this out.
+
+      console.log(5);
+
+[expect]
+- [ ] Testing this out.
+
+      console.log(5);
+
+!! should format with many kinds of nodes after that shouldn't indent !!
+- [ ] Test
+  > test
+- [ ] Test
+  # test
+- [ ] Test
+  ```ts
+  test
+  ```
+- [ ] Test
+      asdf
+  ```ts
+  test
+  ```
+
+[expect]
+- [ ] Test
+  > test
+- [ ] Test
+  # test
+- [ ] Test
+  ```ts
+  test
+  ```
+- [ ] Test
+      asdf
+  ```ts
+  test
+  ```
+
+!! should format across multiple lines !!
+### Some text
+
+- [ ] Some text goes here. Testing testing testing testing testing testing testing.
+      Here is some text on the next line
+  1. Tesitng this out
+
+[expect]
+### Some text
+
+- [ ] Some text goes here. Testing testing testing testing testing testing testing.
+      Here is some text on the next line
+  1. Tesitng this out

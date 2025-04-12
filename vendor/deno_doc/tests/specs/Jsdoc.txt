@@ -1,0 +1,125 @@
+# mod.ts
+/**
+ * A is a class
+ *
+ * Nothing more
+ */
+export class A {}
+/**
+ * B is an interface
+ *
+ * Should be
+ */
+export interface B {}
+/**
+ * C is a function
+ *
+ * Summarised
+ */
+export function C() {}
+
+# output.txt
+Defined in file:///mod.ts:18:1
+
+function C(): void
+  C is a function
+  
+  Summarised
+
+Defined in file:///mod.ts:6:1
+
+class A
+  A is a class
+  
+  Nothing more
+
+
+Defined in file:///mod.ts:12:1
+
+interface B
+  B is an interface
+  
+  Should be
+
+
+
+# output.json
+[
+  {
+    "name": "A",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 6,
+      "col": 0,
+      "byteIndex": 43
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "A is a class\n\nNothing more"
+    },
+    "kind": "class",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "name": "B",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 12,
+      "col": 0,
+      "byteIndex": 106
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "B is an interface\n\nShould be"
+    },
+    "kind": "interface",
+    "interfaceDef": {
+      "extends": [],
+      "constructors": [],
+      "methods": [],
+      "properties": [],
+      "callSignatures": [],
+      "indexSignatures": [],
+      "typeParams": []
+    }
+  },
+  {
+    "name": "C",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 18,
+      "col": 0,
+      "byteIndex": 172
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "C is a function\n\nSummarised"
+    },
+    "kind": "function",
+    "functionDef": {
+      "params": [],
+      "returnType": {
+        "repr": "void",
+        "kind": "keyword",
+        "keyword": "void"
+      },
+      "hasBody": true,
+      "isAsync": false,
+      "isGenerator": false,
+      "typeParams": []
+    }
+  }
+]

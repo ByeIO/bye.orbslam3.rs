@@ -1,0 +1,9 @@
+[package]
+name = "seekslam_rotation"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+keywords.workspace = true
+
+[dependencies]

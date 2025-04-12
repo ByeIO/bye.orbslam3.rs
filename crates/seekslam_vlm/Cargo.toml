@@ -1,0 +1,10 @@
+[package]
+name = "seekslam_vlm"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+keywords.workspace = true
+
+[dependencies]
+

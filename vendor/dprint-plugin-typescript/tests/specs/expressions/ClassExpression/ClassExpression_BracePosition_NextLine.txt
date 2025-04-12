@@ -1,0 +1,53 @@
+~~ classExpression.bracePosition: nextLine, lineWidth: 50 ~~
+== should use the next line for the brace position ==
+const t = class {
+};
+
+[expect]
+const t = class
+{
+};
+
+== should use the next line for type parameters on multiple lines ==
+const t = class<
+    T,
+U,
+V> {
+};
+
+[expect]
+const t = class<
+    T,
+    U,
+    V,
+>
+{
+};
+
+== should use the next line for the brace position when hanging ==
+const t = class extends SomethingReallyReallyReallyLong
+{
+};
+
+[expect]
+const t = class
+    extends SomethingReallyReallyReallyLong
+{
+};
+
+== should consider export default with no name as an expr ==
+export default class {
+}
+
+[expect]
+export default class
+{
+}
+
+== export default class is a declaration ==
+export default class Test {
+}
+
+[expect]
+export default class Test {
+}

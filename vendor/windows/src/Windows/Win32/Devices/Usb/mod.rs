@@ -1,321 +1,265 @@
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_AbortPipe<P0>(interfacehandle: P0, pipeid: u8) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_AbortPipe<P0>(interfacehandle: P0, pipeid: u8) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_AbortPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8) -> super::super::Foundation:: BOOL);
-    WinUsb_AbortPipe(interfacehandle.into_param().abi(), pipeid).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_AbortPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8) -> super::super::Foundation:: BOOL);
+    WinUsb_AbortPipe(interfacehandle.param().abi(), pipeid).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_ControlTransfer<P0>(interfacehandle: P0, setuppacket: WINUSB_SETUP_PACKET, buffer: ::core::option::Option<&mut [u8]>, lengthtransferred: ::core::option::Option<*mut u32>, overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_ControlTransfer<P0>(interfacehandle: P0, setuppacket: WINUSB_SETUP_PACKET, buffer: Option<&mut [u8]>, lengthtransferred: Option<*mut u32>, overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ControlTransfer(interfacehandle : WINUSB_INTERFACE_HANDLE, setuppacket : WINUSB_SETUP_PACKET, buffer : *mut u8, bufferlength : u32, lengthtransferred : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_ControlTransfer(interfacehandle.into_param().abi(), ::core::mem::transmute(setuppacket), ::core::mem::transmute(buffer.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())), buffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), ::core::mem::transmute(lengthtransferred.unwrap_or(::std::ptr::null_mut())), ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ControlTransfer(interfacehandle : WINUSB_INTERFACE_HANDLE, setuppacket : WINUSB_SETUP_PACKET, buffer : *mut u8, bufferlength : u32, lengthtransferred : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_ControlTransfer(interfacehandle.param().abi(), core::mem::transmute(setuppacket), core::mem::transmute(buffer.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), buffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), core::mem::transmute(lengthtransferred.unwrap_or(std::ptr::null_mut())), core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_FlushPipe<P0>(interfacehandle: P0, pipeid: u8) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_FlushPipe<P0>(interfacehandle: P0, pipeid: u8) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_FlushPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8) -> super::super::Foundation:: BOOL);
-    WinUsb_FlushPipe(interfacehandle.into_param().abi(), pipeid).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_FlushPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8) -> super::super::Foundation:: BOOL);
+    WinUsb_FlushPipe(interfacehandle.param().abi(), pipeid).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn WinUsb_Free<P0>(interfacehandle: P0) -> super::super::Foundation::BOOL
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_Free(interfacehandle : WINUSB_INTERFACE_HANDLE) -> super::super::Foundation:: BOOL);
-    WinUsb_Free(interfacehandle.into_param().abi())
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_Free(interfacehandle : WINUSB_INTERFACE_HANDLE) -> super::super::Foundation:: BOOL);
+    WinUsb_Free(interfacehandle.param().abi())
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_GetAdjustedFrameNumber(currentframenumber: *mut u32, timestamp: i64) -> ::windows_core::Result<()> {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetAdjustedFrameNumber(currentframenumber : *mut u32, timestamp : i64) -> super::super::Foundation:: BOOL);
+pub unsafe fn WinUsb_GetAdjustedFrameNumber(currentframenumber: *mut u32, timestamp: i64) -> windows_core::Result<()> {
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetAdjustedFrameNumber(currentframenumber : *mut u32, timestamp : i64) -> super::super::Foundation:: BOOL);
     WinUsb_GetAdjustedFrameNumber(currentframenumber, timestamp).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_GetAssociatedInterface<P0>(interfacehandle: P0, associatedinterfaceindex: u8, associatedinterfacehandle: *mut WINUSB_INTERFACE_HANDLE) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_GetAssociatedInterface<P0>(interfacehandle: P0, associatedinterfaceindex: u8, associatedinterfacehandle: *mut WINUSB_INTERFACE_HANDLE) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetAssociatedInterface(interfacehandle : WINUSB_INTERFACE_HANDLE, associatedinterfaceindex : u8, associatedinterfacehandle : *mut WINUSB_INTERFACE_HANDLE) -> super::super::Foundation:: BOOL);
-    WinUsb_GetAssociatedInterface(interfacehandle.into_param().abi(), associatedinterfaceindex, associatedinterfacehandle).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_GetCurrentAlternateSetting<P0>(interfacehandle: P0, settingnumber: *mut u8) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetCurrentAlternateSetting(interfacehandle : WINUSB_INTERFACE_HANDLE, settingnumber : *mut u8) -> super::super::Foundation:: BOOL);
-    WinUsb_GetCurrentAlternateSetting(interfacehandle.into_param().abi(), settingnumber).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_GetCurrentFrameNumber<P0>(interfacehandle: P0, currentframenumber: *mut u32, timestamp: *mut i64) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetCurrentFrameNumber(interfacehandle : WINUSB_INTERFACE_HANDLE, currentframenumber : *mut u32, timestamp : *mut i64) -> super::super::Foundation:: BOOL);
-    WinUsb_GetCurrentFrameNumber(interfacehandle.into_param().abi(), currentframenumber, timestamp).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_GetCurrentFrameNumberAndQpc<P0>(interfacehandle: P0, frameqpcinfo: *const USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetCurrentFrameNumberAndQpc(interfacehandle : WINUSB_INTERFACE_HANDLE, frameqpcinfo : *const USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION) -> super::super::Foundation:: BOOL);
-    WinUsb_GetCurrentFrameNumberAndQpc(interfacehandle.into_param().abi(), frameqpcinfo).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_GetDescriptor<P0>(interfacehandle: P0, descriptortype: u8, index: u8, languageid: u16, buffer: ::core::option::Option<&mut [u8]>, lengthtransferred: *mut u32) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetDescriptor(interfacehandle : WINUSB_INTERFACE_HANDLE, descriptortype : u8, index : u8, languageid : u16, buffer : *mut u8, bufferlength : u32, lengthtransferred : *mut u32) -> super::super::Foundation:: BOOL);
-    WinUsb_GetDescriptor(interfacehandle.into_param().abi(), descriptortype, index, languageid, ::core::mem::transmute(buffer.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())), buffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), lengthtransferred).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
-#[inline]
-pub unsafe fn WinUsb_GetOverlappedResult<P0, P1>(interfacehandle: P0, lpoverlapped: *const super::super::System::IO::OVERLAPPED, lpnumberofbytestransferred: *mut u32, bwait: P1) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-    P1: ::windows_core::IntoParam<super::super::Foundation::BOOL>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetOverlappedResult(interfacehandle : WINUSB_INTERFACE_HANDLE, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpnumberofbytestransferred : *mut u32, bwait : super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
-    WinUsb_GetOverlappedResult(interfacehandle.into_param().abi(), lpoverlapped, lpnumberofbytestransferred, bwait.into_param().abi()).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_GetPipePolicy<P0>(interfacehandle: P0, pipeid: u8, policytype: WINUSB_PIPE_POLICY, valuelength: *mut u32, value: *mut ::core::ffi::c_void) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetPipePolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, policytype : WINUSB_PIPE_POLICY, valuelength : *mut u32, value : *mut ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
-    WinUsb_GetPipePolicy(interfacehandle.into_param().abi(), pipeid, policytype, valuelength, value).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_GetPowerPolicy<P0>(interfacehandle: P0, policytype: WINUSB_POWER_POLICY, valuelength: *mut u32, value: *mut ::core::ffi::c_void) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_GetPowerPolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, policytype : WINUSB_POWER_POLICY, valuelength : *mut u32, value : *mut ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
-    WinUsb_GetPowerPolicy(interfacehandle.into_param().abi(), policytype, valuelength, value).ok()
-}
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
-#[inline]
-pub unsafe fn WinUsb_Initialize<P0>(devicehandle: P0, interfacehandle: *mut WINUSB_INTERFACE_HANDLE) -> ::windows_core::Result<()>
-where
-    P0: ::windows_core::IntoParam<super::super::Foundation::HANDLE>,
-{
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_Initialize(devicehandle : super::super::Foundation:: HANDLE, interfacehandle : *mut WINUSB_INTERFACE_HANDLE) -> super::super::Foundation:: BOOL);
-    WinUsb_Initialize(devicehandle.into_param().abi(), interfacehandle).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetAssociatedInterface(interfacehandle : WINUSB_INTERFACE_HANDLE, associatedinterfaceindex : u8, associatedinterfacehandle : *mut WINUSB_INTERFACE_HANDLE) -> super::super::Foundation:: BOOL);
+    WinUsb_GetAssociatedInterface(interfacehandle.param().abi(), associatedinterfaceindex, associatedinterfacehandle).ok()
 }
 #[inline]
-pub unsafe fn WinUsb_ParseConfigurationDescriptor(configurationdescriptor: *const USB_CONFIGURATION_DESCRIPTOR, startposition: *const ::core::ffi::c_void, interfacenumber: i32, alternatesetting: i32, interfaceclass: i32, interfacesubclass: i32, interfaceprotocol: i32) -> *mut USB_INTERFACE_DESCRIPTOR {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ParseConfigurationDescriptor(configurationdescriptor : *const USB_CONFIGURATION_DESCRIPTOR, startposition : *const ::core::ffi::c_void, interfacenumber : i32, alternatesetting : i32, interfaceclass : i32, interfacesubclass : i32, interfaceprotocol : i32) -> *mut USB_INTERFACE_DESCRIPTOR);
+pub unsafe fn WinUsb_GetCurrentAlternateSetting<P0>(interfacehandle: P0, settingnumber: *mut u8) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetCurrentAlternateSetting(interfacehandle : WINUSB_INTERFACE_HANDLE, settingnumber : *mut u8) -> super::super::Foundation:: BOOL);
+    WinUsb_GetCurrentAlternateSetting(interfacehandle.param().abi(), settingnumber).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_GetCurrentFrameNumber<P0>(interfacehandle: P0, currentframenumber: *mut u32, timestamp: *mut i64) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetCurrentFrameNumber(interfacehandle : WINUSB_INTERFACE_HANDLE, currentframenumber : *mut u32, timestamp : *mut i64) -> super::super::Foundation:: BOOL);
+    WinUsb_GetCurrentFrameNumber(interfacehandle.param().abi(), currentframenumber, timestamp).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_GetCurrentFrameNumberAndQpc<P0>(interfacehandle: P0, frameqpcinfo: *const USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetCurrentFrameNumberAndQpc(interfacehandle : WINUSB_INTERFACE_HANDLE, frameqpcinfo : *const USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION) -> super::super::Foundation:: BOOL);
+    WinUsb_GetCurrentFrameNumberAndQpc(interfacehandle.param().abi(), frameqpcinfo).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_GetDescriptor<P0>(interfacehandle: P0, descriptortype: u8, index: u8, languageid: u16, buffer: Option<&mut [u8]>, lengthtransferred: *mut u32) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetDescriptor(interfacehandle : WINUSB_INTERFACE_HANDLE, descriptortype : u8, index : u8, languageid : u16, buffer : *mut u8, bufferlength : u32, lengthtransferred : *mut u32) -> super::super::Foundation:: BOOL);
+    WinUsb_GetDescriptor(interfacehandle.param().abi(), descriptortype, index, languageid, core::mem::transmute(buffer.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), buffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), lengthtransferred).ok()
+}
+#[cfg(feature = "Win32_System_IO")]
+#[inline]
+pub unsafe fn WinUsb_GetOverlappedResult<P0, P1>(interfacehandle: P0, lpoverlapped: *const super::super::System::IO::OVERLAPPED, lpnumberofbytestransferred: *mut u32, bwait: P1) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+    P1: windows_core::Param<super::super::Foundation::BOOL>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetOverlappedResult(interfacehandle : WINUSB_INTERFACE_HANDLE, lpoverlapped : *const super::super::System::IO:: OVERLAPPED, lpnumberofbytestransferred : *mut u32, bwait : super::super::Foundation:: BOOL) -> super::super::Foundation:: BOOL);
+    WinUsb_GetOverlappedResult(interfacehandle.param().abi(), lpoverlapped, lpnumberofbytestransferred, bwait.param().abi()).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_GetPipePolicy<P0>(interfacehandle: P0, pipeid: u8, policytype: WINUSB_PIPE_POLICY, valuelength: *mut u32, value: *mut core::ffi::c_void) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetPipePolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, policytype : WINUSB_PIPE_POLICY, valuelength : *mut u32, value : *mut core::ffi::c_void) -> super::super::Foundation:: BOOL);
+    WinUsb_GetPipePolicy(interfacehandle.param().abi(), pipeid, policytype, valuelength, value).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_GetPowerPolicy<P0>(interfacehandle: P0, policytype: WINUSB_POWER_POLICY, valuelength: *mut u32, value: *mut core::ffi::c_void) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_GetPowerPolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, policytype : WINUSB_POWER_POLICY, valuelength : *mut u32, value : *mut core::ffi::c_void) -> super::super::Foundation:: BOOL);
+    WinUsb_GetPowerPolicy(interfacehandle.param().abi(), policytype, valuelength, value).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_Initialize<P0>(devicehandle: P0, interfacehandle: *mut WINUSB_INTERFACE_HANDLE) -> windows_core::Result<()>
+where
+    P0: windows_core::Param<super::super::Foundation::HANDLE>,
+{
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_Initialize(devicehandle : super::super::Foundation:: HANDLE, interfacehandle : *mut WINUSB_INTERFACE_HANDLE) -> super::super::Foundation:: BOOL);
+    WinUsb_Initialize(devicehandle.param().abi(), interfacehandle).ok()
+}
+#[inline]
+pub unsafe fn WinUsb_ParseConfigurationDescriptor(configurationdescriptor: *const USB_CONFIGURATION_DESCRIPTOR, startposition: *const core::ffi::c_void, interfacenumber: i32, alternatesetting: i32, interfaceclass: i32, interfacesubclass: i32, interfaceprotocol: i32) -> *mut USB_INTERFACE_DESCRIPTOR {
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ParseConfigurationDescriptor(configurationdescriptor : *const USB_CONFIGURATION_DESCRIPTOR, startposition : *const core::ffi::c_void, interfacenumber : i32, alternatesetting : i32, interfaceclass : i32, interfacesubclass : i32, interfaceprotocol : i32) -> *mut USB_INTERFACE_DESCRIPTOR);
     WinUsb_ParseConfigurationDescriptor(configurationdescriptor, startposition, interfacenumber, alternatesetting, interfaceclass, interfacesubclass, interfaceprotocol)
 }
 #[inline]
-pub unsafe fn WinUsb_ParseDescriptors(descriptorbuffer: *const ::core::ffi::c_void, totallength: u32, startposition: *const ::core::ffi::c_void, descriptortype: i32) -> *mut USB_COMMON_DESCRIPTOR {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ParseDescriptors(descriptorbuffer : *const ::core::ffi::c_void, totallength : u32, startposition : *const ::core::ffi::c_void, descriptortype : i32) -> *mut USB_COMMON_DESCRIPTOR);
+pub unsafe fn WinUsb_ParseDescriptors(descriptorbuffer: *const core::ffi::c_void, totallength: u32, startposition: *const core::ffi::c_void, descriptortype: i32) -> *mut USB_COMMON_DESCRIPTOR {
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ParseDescriptors(descriptorbuffer : *const core::ffi::c_void, totallength : u32, startposition : *const core::ffi::c_void, descriptortype : i32) -> *mut USB_COMMON_DESCRIPTOR);
     WinUsb_ParseDescriptors(descriptorbuffer, totallength, startposition, descriptortype)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_QueryDeviceInformation<P0>(interfacehandle: P0, informationtype: u32, bufferlength: *mut u32, buffer: *mut ::core::ffi::c_void) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_QueryDeviceInformation<P0>(interfacehandle: P0, informationtype: u32, bufferlength: *mut u32, buffer: *mut core::ffi::c_void) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryDeviceInformation(interfacehandle : WINUSB_INTERFACE_HANDLE, informationtype : u32, bufferlength : *mut u32, buffer : *mut ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
-    WinUsb_QueryDeviceInformation(interfacehandle.into_param().abi(), informationtype, bufferlength, buffer).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryDeviceInformation(interfacehandle : WINUSB_INTERFACE_HANDLE, informationtype : u32, bufferlength : *mut u32, buffer : *mut core::ffi::c_void) -> super::super::Foundation:: BOOL);
+    WinUsb_QueryDeviceInformation(interfacehandle.param().abi(), informationtype, bufferlength, buffer).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_QueryInterfaceSettings<P0>(interfacehandle: P0, alternateinterfacenumber: u8, usbaltinterfacedescriptor: *mut USB_INTERFACE_DESCRIPTOR) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_QueryInterfaceSettings<P0>(interfacehandle: P0, alternateinterfacenumber: u8, usbaltinterfacedescriptor: *mut USB_INTERFACE_DESCRIPTOR) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryInterfaceSettings(interfacehandle : WINUSB_INTERFACE_HANDLE, alternateinterfacenumber : u8, usbaltinterfacedescriptor : *mut USB_INTERFACE_DESCRIPTOR) -> super::super::Foundation:: BOOL);
-    WinUsb_QueryInterfaceSettings(interfacehandle.into_param().abi(), alternateinterfacenumber, usbaltinterfacedescriptor).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryInterfaceSettings(interfacehandle : WINUSB_INTERFACE_HANDLE, alternateinterfacenumber : u8, usbaltinterfacedescriptor : *mut USB_INTERFACE_DESCRIPTOR) -> super::super::Foundation:: BOOL);
+    WinUsb_QueryInterfaceSettings(interfacehandle.param().abi(), alternateinterfacenumber, usbaltinterfacedescriptor).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_QueryPipe<P0>(interfacehandle: P0, alternateinterfacenumber: u8, pipeindex: u8, pipeinformation: *mut WINUSB_PIPE_INFORMATION) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_QueryPipe<P0>(interfacehandle: P0, alternateinterfacenumber: u8, pipeindex: u8, pipeinformation: *mut WINUSB_PIPE_INFORMATION) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, alternateinterfacenumber : u8, pipeindex : u8, pipeinformation : *mut WINUSB_PIPE_INFORMATION) -> super::super::Foundation:: BOOL);
-    WinUsb_QueryPipe(interfacehandle.into_param().abi(), alternateinterfacenumber, pipeindex, pipeinformation).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, alternateinterfacenumber : u8, pipeindex : u8, pipeinformation : *mut WINUSB_PIPE_INFORMATION) -> super::super::Foundation:: BOOL);
+    WinUsb_QueryPipe(interfacehandle.param().abi(), alternateinterfacenumber, pipeindex, pipeinformation).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_QueryPipeEx<P0>(interfacehandle: P0, alternatesettingnumber: u8, pipeindex: u8, pipeinformationex: *mut WINUSB_PIPE_INFORMATION_EX) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_QueryPipeEx<P0>(interfacehandle: P0, alternatesettingnumber: u8, pipeindex: u8, pipeinformationex: *mut WINUSB_PIPE_INFORMATION_EX) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryPipeEx(interfacehandle : WINUSB_INTERFACE_HANDLE, alternatesettingnumber : u8, pipeindex : u8, pipeinformationex : *mut WINUSB_PIPE_INFORMATION_EX) -> super::super::Foundation:: BOOL);
-    WinUsb_QueryPipeEx(interfacehandle.into_param().abi(), alternatesettingnumber, pipeindex, pipeinformationex).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_QueryPipeEx(interfacehandle : WINUSB_INTERFACE_HANDLE, alternatesettingnumber : u8, pipeindex : u8, pipeinformationex : *mut WINUSB_PIPE_INFORMATION_EX) -> super::super::Foundation:: BOOL);
+    WinUsb_QueryPipeEx(interfacehandle.param().abi(), alternatesettingnumber, pipeindex, pipeinformationex).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_ReadIsochPipe(bufferhandle: *const ::core::ffi::c_void, offset: u32, length: u32, framenumber: *mut u32, isopacketdescriptors: &mut [USBD_ISO_PACKET_DESCRIPTOR], overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()> {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ReadIsochPipe(bufferhandle : *const ::core::ffi::c_void, offset : u32, length : u32, framenumber : *mut u32, numberofpackets : u32, isopacketdescriptors : *mut USBD_ISO_PACKET_DESCRIPTOR, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_ReadIsochPipe(bufferhandle, offset, length, framenumber, isopacketdescriptors.len().try_into().unwrap(), ::core::mem::transmute(isopacketdescriptors.as_ptr()), ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+pub unsafe fn WinUsb_ReadIsochPipe(bufferhandle: *const core::ffi::c_void, offset: u32, length: u32, framenumber: *mut u32, isopacketdescriptors: &mut [USBD_ISO_PACKET_DESCRIPTOR], overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()> {
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ReadIsochPipe(bufferhandle : *const core::ffi::c_void, offset : u32, length : u32, framenumber : *mut u32, numberofpackets : u32, isopacketdescriptors : *mut USBD_ISO_PACKET_DESCRIPTOR, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_ReadIsochPipe(bufferhandle, offset, length, framenumber, isopacketdescriptors.len().try_into().unwrap(), core::mem::transmute(isopacketdescriptors.as_ptr()), core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_ReadIsochPipeAsap<P0>(bufferhandle: *const ::core::ffi::c_void, offset: u32, length: u32, continuestream: P0, isopacketdescriptors: &mut [USBD_ISO_PACKET_DESCRIPTOR], overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_ReadIsochPipeAsap<P0>(bufferhandle: *const core::ffi::c_void, offset: u32, length: u32, continuestream: P0, isopacketdescriptors: &mut [USBD_ISO_PACKET_DESCRIPTOR], overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<super::super::Foundation::BOOL>,
+    P0: windows_core::Param<super::super::Foundation::BOOL>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ReadIsochPipeAsap(bufferhandle : *const ::core::ffi::c_void, offset : u32, length : u32, continuestream : super::super::Foundation:: BOOL, numberofpackets : u32, isopacketdescriptors : *mut USBD_ISO_PACKET_DESCRIPTOR, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_ReadIsochPipeAsap(bufferhandle, offset, length, continuestream.into_param().abi(), isopacketdescriptors.len().try_into().unwrap(), ::core::mem::transmute(isopacketdescriptors.as_ptr()), ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ReadIsochPipeAsap(bufferhandle : *const core::ffi::c_void, offset : u32, length : u32, continuestream : super::super::Foundation:: BOOL, numberofpackets : u32, isopacketdescriptors : *mut USBD_ISO_PACKET_DESCRIPTOR, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_ReadIsochPipeAsap(bufferhandle, offset, length, continuestream.param().abi(), isopacketdescriptors.len().try_into().unwrap(), core::mem::transmute(isopacketdescriptors.as_ptr()), core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_ReadPipe<P0>(interfacehandle: P0, pipeid: u8, buffer: ::core::option::Option<&mut [u8]>, lengthtransferred: ::core::option::Option<*mut u32>, overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_ReadPipe<P0>(interfacehandle: P0, pipeid: u8, buffer: Option<&mut [u8]>, lengthtransferred: Option<*mut u32>, overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ReadPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, buffer : *mut u8, bufferlength : u32, lengthtransferred : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_ReadPipe(interfacehandle.into_param().abi(), pipeid, ::core::mem::transmute(buffer.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())), buffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), ::core::mem::transmute(lengthtransferred.unwrap_or(::std::ptr::null_mut())), ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ReadPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, buffer : *mut u8, bufferlength : u32, lengthtransferred : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_ReadPipe(interfacehandle.param().abi(), pipeid, core::mem::transmute(buffer.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), buffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), core::mem::transmute(lengthtransferred.unwrap_or(std::ptr::null_mut())), core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_RegisterIsochBuffer<P0>(interfacehandle: P0, pipeid: u8, buffer: &mut [u8], isochbufferhandle: *mut *mut ::core::ffi::c_void) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_RegisterIsochBuffer<P0>(interfacehandle: P0, pipeid: u8, buffer: &mut [u8], isochbufferhandle: *mut *mut core::ffi::c_void) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_RegisterIsochBuffer(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, buffer : *mut u8, bufferlength : u32, isochbufferhandle : *mut *mut ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
-    WinUsb_RegisterIsochBuffer(interfacehandle.into_param().abi(), pipeid, ::core::mem::transmute(buffer.as_ptr()), buffer.len().try_into().unwrap(), isochbufferhandle).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_RegisterIsochBuffer(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, buffer : *mut u8, bufferlength : u32, isochbufferhandle : *mut *mut core::ffi::c_void) -> super::super::Foundation:: BOOL);
+    WinUsb_RegisterIsochBuffer(interfacehandle.param().abi(), pipeid, core::mem::transmute(buffer.as_ptr()), buffer.len().try_into().unwrap(), isochbufferhandle).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_ResetPipe<P0>(interfacehandle: P0, pipeid: u8) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_ResetPipe<P0>(interfacehandle: P0, pipeid: u8) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_ResetPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8) -> super::super::Foundation:: BOOL);
-    WinUsb_ResetPipe(interfacehandle.into_param().abi(), pipeid).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_ResetPipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8) -> super::super::Foundation:: BOOL);
+    WinUsb_ResetPipe(interfacehandle.param().abi(), pipeid).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_SetCurrentAlternateSetting<P0>(interfacehandle: P0, settingnumber: u8) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_SetCurrentAlternateSetting<P0>(interfacehandle: P0, settingnumber: u8) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_SetCurrentAlternateSetting(interfacehandle : WINUSB_INTERFACE_HANDLE, settingnumber : u8) -> super::super::Foundation:: BOOL);
-    WinUsb_SetCurrentAlternateSetting(interfacehandle.into_param().abi(), settingnumber).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_SetCurrentAlternateSetting(interfacehandle : WINUSB_INTERFACE_HANDLE, settingnumber : u8) -> super::super::Foundation:: BOOL);
+    WinUsb_SetCurrentAlternateSetting(interfacehandle.param().abi(), settingnumber).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_SetPipePolicy<P0>(interfacehandle: P0, pipeid: u8, policytype: WINUSB_PIPE_POLICY, valuelength: u32, value: *const ::core::ffi::c_void) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_SetPipePolicy<P0>(interfacehandle: P0, pipeid: u8, policytype: WINUSB_PIPE_POLICY, valuelength: u32, value: *const core::ffi::c_void) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_SetPipePolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, policytype : WINUSB_PIPE_POLICY, valuelength : u32, value : *const ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
-    WinUsb_SetPipePolicy(interfacehandle.into_param().abi(), pipeid, policytype, valuelength, value).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_SetPipePolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, policytype : WINUSB_PIPE_POLICY, valuelength : u32, value : *const core::ffi::c_void) -> super::super::Foundation:: BOOL);
+    WinUsb_SetPipePolicy(interfacehandle.param().abi(), pipeid, policytype, valuelength, value).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_SetPowerPolicy<P0>(interfacehandle: P0, policytype: WINUSB_POWER_POLICY, valuelength: u32, value: *const ::core::ffi::c_void) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_SetPowerPolicy<P0>(interfacehandle: P0, policytype: WINUSB_POWER_POLICY, valuelength: u32, value: *const core::ffi::c_void) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_SetPowerPolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, policytype : WINUSB_POWER_POLICY, valuelength : u32, value : *const ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
-    WinUsb_SetPowerPolicy(interfacehandle.into_param().abi(), policytype, valuelength, value).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_SetPowerPolicy(interfacehandle : WINUSB_INTERFACE_HANDLE, policytype : WINUSB_POWER_POLICY, valuelength : u32, value : *const core::ffi::c_void) -> super::super::Foundation:: BOOL);
+    WinUsb_SetPowerPolicy(interfacehandle.param().abi(), policytype, valuelength, value).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_StartTrackingForTimeSync<P0>(interfacehandle: P0, starttrackinginfo: *const USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_StartTrackingForTimeSync<P0>(interfacehandle: P0, starttrackinginfo: *const USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_StartTrackingForTimeSync(interfacehandle : WINUSB_INTERFACE_HANDLE, starttrackinginfo : *const USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION) -> super::super::Foundation:: BOOL);
-    WinUsb_StartTrackingForTimeSync(interfacehandle.into_param().abi(), starttrackinginfo).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_StartTrackingForTimeSync(interfacehandle : WINUSB_INTERFACE_HANDLE, starttrackinginfo : *const USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION) -> super::super::Foundation:: BOOL);
+    WinUsb_StartTrackingForTimeSync(interfacehandle.param().abi(), starttrackinginfo).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_StopTrackingForTimeSync<P0>(interfacehandle: P0, stoptrackinginfo: *const USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_StopTrackingForTimeSync<P0>(interfacehandle: P0, stoptrackinginfo: *const USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_StopTrackingForTimeSync(interfacehandle : WINUSB_INTERFACE_HANDLE, stoptrackinginfo : *const USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION) -> super::super::Foundation:: BOOL);
-    WinUsb_StopTrackingForTimeSync(interfacehandle.into_param().abi(), stoptrackinginfo).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_StopTrackingForTimeSync(interfacehandle : WINUSB_INTERFACE_HANDLE, stoptrackinginfo : *const USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION) -> super::super::Foundation:: BOOL);
+    WinUsb_StopTrackingForTimeSync(interfacehandle.param().abi(), stoptrackinginfo).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn WinUsb_UnregisterIsochBuffer(isochbufferhandle: *const ::core::ffi::c_void) -> ::windows_core::Result<()> {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_UnregisterIsochBuffer(isochbufferhandle : *const ::core::ffi::c_void) -> super::super::Foundation:: BOOL);
+pub unsafe fn WinUsb_UnregisterIsochBuffer(isochbufferhandle: *const core::ffi::c_void) -> windows_core::Result<()> {
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_UnregisterIsochBuffer(isochbufferhandle : *const core::ffi::c_void) -> super::super::Foundation:: BOOL);
     WinUsb_UnregisterIsochBuffer(isochbufferhandle).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_WriteIsochPipe(bufferhandle: *const ::core::ffi::c_void, offset: u32, length: u32, framenumber: *mut u32, overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()> {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_WriteIsochPipe(bufferhandle : *const ::core::ffi::c_void, offset : u32, length : u32, framenumber : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_WriteIsochPipe(bufferhandle, offset, length, framenumber, ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+pub unsafe fn WinUsb_WriteIsochPipe(bufferhandle: *const core::ffi::c_void, offset: u32, length: u32, framenumber: *mut u32, overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()> {
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_WriteIsochPipe(bufferhandle : *const core::ffi::c_void, offset : u32, length : u32, framenumber : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_WriteIsochPipe(bufferhandle, offset, length, framenumber, core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_WriteIsochPipeAsap<P0>(bufferhandle: *const ::core::ffi::c_void, offset: u32, length: u32, continuestream: P0, overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_WriteIsochPipeAsap<P0>(bufferhandle: *const core::ffi::c_void, offset: u32, length: u32, continuestream: P0, overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<super::super::Foundation::BOOL>,
+    P0: windows_core::Param<super::super::Foundation::BOOL>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_WriteIsochPipeAsap(bufferhandle : *const ::core::ffi::c_void, offset : u32, length : u32, continuestream : super::super::Foundation:: BOOL, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_WriteIsochPipeAsap(bufferhandle, offset, length, continuestream.into_param().abi(), ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_WriteIsochPipeAsap(bufferhandle : *const core::ffi::c_void, offset : u32, length : u32, continuestream : super::super::Foundation:: BOOL, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_WriteIsochPipeAsap(bufferhandle, offset, length, continuestream.param().abi(), core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_System_IO\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_System_IO"))]
+#[cfg(feature = "Win32_System_IO")]
 #[inline]
-pub unsafe fn WinUsb_WritePipe<P0>(interfacehandle: P0, pipeid: u8, buffer: &[u8], lengthtransferred: ::core::option::Option<*mut u32>, overlapped: ::core::option::Option<*const super::super::System::IO::OVERLAPPED>) -> ::windows_core::Result<()>
+pub unsafe fn WinUsb_WritePipe<P0>(interfacehandle: P0, pipeid: u8, buffer: &[u8], lengthtransferred: Option<*mut u32>, overlapped: Option<*const super::super::System::IO::OVERLAPPED>) -> windows_core::Result<()>
 where
-    P0: ::windows_core::IntoParam<WINUSB_INTERFACE_HANDLE>,
+    P0: windows_core::Param<WINUSB_INTERFACE_HANDLE>,
 {
-    ::windows_targets::link!("winusb.dll" "system" fn WinUsb_WritePipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, buffer : *const u8, bufferlength : u32, lengthtransferred : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
-    WinUsb_WritePipe(interfacehandle.into_param().abi(), pipeid, ::core::mem::transmute(buffer.as_ptr()), buffer.len().try_into().unwrap(), ::core::mem::transmute(lengthtransferred.unwrap_or(::std::ptr::null_mut())), ::core::mem::transmute(overlapped.unwrap_or(::std::ptr::null()))).ok()
+    windows_targets::link!("winusb.dll" "system" fn WinUsb_WritePipe(interfacehandle : WINUSB_INTERFACE_HANDLE, pipeid : u8, buffer : *const u8, bufferlength : u32, lengthtransferred : *mut u32, overlapped : *const super::super::System::IO:: OVERLAPPED) -> super::super::Foundation:: BOOL);
+    WinUsb_WritePipe(interfacehandle.param().abi(), pipeid, core::mem::transmute(buffer.as_ptr()), buffer.len().try_into().unwrap(), core::mem::transmute(lengthtransferred.unwrap_or(std::ptr::null_mut())), core::mem::transmute(overlapped.unwrap_or(std::ptr::null()))).ok()
 }
 pub const ALLOW_PARTIAL_READS: WINUSB_PIPE_POLICY = WINUSB_PIPE_POLICY(5u32);
 pub const ALL_PIPE: PIPE_TYPE = PIPE_TYPE(3i32);
@@ -358,19 +302,19 @@ pub const EnumerationFailure: USB_NOTIFICATION_TYPE = USB_NOTIFICATION_TYPE(0i32
 pub const FILE_DEVICE_USB: u32 = 34u32;
 pub const FILE_DEVICE_USB_SCAN: u32 = 32768u32;
 pub const FullSpeed: u32 = 2u32;
-pub const GUID_DEVINTERFACE_USB_BILLBOARD: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x5e9adaef_f879_473f_b807_4e5ea77d1b1c);
-pub const GUID_DEVINTERFACE_USB_DEVICE: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xa5dcbf10_6530_11d2_901f_00c04fb951ed);
-pub const GUID_DEVINTERFACE_USB_HOST_CONTROLLER: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x3abf6f2d_71c4_462a_8a92_1e6861e6af27);
-pub const GUID_DEVINTERFACE_USB_HUB: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xf18a0e88_c30c_11d0_8815_00a0c906bed8);
-pub const GUID_USB_MSOS20_PLATFORM_CAPABILITY_ID: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xd8dd60df_4589_4cc7_9cd2_659d9e648a9f);
-pub const GUID_USB_PERFORMANCE_TRACING: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xd5de77a6_6ae9_425c_b1e2_f5615fd348a9);
-pub const GUID_USB_TRANSFER_TRACING: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x681eb8aa_403d_452c_9f8a_f0616fac9540);
-pub const GUID_USB_WMI_DEVICE_PERF_INFO: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x66c1aa3c_499f_49a0_a9a5_61e2359f6407);
-pub const GUID_USB_WMI_NODE_INFO: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x9c179357_dc7a_4f41_b66b_323b9ddcb5b1);
-pub const GUID_USB_WMI_STD_DATA: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x4e623b20_cb14_11d1_b331_00a0c959bbd2);
-pub const GUID_USB_WMI_STD_NOTIFICATION: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x4e623b20_cb14_11d1_b331_00a0c959bbd2);
-pub const GUID_USB_WMI_SURPRISE_REMOVAL_NOTIFICATION: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x9bbbf831_a2f2_43b4_96d1_86944b5914b3);
-pub const GUID_USB_WMI_TRACING: ::windows_core::GUID = ::windows_core::GUID::from_u128(0x3a61881b_b4e6_4bf9_ae0f_3cd8f394e52f);
+pub const GUID_DEVINTERFACE_USB_BILLBOARD: windows_core::GUID = windows_core::GUID::from_u128(0x5e9adaef_f879_473f_b807_4e5ea77d1b1c);
+pub const GUID_DEVINTERFACE_USB_DEVICE: windows_core::GUID = windows_core::GUID::from_u128(0xa5dcbf10_6530_11d2_901f_00c04fb951ed);
+pub const GUID_DEVINTERFACE_USB_HOST_CONTROLLER: windows_core::GUID = windows_core::GUID::from_u128(0x3abf6f2d_71c4_462a_8a92_1e6861e6af27);
+pub const GUID_DEVINTERFACE_USB_HUB: windows_core::GUID = windows_core::GUID::from_u128(0xf18a0e88_c30c_11d0_8815_00a0c906bed8);
+pub const GUID_USB_MSOS20_PLATFORM_CAPABILITY_ID: windows_core::GUID = windows_core::GUID::from_u128(0xd8dd60df_4589_4cc7_9cd2_659d9e648a9f);
+pub const GUID_USB_PERFORMANCE_TRACING: windows_core::GUID = windows_core::GUID::from_u128(0xd5de77a6_6ae9_425c_b1e2_f5615fd348a9);
+pub const GUID_USB_TRANSFER_TRACING: windows_core::GUID = windows_core::GUID::from_u128(0x681eb8aa_403d_452c_9f8a_f0616fac9540);
+pub const GUID_USB_WMI_DEVICE_PERF_INFO: windows_core::GUID = windows_core::GUID::from_u128(0x66c1aa3c_499f_49a0_a9a5_61e2359f6407);
+pub const GUID_USB_WMI_NODE_INFO: windows_core::GUID = windows_core::GUID::from_u128(0x9c179357_dc7a_4f41_b66b_323b9ddcb5b1);
+pub const GUID_USB_WMI_STD_DATA: windows_core::GUID = windows_core::GUID::from_u128(0x4e623b20_cb14_11d1_b331_00a0c959bbd2);
+pub const GUID_USB_WMI_STD_NOTIFICATION: windows_core::GUID = windows_core::GUID::from_u128(0x4e623b20_cb14_11d1_b331_00a0c959bbd2);
+pub const GUID_USB_WMI_SURPRISE_REMOVAL_NOTIFICATION: windows_core::GUID = windows_core::GUID::from_u128(0x9bbbf831_a2f2_43b4_96d1_86944b5914b3);
+pub const GUID_USB_WMI_TRACING: windows_core::GUID = windows_core::GUID::from_u128(0x3a61881b_b4e6_4bf9_ae0f_3cd8f394e52f);
 pub const HCD_DIAGNOSTIC_MODE_OFF: u32 = 257u32;
 pub const HCD_DIAGNOSTIC_MODE_ON: u32 = 256u32;
 pub const HCD_DISABLE_PORT: u32 = 268u32;
@@ -475,8 +419,8 @@ pub const IOCTL_WAIT_ON_DEVICE_EVENT: u32 = 2147491848u32;
 pub const IOCTL_WRITE_REGISTERS: u32 = 2147491856u32;
 pub const InsufficentBandwidth: USB_NOTIFICATION_TYPE = USB_NOTIFICATION_TYPE(1i32);
 pub const InsufficentPower: USB_NOTIFICATION_TYPE = USB_NOTIFICATION_TYPE(2i32);
-pub const KREGMANUSBFNENUMPATH: ::windows_core::PCWSTR = ::windows_core::w!("\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\ManufacturingMode\\Current\\USBFN\\");
-pub const KREGUSBFNENUMPATH: ::windows_core::PCWSTR = ::windows_core::w!("\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\");
+pub const KREGMANUSBFNENUMPATH: windows_core::PCWSTR = windows_core::w!("\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\ManufacturingMode\\Current\\USBFN\\");
+pub const KREGUSBFNENUMPATH: windows_core::PCWSTR = windows_core::w!("\\Registry\\Machine\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\");
 pub const LowSpeed: u32 = 1u32;
 pub const MAXIMUM_TRANSFER_SIZE: WINUSB_PIPE_POLICY = WINUSB_PIPE_POLICY(8u32);
 pub const MAXIMUM_USB_STRING_LENGTH: u32 = 255u32;
@@ -490,7 +434,7 @@ pub const MAX_SUPPORTED_CONFIGURATIONS: u32 = 12u32;
 pub const MAX_USB_STRING_LENGTH: u32 = 255u32;
 pub const MS_GENRE_DESCRIPTOR_INDEX: u32 = 1u32;
 pub const MS_OS_FLAGS_CONTAINERID: u32 = 2u32;
-pub const MS_OS_STRING_SIGNATURE: ::windows_core::PCWSTR = ::windows_core::w!("MSFT100");
+pub const MS_OS_STRING_SIGNATURE: windows_core::PCWSTR = windows_core::w!("MSFT100");
 pub const MS_POWER_DESCRIPTOR_INDEX: u32 = 2u32;
 pub const ModernDeviceInLegacyHub: USB_NOTIFICATION_TYPE = USB_NOTIFICATION_TYPE(11i32);
 pub const NoDeviceConnected: USB_CONNECTION_STATUS = USB_CONNECTION_STATUS(0i32);
@@ -596,8 +540,8 @@ pub const URB_FUNCTION_VENDOR_ENDPOINT: u32 = 25u32;
 pub const URB_FUNCTION_VENDOR_INTERFACE: u32 = 24u32;
 pub const URB_FUNCTION_VENDOR_OTHER: u32 = 32u32;
 pub const URB_OPEN_STATIC_STREAMS_VERSION_100: u32 = 256u32;
-pub const UREGMANUSBFNENUMPATH: ::windows_core::PCWSTR = ::windows_core::w!("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\ManufacturingMode\\Current\\USBFN\\");
-pub const UREGUSBFNENUMPATH: ::windows_core::PCWSTR = ::windows_core::w!("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\");
+pub const UREGMANUSBFNENUMPATH: windows_core::PCWSTR = windows_core::w!("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\ManufacturingMode\\Current\\USBFN\\");
+pub const UREGUSBFNENUMPATH: windows_core::PCWSTR = windows_core::w!("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\USBFN\\");
 pub const USBDI_VERSION: u32 = 1536u32;
 pub const USBD_DEFAULT_MAXIMUM_TRANSFER_SIZE: u32 = 4294967295u32;
 pub const USBD_DEFAULT_PIPE_TRANSFER: u32 = 8u32;
@@ -1008,642 +952,327 @@ pub const WdmUsbPowerSystemSleeping2: WDMUSB_POWER_STATE = WDMUSB_POWER_STATE(10
 pub const WdmUsbPowerSystemSleeping3: WDMUSB_POWER_STATE = WDMUSB_POWER_STATE(104i32);
 pub const WdmUsbPowerSystemUnspecified: WDMUSB_POWER_STATE = WDMUSB_POWER_STATE(100i32);
 pub const WdmUsbPowerSystemWorking: WDMUSB_POWER_STATE = WDMUSB_POWER_STATE(101i32);
-pub const WinUSB_TestGuid: ::windows_core::GUID = ::windows_core::GUID::from_u128(0xda812bff_12c3_46a2_8e2b_dbd3b7834c43);
+pub const WinUSB_TestGuid: windows_core::GUID = windows_core::GUID::from_u128(0xda812bff_12c3_46a2_8e2b_dbd3b7834c43);
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct PIPE_TYPE(pub i32);
-impl ::core::marker::Copy for PIPE_TYPE {}
-impl ::core::clone::Clone for PIPE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for PIPE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for PIPE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for PIPE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for PIPE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for PIPE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("PIPE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct RAW_PIPE_TYPE(pub i32);
-impl ::core::marker::Copy for RAW_PIPE_TYPE {}
-impl ::core::clone::Clone for RAW_PIPE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for RAW_PIPE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for RAW_PIPE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for RAW_PIPE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for RAW_PIPE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for RAW_PIPE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("RAW_PIPE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBD_ENDPOINT_OFFLOAD_MODE(pub i32);
-impl ::core::marker::Copy for USBD_ENDPOINT_OFFLOAD_MODE {}
-impl ::core::clone::Clone for USBD_ENDPOINT_OFFLOAD_MODE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_ENDPOINT_OFFLOAD_MODE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBD_ENDPOINT_OFFLOAD_MODE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBD_ENDPOINT_OFFLOAD_MODE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBD_ENDPOINT_OFFLOAD_MODE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBD_ENDPOINT_OFFLOAD_MODE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBD_ENDPOINT_OFFLOAD_MODE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBD_PIPE_TYPE(pub i32);
-impl ::core::marker::Copy for USBD_PIPE_TYPE {}
-impl ::core::clone::Clone for USBD_PIPE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_PIPE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBD_PIPE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBD_PIPE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBD_PIPE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBD_PIPE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBD_PIPE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBFN_BUS_SPEED(pub i32);
-impl ::core::marker::Copy for USBFN_BUS_SPEED {}
-impl ::core::clone::Clone for USBFN_BUS_SPEED {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_BUS_SPEED {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBFN_BUS_SPEED {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBFN_BUS_SPEED {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBFN_BUS_SPEED {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBFN_BUS_SPEED {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBFN_BUS_SPEED").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBFN_DEVICE_STATE(pub i32);
-impl ::core::marker::Copy for USBFN_DEVICE_STATE {}
-impl ::core::clone::Clone for USBFN_DEVICE_STATE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_DEVICE_STATE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBFN_DEVICE_STATE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBFN_DEVICE_STATE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBFN_DEVICE_STATE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBFN_DEVICE_STATE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBFN_DEVICE_STATE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBFN_DIRECTION(pub i32);
-impl ::core::marker::Copy for USBFN_DIRECTION {}
-impl ::core::clone::Clone for USBFN_DIRECTION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_DIRECTION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBFN_DIRECTION {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBFN_DIRECTION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBFN_DIRECTION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBFN_DIRECTION {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBFN_DIRECTION").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBFN_EVENT(pub i32);
-impl ::core::marker::Copy for USBFN_EVENT {}
-impl ::core::clone::Clone for USBFN_EVENT {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_EVENT {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBFN_EVENT {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBFN_EVENT {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBFN_EVENT {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBFN_EVENT {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBFN_EVENT").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USBFN_PORT_TYPE(pub i32);
-impl ::core::marker::Copy for USBFN_PORT_TYPE {}
-impl ::core::clone::Clone for USBFN_PORT_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_PORT_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USBFN_PORT_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USBFN_PORT_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USBFN_PORT_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USBFN_PORT_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USBFN_PORT_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_CONNECTION_STATUS(pub i32);
-impl ::core::marker::Copy for USB_CONNECTION_STATUS {}
-impl ::core::clone::Clone for USB_CONNECTION_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONNECTION_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_CONNECTION_STATUS {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_CONNECTION_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_CONNECTION_STATUS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_CONNECTION_STATUS {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_CONNECTION_STATUS").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_CONTROLLER_FLAVOR(pub i32);
-impl ::core::marker::Copy for USB_CONTROLLER_FLAVOR {}
-impl ::core::clone::Clone for USB_CONTROLLER_FLAVOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONTROLLER_FLAVOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_CONTROLLER_FLAVOR {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_CONTROLLER_FLAVOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_CONTROLLER_FLAVOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_CONTROLLER_FLAVOR {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_CONTROLLER_FLAVOR").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_DEVICE_SPEED(pub i32);
-impl ::core::marker::Copy for USB_DEVICE_SPEED {}
-impl ::core::clone::Clone for USB_DEVICE_SPEED {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_SPEED {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_DEVICE_SPEED {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_DEVICE_SPEED {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_DEVICE_SPEED {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_DEVICE_SPEED {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_DEVICE_SPEED").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_DEVICE_TYPE(pub i32);
-impl ::core::marker::Copy for USB_DEVICE_TYPE {}
-impl ::core::clone::Clone for USB_DEVICE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_DEVICE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_DEVICE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_DEVICE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_DEVICE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_DEVICE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_HUB_NODE(pub i32);
-impl ::core::marker::Copy for USB_HUB_NODE {}
-impl ::core::clone::Clone for USB_HUB_NODE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_NODE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_HUB_NODE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_HUB_NODE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_HUB_NODE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_HUB_NODE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_HUB_NODE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_HUB_TYPE(pub i32);
-impl ::core::marker::Copy for USB_HUB_TYPE {}
-impl ::core::clone::Clone for USB_HUB_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_HUB_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_HUB_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_HUB_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_HUB_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_HUB_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_NOTIFICATION_TYPE(pub i32);
-impl ::core::marker::Copy for USB_NOTIFICATION_TYPE {}
-impl ::core::clone::Clone for USB_NOTIFICATION_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NOTIFICATION_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_NOTIFICATION_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_NOTIFICATION_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_NOTIFICATION_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_NOTIFICATION_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_NOTIFICATION_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_USER_ERROR_CODE(pub i32);
-impl ::core::marker::Copy for USB_USER_ERROR_CODE {}
-impl ::core::clone::Clone for USB_USER_ERROR_CODE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_USER_ERROR_CODE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_USER_ERROR_CODE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_USER_ERROR_CODE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_USER_ERROR_CODE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_USER_ERROR_CODE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_USER_ERROR_CODE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct USB_WMI_DEVICE_NODE_TYPE(pub i32);
-impl ::core::marker::Copy for USB_WMI_DEVICE_NODE_TYPE {}
-impl ::core::clone::Clone for USB_WMI_DEVICE_NODE_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_WMI_DEVICE_NODE_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for USB_WMI_DEVICE_NODE_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for USB_WMI_DEVICE_NODE_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for USB_WMI_DEVICE_NODE_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for USB_WMI_DEVICE_NODE_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("USB_WMI_DEVICE_NODE_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WDMUSB_POWER_STATE(pub i32);
-impl ::core::marker::Copy for WDMUSB_POWER_STATE {}
-impl ::core::clone::Clone for WDMUSB_POWER_STATE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WDMUSB_POWER_STATE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WDMUSB_POWER_STATE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WDMUSB_POWER_STATE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WDMUSB_POWER_STATE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WDMUSB_POWER_STATE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WDMUSB_POWER_STATE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WINUSB_PIPE_POLICY(pub u32);
-impl ::core::marker::Copy for WINUSB_PIPE_POLICY {}
-impl ::core::clone::Clone for WINUSB_PIPE_POLICY {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WINUSB_PIPE_POLICY {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WINUSB_PIPE_POLICY {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WINUSB_PIPE_POLICY {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WINUSB_PIPE_POLICY {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WINUSB_PIPE_POLICY {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WINUSB_PIPE_POLICY").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct WINUSB_POWER_POLICY(pub u32);
-impl ::core::marker::Copy for WINUSB_POWER_POLICY {}
-impl ::core::clone::Clone for WINUSB_POWER_POLICY {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WINUSB_POWER_POLICY {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for WINUSB_POWER_POLICY {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for WINUSB_POWER_POLICY {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for WINUSB_POWER_POLICY {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for WINUSB_POWER_POLICY {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("WINUSB_POWER_POLICY").field(&self.0).finish()
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ALTERNATE_INTERFACE {
     pub InterfaceNumber: u16,
     pub AlternateInterfaceNumber: u16,
 }
-impl ::core::marker::Copy for ALTERNATE_INTERFACE {}
-impl ::core::clone::Clone for ALTERNATE_INTERFACE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for ALTERNATE_INTERFACE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for ALTERNATE_INTERFACE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("ALTERNATE_INTERFACE").field("InterfaceNumber", &self.InterfaceNumber).field("AlternateInterfaceNumber", &self.AlternateInterfaceNumber).finish()
-    }
-}
-impl ::windows_core::TypeKind for ALTERNATE_INTERFACE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for ALTERNATE_INTERFACE {
-    fn eq(&self, other: &Self) -> bool {
-        self.InterfaceNumber == other.InterfaceNumber && self.AlternateInterfaceNumber == other.AlternateInterfaceNumber
-    }
-}
-impl ::core::cmp::Eq for ALTERNATE_INTERFACE {}
-impl ::core::default::Default for ALTERNATE_INTERFACE {
+impl Default for ALTERNATE_INTERFACE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union BM_REQUEST_TYPE {
     pub s: BM_REQUEST_TYPE_0,
     pub B: u8,
 }
-impl ::core::marker::Copy for BM_REQUEST_TYPE {}
-impl ::core::clone::Clone for BM_REQUEST_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for BM_REQUEST_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for BM_REQUEST_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for BM_REQUEST_TYPE {
+impl Default for BM_REQUEST_TYPE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct BM_REQUEST_TYPE_0 {
     pub _bitfield: u8,
 }
-impl ::core::marker::Copy for BM_REQUEST_TYPE_0 {}
-impl ::core::clone::Clone for BM_REQUEST_TYPE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for BM_REQUEST_TYPE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for BM_REQUEST_TYPE_0 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("BM_REQUEST_TYPE_0").field("_bitfield", &self._bitfield).finish()
-    }
-}
-impl ::windows_core::TypeKind for BM_REQUEST_TYPE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for BM_REQUEST_TYPE_0 {
-    fn eq(&self, other: &Self) -> bool {
-        self._bitfield == other._bitfield
-    }
-}
-impl ::core::cmp::Eq for BM_REQUEST_TYPE_0 {}
-impl ::core::default::Default for BM_REQUEST_TYPE_0 {
+impl Default for BM_REQUEST_TYPE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct CHANNEL_INFO {
     pub EventChannelSize: u32,
     pub uReadDataAlignment: u32,
     pub uWriteDataAlignment: u32,
 }
-impl ::core::marker::Copy for CHANNEL_INFO {}
-impl ::core::clone::Clone for CHANNEL_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for CHANNEL_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for CHANNEL_INFO {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("CHANNEL_INFO").field("EventChannelSize", &self.EventChannelSize).field("uReadDataAlignment", &self.uReadDataAlignment).field("uWriteDataAlignment", &self.uWriteDataAlignment).finish()
-    }
-}
-impl ::windows_core::TypeKind for CHANNEL_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for CHANNEL_INFO {
-    fn eq(&self, other: &Self) -> bool {
-        self.EventChannelSize == other.EventChannelSize && self.uReadDataAlignment == other.uReadDataAlignment && self.uWriteDataAlignment == other.uWriteDataAlignment
-    }
-}
-impl ::core::cmp::Eq for CHANNEL_INFO {}
-impl ::core::default::Default for CHANNEL_INFO {
+impl Default for CHANNEL_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DEVICE_DESCRIPTOR {
     pub usVendorId: u16,
     pub usProductId: u16,
     pub usBcdDevice: u16,
     pub usLanguageId: u16,
 }
-impl ::core::marker::Copy for DEVICE_DESCRIPTOR {}
-impl ::core::clone::Clone for DEVICE_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for DEVICE_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for DEVICE_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("DEVICE_DESCRIPTOR").field("usVendorId", &self.usVendorId).field("usProductId", &self.usProductId).field("usBcdDevice", &self.usBcdDevice).field("usLanguageId", &self.usLanguageId).finish()
-    }
-}
-impl ::windows_core::TypeKind for DEVICE_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for DEVICE_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.usVendorId == other.usVendorId && self.usProductId == other.usProductId && self.usBcdDevice == other.usBcdDevice && self.usLanguageId == other.usLanguageId
-    }
-}
-impl ::core::cmp::Eq for DEVICE_DESCRIPTOR {}
-impl ::core::default::Default for DEVICE_DESCRIPTOR {
+impl Default for DEVICE_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DRV_VERSION {
     pub major: u32,
     pub minor: u32,
     pub internal: u32,
 }
-impl ::core::marker::Copy for DRV_VERSION {}
-impl ::core::clone::Clone for DRV_VERSION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for DRV_VERSION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for DRV_VERSION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("DRV_VERSION").field("major", &self.major).field("minor", &self.minor).field("internal", &self.internal).finish()
-    }
-}
-impl ::windows_core::TypeKind for DRV_VERSION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for DRV_VERSION {
-    fn eq(&self, other: &Self) -> bool {
-        self.major == other.major && self.minor == other.minor && self.internal == other.internal
-    }
-}
-impl ::core::cmp::Eq for DRV_VERSION {}
-impl ::core::default::Default for DRV_VERSION {
+impl Default for DRV_VERSION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct HCD_ISO_STAT_COUNTERS {
     pub LateUrbs: u16,
     pub DoubleBufferedPackets: u16,
@@ -1666,21 +1295,16 @@ pub struct HCD_ISO_STAT_COUNTERS {
     pub HWIsoMissedCount: u16,
     pub Reserved7: [u32; 8],
 }
-impl ::core::marker::Copy for HCD_ISO_STAT_COUNTERS {}
-impl ::core::clone::Clone for HCD_ISO_STAT_COUNTERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for HCD_ISO_STAT_COUNTERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for HCD_ISO_STAT_COUNTERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for HCD_ISO_STAT_COUNTERS {
+impl Default for HCD_ISO_STAT_COUNTERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct HCD_STAT_COUNTERS {
     pub BytesTransferred: u32,
     pub IsoMissedCount: u16,
@@ -1694,21 +1318,16 @@ pub struct HCD_STAT_COUNTERS {
     pub StallPidCount: u16,
     pub PortDisableCount: u16,
 }
-impl ::core::marker::Copy for HCD_STAT_COUNTERS {}
-impl ::core::clone::Clone for HCD_STAT_COUNTERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for HCD_STAT_COUNTERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for HCD_STAT_COUNTERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for HCD_STAT_COUNTERS {
+impl Default for HCD_STAT_COUNTERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct HCD_STAT_INFORMATION_1 {
     pub Reserved1: u32,
     pub Reserved2: u32,
@@ -1716,21 +1335,16 @@ pub struct HCD_STAT_INFORMATION_1 {
     pub TimeRead: i64,
     pub Counters: HCD_STAT_COUNTERS,
 }
-impl ::core::marker::Copy for HCD_STAT_INFORMATION_1 {}
-impl ::core::clone::Clone for HCD_STAT_INFORMATION_1 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for HCD_STAT_INFORMATION_1 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for HCD_STAT_INFORMATION_1 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for HCD_STAT_INFORMATION_1 {
+impl Default for HCD_STAT_INFORMATION_1 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct HCD_STAT_INFORMATION_2 {
     pub Reserved1: u32,
     pub Reserved2: u32,
@@ -1740,21 +1354,16 @@ pub struct HCD_STAT_INFORMATION_2 {
     pub Counters: HCD_STAT_COUNTERS,
     pub IsoCounters: HCD_ISO_STAT_COUNTERS,
 }
-impl ::core::marker::Copy for HCD_STAT_INFORMATION_2 {}
-impl ::core::clone::Clone for HCD_STAT_INFORMATION_2 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for HCD_STAT_INFORMATION_2 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for HCD_STAT_INFORMATION_2 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for HCD_STAT_INFORMATION_2 {
+impl Default for HCD_STAT_INFORMATION_2 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct HUB_DEVICE_CONFIG_INFO {
     pub Version: u32,
     pub Length: u32,
@@ -1765,53 +1374,32 @@ pub struct HUB_DEVICE_CONFIG_INFO {
     pub Reserved: [u32; 19],
     pub UxdSettings: USB_HUB_DEVICE_UXD_SETTINGS,
 }
-impl ::core::marker::Copy for HUB_DEVICE_CONFIG_INFO {}
-impl ::core::clone::Clone for HUB_DEVICE_CONFIG_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for HUB_DEVICE_CONFIG_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for HUB_DEVICE_CONFIG_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for HUB_DEVICE_CONFIG_INFO {
+impl Default for HUB_DEVICE_CONFIG_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct IO_BLOCK {
     pub uOffset: u32,
     pub uLength: u32,
     pub pbyData: *mut u8,
     pub uIndex: u32,
 }
-impl ::core::marker::Copy for IO_BLOCK {}
-impl ::core::clone::Clone for IO_BLOCK {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for IO_BLOCK {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for IO_BLOCK {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("IO_BLOCK").field("uOffset", &self.uOffset).field("uLength", &self.uLength).field("pbyData", &self.pbyData).field("uIndex", &self.uIndex).finish()
-    }
-}
-impl ::windows_core::TypeKind for IO_BLOCK {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for IO_BLOCK {
-    fn eq(&self, other: &Self) -> bool {
-        self.uOffset == other.uOffset && self.uLength == other.uLength && self.pbyData == other.pbyData && self.uIndex == other.uIndex
-    }
-}
-impl ::core::cmp::Eq for IO_BLOCK {}
-impl ::core::default::Default for IO_BLOCK {
+impl Default for IO_BLOCK {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct IO_BLOCK_EX {
     pub uOffset: u32,
     pub uLength: u32,
@@ -1821,32 +1409,16 @@ pub struct IO_BLOCK_EX {
     pub bmRequestType: u8,
     pub fTransferDirectionIn: u8,
 }
-impl ::core::marker::Copy for IO_BLOCK_EX {}
-impl ::core::clone::Clone for IO_BLOCK_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for IO_BLOCK_EX {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for IO_BLOCK_EX {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("IO_BLOCK_EX").field("uOffset", &self.uOffset).field("uLength", &self.uLength).field("pbyData", &self.pbyData).field("uIndex", &self.uIndex).field("bRequest", &self.bRequest).field("bmRequestType", &self.bmRequestType).field("fTransferDirectionIn", &self.fTransferDirectionIn).finish()
-    }
-}
-impl ::windows_core::TypeKind for IO_BLOCK_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for IO_BLOCK_EX {
-    fn eq(&self, other: &Self) -> bool {
-        self.uOffset == other.uOffset && self.uLength == other.uLength && self.pbyData == other.pbyData && self.uIndex == other.uIndex && self.bRequest == other.bRequest && self.bmRequestType == other.bmRequestType && self.fTransferDirectionIn == other.fTransferDirectionIn
-    }
-}
-impl ::core::cmp::Eq for IO_BLOCK_EX {}
-impl ::core::default::Default for IO_BLOCK_EX {
+impl Default for IO_BLOCK_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct OS_STRING {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -1854,40 +1426,30 @@ pub struct OS_STRING {
     pub bVendorCode: u8,
     pub Anonymous: OS_STRING_0,
 }
-impl ::core::marker::Copy for OS_STRING {}
-impl ::core::clone::Clone for OS_STRING {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for OS_STRING {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for OS_STRING {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for OS_STRING {
+impl Default for OS_STRING {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union OS_STRING_0 {
     pub bPad: u8,
     pub bFlags: u8,
 }
-impl ::core::marker::Copy for OS_STRING_0 {}
-impl ::core::clone::Clone for OS_STRING_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for OS_STRING_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for OS_STRING_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for OS_STRING_0 {
+impl Default for OS_STRING_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct PACKET_PARAMETERS {
     pub DeviceAddress: u8,
     pub EndpointAddress: u8,
@@ -1902,97 +1464,72 @@ pub struct PACKET_PARAMETERS {
     pub UsbdStatusCode: i32,
     pub Data: [u8; 4],
 }
-impl ::core::marker::Copy for PACKET_PARAMETERS {}
-impl ::core::clone::Clone for PACKET_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for PACKET_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for PACKET_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for PACKET_PARAMETERS {
+impl Default for PACKET_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct RAW_RESET_PORT_PARAMETERS {
     pub PortNumber: u16,
     pub PortStatus: u16,
 }
-impl ::core::marker::Copy for RAW_RESET_PORT_PARAMETERS {}
-impl ::core::clone::Clone for RAW_RESET_PORT_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for RAW_RESET_PORT_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for RAW_RESET_PORT_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for RAW_RESET_PORT_PARAMETERS {
+impl Default for RAW_RESET_PORT_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct RAW_ROOTPORT_FEATURE {
     pub PortNumber: u16,
     pub PortFeature: u16,
     pub PortStatus: u16,
 }
-impl ::core::marker::Copy for RAW_ROOTPORT_FEATURE {}
-impl ::core::clone::Clone for RAW_ROOTPORT_FEATURE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for RAW_ROOTPORT_FEATURE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for RAW_ROOTPORT_FEATURE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for RAW_ROOTPORT_FEATURE {
+impl Default for RAW_ROOTPORT_FEATURE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct RAW_ROOTPORT_PARAMETERS {
     pub PortNumber: u16,
     pub PortStatus: u16,
 }
-impl ::core::marker::Copy for RAW_ROOTPORT_PARAMETERS {}
-impl ::core::clone::Clone for RAW_ROOTPORT_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for RAW_ROOTPORT_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for RAW_ROOTPORT_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for RAW_ROOTPORT_PARAMETERS {
+impl Default for RAW_ROOTPORT_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct URB {
     pub Anonymous: URB_0,
 }
-impl ::core::marker::Copy for URB {}
-impl ::core::clone::Clone for URB {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for URB {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for URB {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for URB {
+impl Default for URB {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union URB_0 {
     pub UrbHeader: _URB_HEADER,
     pub UrbSelectInterface: _URB_SELECT_INTERFACE,
@@ -2016,41 +1553,31 @@ pub union URB_0 {
     pub UrbOpenStaticStreams: _URB_OPEN_STATIC_STREAMS,
     pub UrbGetIsochPipeTransferPathDelays: _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS,
 }
-impl ::core::marker::Copy for URB_0 {}
-impl ::core::clone::Clone for URB_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for URB_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for URB_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for URB_0 {
+impl Default for URB_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USBD_DEVICE_INFORMATION {
     pub OffsetNext: u32,
-    pub UsbdDeviceHandle: *mut ::core::ffi::c_void,
+    pub UsbdDeviceHandle: *mut core::ffi::c_void,
     pub DeviceDescriptor: USB_DEVICE_DESCRIPTOR,
 }
-impl ::core::marker::Copy for USBD_DEVICE_INFORMATION {}
-impl ::core::clone::Clone for USBD_DEVICE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_DEVICE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBD_DEVICE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBD_DEVICE_INFORMATION {
+impl Default for USBD_DEVICE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBD_ENDPOINT_OFFLOAD_INFORMATION {
     pub Size: u32,
     pub EndpointAddress: u16,
@@ -2059,30 +1586,25 @@ pub struct USBD_ENDPOINT_OFFLOAD_INFORMATION {
     pub _bitfield1: u32,
     pub _bitfield2: u32,
     pub TransferSegmentLA: i64,
-    pub TransferSegmentVA: *mut ::core::ffi::c_void,
+    pub TransferSegmentVA: *mut core::ffi::c_void,
     pub TransferRingSize: usize,
     pub TransferRingInitialCycleBit: u32,
     pub MessageNumber: u32,
     pub EventRingSegmentLA: i64,
-    pub EventRingSegmentVA: *mut ::core::ffi::c_void,
+    pub EventRingSegmentVA: *mut core::ffi::c_void,
     pub EventRingSize: usize,
     pub EventRingInitialCycleBit: u32,
 }
-impl ::core::marker::Copy for USBD_ENDPOINT_OFFLOAD_INFORMATION {}
-impl ::core::clone::Clone for USBD_ENDPOINT_OFFLOAD_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_ENDPOINT_OFFLOAD_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBD_ENDPOINT_OFFLOAD_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBD_ENDPOINT_OFFLOAD_INFORMATION {
+impl Default for USBD_ENDPOINT_OFFLOAD_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBD_INTERFACE_INFORMATION {
     pub Length: u16,
     pub InterfaceNumber: u8,
@@ -2091,206 +1613,99 @@ pub struct USBD_INTERFACE_INFORMATION {
     pub SubClass: u8,
     pub Protocol: u8,
     pub Reserved: u8,
-    pub InterfaceHandle: *mut ::core::ffi::c_void,
+    pub InterfaceHandle: *mut core::ffi::c_void,
     pub NumberOfPipes: u32,
     pub Pipes: [USBD_PIPE_INFORMATION; 1],
 }
-impl ::core::marker::Copy for USBD_INTERFACE_INFORMATION {}
-impl ::core::clone::Clone for USBD_INTERFACE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_INTERFACE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBD_INTERFACE_INFORMATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBD_INTERFACE_INFORMATION").field("Length", &self.Length).field("InterfaceNumber", &self.InterfaceNumber).field("AlternateSetting", &self.AlternateSetting).field("Class", &self.Class).field("SubClass", &self.SubClass).field("Protocol", &self.Protocol).field("Reserved", &self.Reserved).field("InterfaceHandle", &self.InterfaceHandle).field("NumberOfPipes", &self.NumberOfPipes).field("Pipes", &self.Pipes).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBD_INTERFACE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBD_INTERFACE_INFORMATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.Length == other.Length && self.InterfaceNumber == other.InterfaceNumber && self.AlternateSetting == other.AlternateSetting && self.Class == other.Class && self.SubClass == other.SubClass && self.Protocol == other.Protocol && self.Reserved == other.Reserved && self.InterfaceHandle == other.InterfaceHandle && self.NumberOfPipes == other.NumberOfPipes && self.Pipes == other.Pipes
-    }
-}
-impl ::core::cmp::Eq for USBD_INTERFACE_INFORMATION {}
-impl ::core::default::Default for USBD_INTERFACE_INFORMATION {
+impl Default for USBD_INTERFACE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBD_ISO_PACKET_DESCRIPTOR {
     pub Offset: u32,
     pub Length: u32,
     pub Status: i32,
 }
-impl ::core::marker::Copy for USBD_ISO_PACKET_DESCRIPTOR {}
-impl ::core::clone::Clone for USBD_ISO_PACKET_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_ISO_PACKET_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBD_ISO_PACKET_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBD_ISO_PACKET_DESCRIPTOR").field("Offset", &self.Offset).field("Length", &self.Length).field("Status", &self.Status).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBD_ISO_PACKET_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBD_ISO_PACKET_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.Offset == other.Offset && self.Length == other.Length && self.Status == other.Status
-    }
-}
-impl ::core::cmp::Eq for USBD_ISO_PACKET_DESCRIPTOR {}
-impl ::core::default::Default for USBD_ISO_PACKET_DESCRIPTOR {
+impl Default for USBD_ISO_PACKET_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBD_PIPE_INFORMATION {
     pub MaximumPacketSize: u16,
     pub EndpointAddress: u8,
     pub Interval: u8,
     pub PipeType: USBD_PIPE_TYPE,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub MaximumTransferSize: u32,
     pub PipeFlags: u32,
 }
-impl ::core::marker::Copy for USBD_PIPE_INFORMATION {}
-impl ::core::clone::Clone for USBD_PIPE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_PIPE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBD_PIPE_INFORMATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBD_PIPE_INFORMATION").field("MaximumPacketSize", &self.MaximumPacketSize).field("EndpointAddress", &self.EndpointAddress).field("Interval", &self.Interval).field("PipeType", &self.PipeType).field("PipeHandle", &self.PipeHandle).field("MaximumTransferSize", &self.MaximumTransferSize).field("PipeFlags", &self.PipeFlags).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBD_PIPE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBD_PIPE_INFORMATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.MaximumPacketSize == other.MaximumPacketSize && self.EndpointAddress == other.EndpointAddress && self.Interval == other.Interval && self.PipeType == other.PipeType && self.PipeHandle == other.PipeHandle && self.MaximumTransferSize == other.MaximumTransferSize && self.PipeFlags == other.PipeFlags
-    }
-}
-impl ::core::cmp::Eq for USBD_PIPE_INFORMATION {}
-impl ::core::default::Default for USBD_PIPE_INFORMATION {
+impl Default for USBD_PIPE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBD_STREAM_INFORMATION {
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub StreamID: u32,
     pub MaximumTransferSize: u32,
     pub PipeFlags: u32,
 }
-impl ::core::marker::Copy for USBD_STREAM_INFORMATION {}
-impl ::core::clone::Clone for USBD_STREAM_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_STREAM_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBD_STREAM_INFORMATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBD_STREAM_INFORMATION").field("PipeHandle", &self.PipeHandle).field("StreamID", &self.StreamID).field("MaximumTransferSize", &self.MaximumTransferSize).field("PipeFlags", &self.PipeFlags).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBD_STREAM_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBD_STREAM_INFORMATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.PipeHandle == other.PipeHandle && self.StreamID == other.StreamID && self.MaximumTransferSize == other.MaximumTransferSize && self.PipeFlags == other.PipeFlags
-    }
-}
-impl ::core::cmp::Eq for USBD_STREAM_INFORMATION {}
-impl ::core::default::Default for USBD_STREAM_INFORMATION {
+impl Default for USBD_STREAM_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBD_VERSION_INFORMATION {
     pub USBDI_Version: u32,
     pub Supported_USB_Version: u32,
 }
-impl ::core::marker::Copy for USBD_VERSION_INFORMATION {}
-impl ::core::clone::Clone for USBD_VERSION_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBD_VERSION_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBD_VERSION_INFORMATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBD_VERSION_INFORMATION").field("USBDI_Version", &self.USBDI_Version).field("Supported_USB_Version", &self.Supported_USB_Version).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBD_VERSION_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBD_VERSION_INFORMATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.USBDI_Version == other.USBDI_Version && self.Supported_USB_Version == other.Supported_USB_Version
-    }
-}
-impl ::core::cmp::Eq for USBD_VERSION_INFORMATION {}
-impl ::core::default::Default for USBD_VERSION_INFORMATION {
+impl Default for USBD_VERSION_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBFN_BUS_CONFIGURATION_INFO {
     pub ConfigurationName: [u16; 40],
     pub IsCurrent: super::super::Foundation::BOOLEAN,
     pub IsActive: super::super::Foundation::BOOLEAN,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USBFN_BUS_CONFIGURATION_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USBFN_BUS_CONFIGURATION_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_BUS_CONFIGURATION_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::fmt::Debug for USBFN_BUS_CONFIGURATION_INFO {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBFN_BUS_CONFIGURATION_INFO").field("ConfigurationName", &self.ConfigurationName).field("IsCurrent", &self.IsCurrent).field("IsActive", &self.IsActive).finish()
-    }
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USBFN_BUS_CONFIGURATION_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::cmp::PartialEq for USBFN_BUS_CONFIGURATION_INFO {
-    fn eq(&self, other: &Self) -> bool {
-        self.ConfigurationName == other.ConfigurationName && self.IsCurrent == other.IsCurrent && self.IsActive == other.IsActive
-    }
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::cmp::Eq for USBFN_BUS_CONFIGURATION_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USBFN_BUS_CONFIGURATION_INFO {
+impl Default for USBFN_BUS_CONFIGURATION_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USBFN_CLASS_INFORMATION_PACKET {
     pub FullSpeedClassInterface: USBFN_CLASS_INTERFACE,
     pub HighSpeedClassInterface: USBFN_CLASS_INTERFACE,
@@ -2299,27 +1714,16 @@ pub struct USBFN_CLASS_INFORMATION_PACKET {
     pub HasInterfaceGuid: super::super::Foundation::BOOLEAN,
     pub SuperSpeedClassInterface: USBFN_CLASS_INTERFACE,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USBFN_CLASS_INFORMATION_PACKET {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USBFN_CLASS_INFORMATION_PACKET {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_CLASS_INFORMATION_PACKET {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USBFN_CLASS_INFORMATION_PACKET {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USBFN_CLASS_INFORMATION_PACKET {
+impl Default for USBFN_CLASS_INFORMATION_PACKET {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USBFN_CLASS_INFORMATION_PACKET_EX {
     pub FullSpeedClassInterfaceEx: USBFN_CLASS_INTERFACE_EX,
     pub HighSpeedClassInterfaceEx: USBFN_CLASS_INTERFACE_EX,
@@ -2328,117 +1732,77 @@ pub struct USBFN_CLASS_INFORMATION_PACKET_EX {
     pub InterfaceGuid: [u16; 39],
     pub HasInterfaceGuid: super::super::Foundation::BOOLEAN,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USBFN_CLASS_INFORMATION_PACKET_EX {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USBFN_CLASS_INFORMATION_PACKET_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_CLASS_INFORMATION_PACKET_EX {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USBFN_CLASS_INFORMATION_PACKET_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USBFN_CLASS_INFORMATION_PACKET_EX {
+impl Default for USBFN_CLASS_INFORMATION_PACKET_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USBFN_CLASS_INTERFACE {
     pub InterfaceNumber: u8,
     pub PipeCount: u8,
     pub PipeArr: [USBFN_PIPE_INFORMATION; 16],
 }
-impl ::core::marker::Copy for USBFN_CLASS_INTERFACE {}
-impl ::core::clone::Clone for USBFN_CLASS_INTERFACE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_CLASS_INTERFACE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBFN_CLASS_INTERFACE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBFN_CLASS_INTERFACE {
+impl Default for USBFN_CLASS_INTERFACE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USBFN_CLASS_INTERFACE_EX {
     pub BaseInterfaceNumber: u8,
     pub InterfaceCount: u8,
     pub PipeCount: u8,
     pub PipeArr: [USBFN_PIPE_INFORMATION; 16],
 }
-impl ::core::marker::Copy for USBFN_CLASS_INTERFACE_EX {}
-impl ::core::clone::Clone for USBFN_CLASS_INTERFACE_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_CLASS_INTERFACE_EX {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBFN_CLASS_INTERFACE_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBFN_CLASS_INTERFACE_EX {
+impl Default for USBFN_CLASS_INTERFACE_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBFN_INTERFACE_INFO {
     pub InterfaceNumber: u8,
     pub Speed: USBFN_BUS_SPEED,
     pub Size: u16,
     pub InterfaceDescriptorSet: [u8; 1],
 }
-impl ::core::marker::Copy for USBFN_INTERFACE_INFO {}
-impl ::core::clone::Clone for USBFN_INTERFACE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_INTERFACE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBFN_INTERFACE_INFO {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBFN_INTERFACE_INFO").field("InterfaceNumber", &self.InterfaceNumber).field("Speed", &self.Speed).field("Size", &self.Size).field("InterfaceDescriptorSet", &self.InterfaceDescriptorSet).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBFN_INTERFACE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBFN_INTERFACE_INFO {
-    fn eq(&self, other: &Self) -> bool {
-        self.InterfaceNumber == other.InterfaceNumber && self.Speed == other.Speed && self.Size == other.Size && self.InterfaceDescriptorSet == other.InterfaceDescriptorSet
-    }
-}
-impl ::core::cmp::Eq for USBFN_INTERFACE_INFO {}
-impl ::core::default::Default for USBFN_INTERFACE_INFO {
+impl Default for USBFN_INTERFACE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USBFN_NOTIFICATION {
     pub Event: USBFN_EVENT,
     pub u: USBFN_NOTIFICATION_0,
 }
-impl ::core::marker::Copy for USBFN_NOTIFICATION {}
-impl ::core::clone::Clone for USBFN_NOTIFICATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_NOTIFICATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBFN_NOTIFICATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBFN_NOTIFICATION {
+impl Default for USBFN_NOTIFICATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union USBFN_NOTIFICATION_0 {
     pub BusSpeed: USBFN_BUS_SPEED,
     pub SetupPacket: USB_DEFAULT_PIPE_SETUP_PACKET,
@@ -2446,611 +1810,398 @@ pub union USBFN_NOTIFICATION_0 {
     pub PortType: USBFN_PORT_TYPE,
     pub AlternateInterface: ALTERNATE_INTERFACE,
 }
-impl ::core::marker::Copy for USBFN_NOTIFICATION_0 {}
-impl ::core::clone::Clone for USBFN_NOTIFICATION_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_NOTIFICATION_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBFN_NOTIFICATION_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBFN_NOTIFICATION_0 {
+impl Default for USBFN_NOTIFICATION_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USBFN_PIPE_INFORMATION {
     pub EpDesc: USB_ENDPOINT_DESCRIPTOR,
     pub PipeId: u32,
 }
-impl ::core::marker::Copy for USBFN_PIPE_INFORMATION {}
-impl ::core::clone::Clone for USBFN_PIPE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_PIPE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBFN_PIPE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBFN_PIPE_INFORMATION {
+impl Default for USBFN_PIPE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBFN_USB_STRING {
     pub StringIndex: u8,
     pub UsbString: [u16; 255],
 }
-impl ::core::marker::Copy for USBFN_USB_STRING {}
-impl ::core::clone::Clone for USBFN_USB_STRING {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBFN_USB_STRING {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBFN_USB_STRING {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBFN_USB_STRING").field("StringIndex", &self.StringIndex).field("UsbString", &self.UsbString).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBFN_USB_STRING {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBFN_USB_STRING {
-    fn eq(&self, other: &Self) -> bool {
-        self.StringIndex == other.StringIndex && self.UsbString == other.UsbString
-    }
-}
-impl ::core::cmp::Eq for USBFN_USB_STRING {}
-impl ::core::default::Default for USBFN_USB_STRING {
+impl Default for USBFN_USB_STRING {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBSCAN_GET_DESCRIPTOR {
     pub DescriptorType: u8,
     pub Index: u8,
     pub LanguageId: u16,
 }
-impl ::core::marker::Copy for USBSCAN_GET_DESCRIPTOR {}
-impl ::core::clone::Clone for USBSCAN_GET_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBSCAN_GET_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBSCAN_GET_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBSCAN_GET_DESCRIPTOR").field("DescriptorType", &self.DescriptorType).field("Index", &self.Index).field("LanguageId", &self.LanguageId).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBSCAN_GET_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBSCAN_GET_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.DescriptorType == other.DescriptorType && self.Index == other.Index && self.LanguageId == other.LanguageId
-    }
-}
-impl ::core::cmp::Eq for USBSCAN_GET_DESCRIPTOR {}
-impl ::core::default::Default for USBSCAN_GET_DESCRIPTOR {
+impl Default for USBSCAN_GET_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBSCAN_PIPE_CONFIGURATION {
     pub NumberOfPipes: u32,
     pub PipeInfo: [USBSCAN_PIPE_INFORMATION; 8],
 }
-impl ::core::marker::Copy for USBSCAN_PIPE_CONFIGURATION {}
-impl ::core::clone::Clone for USBSCAN_PIPE_CONFIGURATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBSCAN_PIPE_CONFIGURATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBSCAN_PIPE_CONFIGURATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBSCAN_PIPE_CONFIGURATION").field("NumberOfPipes", &self.NumberOfPipes).field("PipeInfo", &self.PipeInfo).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBSCAN_PIPE_CONFIGURATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBSCAN_PIPE_CONFIGURATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.NumberOfPipes == other.NumberOfPipes && self.PipeInfo == other.PipeInfo
-    }
-}
-impl ::core::cmp::Eq for USBSCAN_PIPE_CONFIGURATION {}
-impl ::core::default::Default for USBSCAN_PIPE_CONFIGURATION {
+impl Default for USBSCAN_PIPE_CONFIGURATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBSCAN_PIPE_INFORMATION {
     pub MaximumPacketSize: u16,
     pub EndpointAddress: u8,
     pub Interval: u8,
     pub PipeType: RAW_PIPE_TYPE,
 }
-impl ::core::marker::Copy for USBSCAN_PIPE_INFORMATION {}
-impl ::core::clone::Clone for USBSCAN_PIPE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBSCAN_PIPE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBSCAN_PIPE_INFORMATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBSCAN_PIPE_INFORMATION").field("MaximumPacketSize", &self.MaximumPacketSize).field("EndpointAddress", &self.EndpointAddress).field("Interval", &self.Interval).field("PipeType", &self.PipeType).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBSCAN_PIPE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBSCAN_PIPE_INFORMATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.MaximumPacketSize == other.MaximumPacketSize && self.EndpointAddress == other.EndpointAddress && self.Interval == other.Interval && self.PipeType == other.PipeType
-    }
-}
-impl ::core::cmp::Eq for USBSCAN_PIPE_INFORMATION {}
-impl ::core::default::Default for USBSCAN_PIPE_INFORMATION {
+impl Default for USBSCAN_PIPE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USBSCAN_TIMEOUT {
     pub TimeoutRead: u32,
     pub TimeoutWrite: u32,
     pub TimeoutEvent: u32,
 }
-impl ::core::marker::Copy for USBSCAN_TIMEOUT {}
-impl ::core::clone::Clone for USBSCAN_TIMEOUT {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBSCAN_TIMEOUT {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USBSCAN_TIMEOUT {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USBSCAN_TIMEOUT").field("TimeoutRead", &self.TimeoutRead).field("TimeoutWrite", &self.TimeoutWrite).field("TimeoutEvent", &self.TimeoutEvent).finish()
-    }
-}
-impl ::windows_core::TypeKind for USBSCAN_TIMEOUT {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USBSCAN_TIMEOUT {
-    fn eq(&self, other: &Self) -> bool {
-        self.TimeoutRead == other.TimeoutRead && self.TimeoutWrite == other.TimeoutWrite && self.TimeoutEvent == other.TimeoutEvent
-    }
-}
-impl ::core::cmp::Eq for USBSCAN_TIMEOUT {}
-impl ::core::default::Default for USBSCAN_TIMEOUT {
+impl Default for USBSCAN_TIMEOUT {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_BANDWIDTH_INFO_REQUEST {
     pub Header: USBUSER_REQUEST_HEADER,
     pub BandwidthInformation: USB_BANDWIDTH_INFO,
 }
-impl ::core::marker::Copy for USBUSER_BANDWIDTH_INFO_REQUEST {}
-impl ::core::clone::Clone for USBUSER_BANDWIDTH_INFO_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_BANDWIDTH_INFO_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_BANDWIDTH_INFO_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_BANDWIDTH_INFO_REQUEST {
+impl Default for USBUSER_BANDWIDTH_INFO_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USBUSER_BUS_STATISTICS_0_REQUEST {
     pub Header: USBUSER_REQUEST_HEADER,
     pub BusStatistics0: USB_BUS_STATISTICS_0,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USBUSER_BUS_STATISTICS_0_REQUEST {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USBUSER_BUS_STATISTICS_0_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_BUS_STATISTICS_0_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USBUSER_BUS_STATISTICS_0_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USBUSER_BUS_STATISTICS_0_REQUEST {
+impl Default for USBUSER_BUS_STATISTICS_0_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_CLOSE_RAW_DEVICE {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: USB_CLOSE_RAW_DEVICE_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_CLOSE_RAW_DEVICE {}
-impl ::core::clone::Clone for USBUSER_CLOSE_RAW_DEVICE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_CLOSE_RAW_DEVICE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_CLOSE_RAW_DEVICE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_CLOSE_RAW_DEVICE {
+impl Default for USBUSER_CLOSE_RAW_DEVICE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_CONTROLLER_INFO_0 {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Info0: USB_CONTROLLER_INFO_0,
 }
-impl ::core::marker::Copy for USBUSER_CONTROLLER_INFO_0 {}
-impl ::core::clone::Clone for USBUSER_CONTROLLER_INFO_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_CONTROLLER_INFO_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_CONTROLLER_INFO_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_CONTROLLER_INFO_0 {
+impl Default for USBUSER_CONTROLLER_INFO_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_CONTROLLER_UNICODE_NAME {
     pub Header: USBUSER_REQUEST_HEADER,
     pub UnicodeName: USB_UNICODE_NAME,
 }
-impl ::core::marker::Copy for USBUSER_CONTROLLER_UNICODE_NAME {}
-impl ::core::clone::Clone for USBUSER_CONTROLLER_UNICODE_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_CONTROLLER_UNICODE_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_CONTROLLER_UNICODE_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_CONTROLLER_UNICODE_NAME {
+impl Default for USBUSER_CONTROLLER_UNICODE_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USBUSER_GET_DRIVER_VERSION {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: USB_DRIVER_VERSION_PARAMETERS,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USBUSER_GET_DRIVER_VERSION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USBUSER_GET_DRIVER_VERSION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_GET_DRIVER_VERSION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USBUSER_GET_DRIVER_VERSION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USBUSER_GET_DRIVER_VERSION {
+impl Default for USBUSER_GET_DRIVER_VERSION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_GET_USB2HW_VERSION {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: USB_USB2HW_VERSION_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_GET_USB2HW_VERSION {}
-impl ::core::clone::Clone for USBUSER_GET_USB2HW_VERSION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_GET_USB2HW_VERSION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_GET_USB2HW_VERSION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_GET_USB2HW_VERSION {
+impl Default for USBUSER_GET_USB2HW_VERSION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_OPEN_RAW_DEVICE {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: USB_OPEN_RAW_DEVICE_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_OPEN_RAW_DEVICE {}
-impl ::core::clone::Clone for USBUSER_OPEN_RAW_DEVICE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_OPEN_RAW_DEVICE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_OPEN_RAW_DEVICE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_OPEN_RAW_DEVICE {
+impl Default for USBUSER_OPEN_RAW_DEVICE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_PASS_THRU_REQUEST {
     pub Header: USBUSER_REQUEST_HEADER,
     pub PassThru: USB_PASS_THRU_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_PASS_THRU_REQUEST {}
-impl ::core::clone::Clone for USBUSER_PASS_THRU_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_PASS_THRU_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_PASS_THRU_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_PASS_THRU_REQUEST {
+impl Default for USBUSER_PASS_THRU_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USBUSER_POWER_INFO_REQUEST {
     pub Header: USBUSER_REQUEST_HEADER,
     pub PowerInformation: USB_POWER_INFO,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USBUSER_POWER_INFO_REQUEST {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USBUSER_POWER_INFO_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_POWER_INFO_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USBUSER_POWER_INFO_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USBUSER_POWER_INFO_REQUEST {
+impl Default for USBUSER_POWER_INFO_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_RAW_RESET_ROOT_PORT {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: RAW_RESET_PORT_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_RAW_RESET_ROOT_PORT {}
-impl ::core::clone::Clone for USBUSER_RAW_RESET_ROOT_PORT {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_RAW_RESET_ROOT_PORT {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_RAW_RESET_ROOT_PORT {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_RAW_RESET_ROOT_PORT {
+impl Default for USBUSER_RAW_RESET_ROOT_PORT {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_REFRESH_HCT_REG {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Flags: u32,
 }
-impl ::core::marker::Copy for USBUSER_REFRESH_HCT_REG {}
-impl ::core::clone::Clone for USBUSER_REFRESH_HCT_REG {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_REFRESH_HCT_REG {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_REFRESH_HCT_REG {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_REFRESH_HCT_REG {
+impl Default for USBUSER_REFRESH_HCT_REG {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_REQUEST_HEADER {
     pub UsbUserRequest: u32,
     pub UsbUserStatusCode: USB_USER_ERROR_CODE,
     pub RequestBufferLength: u32,
     pub ActualBufferLength: u32,
 }
-impl ::core::marker::Copy for USBUSER_REQUEST_HEADER {}
-impl ::core::clone::Clone for USBUSER_REQUEST_HEADER {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_REQUEST_HEADER {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_REQUEST_HEADER {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_REQUEST_HEADER {
+impl Default for USBUSER_REQUEST_HEADER {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_ROOTPORT_FEATURE_REQUEST {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: RAW_ROOTPORT_FEATURE,
 }
-impl ::core::marker::Copy for USBUSER_ROOTPORT_FEATURE_REQUEST {}
-impl ::core::clone::Clone for USBUSER_ROOTPORT_FEATURE_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_ROOTPORT_FEATURE_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_ROOTPORT_FEATURE_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_ROOTPORT_FEATURE_REQUEST {
+impl Default for USBUSER_ROOTPORT_FEATURE_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_ROOTPORT_PARAMETERS {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: RAW_ROOTPORT_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_ROOTPORT_PARAMETERS {}
-impl ::core::clone::Clone for USBUSER_ROOTPORT_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_ROOTPORT_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_ROOTPORT_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_ROOTPORT_PARAMETERS {
+impl Default for USBUSER_ROOTPORT_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_SEND_ONE_PACKET {
     pub Header: USBUSER_REQUEST_HEADER,
     pub PacketParameters: PACKET_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_SEND_ONE_PACKET {}
-impl ::core::clone::Clone for USBUSER_SEND_ONE_PACKET {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_SEND_ONE_PACKET {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_SEND_ONE_PACKET {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_SEND_ONE_PACKET {
+impl Default for USBUSER_SEND_ONE_PACKET {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USBUSER_SEND_RAW_COMMAND {
     pub Header: USBUSER_REQUEST_HEADER,
     pub Parameters: USB_SEND_RAW_COMMAND_PARAMETERS,
 }
-impl ::core::marker::Copy for USBUSER_SEND_RAW_COMMAND {}
-impl ::core::clone::Clone for USBUSER_SEND_RAW_COMMAND {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USBUSER_SEND_RAW_COMMAND {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USBUSER_SEND_RAW_COMMAND {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USBUSER_SEND_RAW_COMMAND {
+impl Default for USBUSER_SEND_RAW_COMMAND {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_20_PORT_CHANGE {
     pub AsUshort16: u16,
     pub Anonymous: USB_20_PORT_CHANGE_0,
 }
-impl ::core::marker::Copy for USB_20_PORT_CHANGE {}
-impl ::core::clone::Clone for USB_20_PORT_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_20_PORT_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_20_PORT_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_20_PORT_CHANGE {
+impl Default for USB_20_PORT_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_20_PORT_CHANGE_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_20_PORT_CHANGE_0 {}
-impl ::core::clone::Clone for USB_20_PORT_CHANGE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_20_PORT_CHANGE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_20_PORT_CHANGE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_20_PORT_CHANGE_0 {
+impl Default for USB_20_PORT_CHANGE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_20_PORT_STATUS {
     pub AsUshort16: u16,
     pub Anonymous: USB_20_PORT_STATUS_0,
 }
-impl ::core::marker::Copy for USB_20_PORT_STATUS {}
-impl ::core::clone::Clone for USB_20_PORT_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_20_PORT_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_20_PORT_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_20_PORT_STATUS {
+impl Default for USB_20_PORT_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_20_PORT_STATUS_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_20_PORT_STATUS_0 {}
-impl ::core::clone::Clone for USB_20_PORT_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_20_PORT_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_20_PORT_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_20_PORT_STATUS_0 {
+impl Default for USB_20_PORT_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_30_HUB_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3062,115 +2213,85 @@ pub struct USB_30_HUB_DESCRIPTOR {
     pub wHubDelay: u16,
     pub DeviceRemovable: u16,
 }
-impl ::core::marker::Copy for USB_30_HUB_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_30_HUB_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_30_HUB_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_30_HUB_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_30_HUB_DESCRIPTOR {
+impl Default for USB_30_HUB_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_30_PORT_CHANGE {
     pub AsUshort16: u16,
     pub Anonymous: USB_30_PORT_CHANGE_0,
 }
-impl ::core::marker::Copy for USB_30_PORT_CHANGE {}
-impl ::core::clone::Clone for USB_30_PORT_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_30_PORT_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_30_PORT_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_30_PORT_CHANGE {
+impl Default for USB_30_PORT_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_30_PORT_CHANGE_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_30_PORT_CHANGE_0 {}
-impl ::core::clone::Clone for USB_30_PORT_CHANGE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_30_PORT_CHANGE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_30_PORT_CHANGE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_30_PORT_CHANGE_0 {
+impl Default for USB_30_PORT_CHANGE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_30_PORT_STATUS {
     pub AsUshort16: u16,
     pub Anonymous: USB_30_PORT_STATUS_0,
 }
-impl ::core::marker::Copy for USB_30_PORT_STATUS {}
-impl ::core::clone::Clone for USB_30_PORT_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_30_PORT_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_30_PORT_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_30_PORT_STATUS {
+impl Default for USB_30_PORT_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_30_PORT_STATUS_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_30_PORT_STATUS_0 {}
-impl ::core::clone::Clone for USB_30_PORT_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_30_PORT_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_30_PORT_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_30_PORT_STATUS_0 {
+impl Default for USB_30_PORT_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_ACQUIRE_INFO {
     pub NotificationType: USB_NOTIFICATION_TYPE,
     pub TotalSize: u32,
     pub Buffer: [u16; 1],
 }
-impl ::core::marker::Copy for USB_ACQUIRE_INFO {}
-impl ::core::clone::Clone for USB_ACQUIRE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_ACQUIRE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_ACQUIRE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_ACQUIRE_INFO {
+impl Default for USB_ACQUIRE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_BANDWIDTH_INFO {
     pub DeviceCount: u32,
     pub TotalBusBandwidth: u32,
@@ -3184,65 +2305,48 @@ pub struct USB_BANDWIDTH_INFO {
     pub AllocedInterrupt_16ms: u32,
     pub AllocedInterrupt_32ms: u32,
 }
-impl ::core::marker::Copy for USB_BANDWIDTH_INFO {}
-impl ::core::clone::Clone for USB_BANDWIDTH_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_BANDWIDTH_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_BANDWIDTH_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_BANDWIDTH_INFO {
+impl Default for USB_BANDWIDTH_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_BOS_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
     pub wTotalLength: u16,
     pub bNumDeviceCaps: u8,
 }
-impl ::core::marker::Copy for USB_BOS_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_BOS_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_BOS_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_BOS_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_BOS_DESCRIPTOR {
+impl Default for USB_BOS_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_BUS_NOTIFICATION {
     pub NotificationType: USB_NOTIFICATION_TYPE,
     pub TotalBandwidth: u32,
     pub ConsumedBandwidth: u32,
     pub ControllerNameLength: u32,
 }
-impl ::core::marker::Copy for USB_BUS_NOTIFICATION {}
-impl ::core::clone::Clone for USB_BUS_NOTIFICATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_BUS_NOTIFICATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_BUS_NOTIFICATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_BUS_NOTIFICATION {
+impl Default for USB_BUS_NOTIFICATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_BUS_STATISTICS_0 {
     pub DeviceCount: u32,
     pub CurrentSystemTime: i64,
@@ -3261,97 +2365,59 @@ pub struct USB_BUS_STATISTICS_0 {
     pub Unused: u8,
     pub NameIndex: u8,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_BUS_STATISTICS_0 {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_BUS_STATISTICS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_BUS_STATISTICS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_BUS_STATISTICS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_BUS_STATISTICS_0 {
+impl Default for USB_BUS_STATISTICS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
-pub struct USB_CHANGE_REGISTRATION_HANDLE(pub isize);
-impl ::core::default::Default for USB_CHANGE_REGISTRATION_HANDLE {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct USB_CHANGE_REGISTRATION_HANDLE(pub *mut core::ffi::c_void);
+impl USB_CHANGE_REGISTRATION_HANDLE {
+    pub fn is_invalid(&self) -> bool {
+        self.0.is_null()
+    }
+}
+impl Default for USB_CHANGE_REGISTRATION_HANDLE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
-impl ::core::clone::Clone for USB_CHANGE_REGISTRATION_HANDLE {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
-impl ::core::marker::Copy for USB_CHANGE_REGISTRATION_HANDLE {}
-impl ::core::fmt::Debug for USB_CHANGE_REGISTRATION_HANDLE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_tuple("USB_CHANGE_REGISTRATION_HANDLE").field(&self.0).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_CHANGE_REGISTRATION_HANDLE {
-    type TypeKind = ::windows_core::CopyType;
+impl windows_core::TypeKind for USB_CHANGE_REGISTRATION_HANDLE {
+    type TypeKind = windows_core::CopyType;
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CLOSE_RAW_DEVICE_PARAMETERS {
     pub xxx: u32,
 }
-impl ::core::marker::Copy for USB_CLOSE_RAW_DEVICE_PARAMETERS {}
-impl ::core::clone::Clone for USB_CLOSE_RAW_DEVICE_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CLOSE_RAW_DEVICE_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CLOSE_RAW_DEVICE_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CLOSE_RAW_DEVICE_PARAMETERS {
+impl Default for USB_CLOSE_RAW_DEVICE_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_COMMON_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
 }
-impl ::core::marker::Copy for USB_COMMON_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_COMMON_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_COMMON_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_COMMON_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_COMMON_DESCRIPTOR").field("bLength", &self.bLength).field("bDescriptorType", &self.bDescriptorType).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_COMMON_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_COMMON_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.bLength == other.bLength && self.bDescriptorType == other.bDescriptorType
-    }
-}
-impl ::core::cmp::Eq for USB_COMMON_DESCRIPTOR {}
-impl ::core::default::Default for USB_COMMON_DESCRIPTOR {
+impl Default for USB_COMMON_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_COMPOSITE_DEVICE_INFO {
     pub DeviceDescriptor: USB_DEVICE_DESCRIPTOR,
     pub CurrentConfigDescriptor: USB_CONFIGURATION_DESCRIPTOR,
@@ -3359,66 +2425,32 @@ pub struct USB_COMPOSITE_DEVICE_INFO {
     pub NumberOfFunctions: u8,
     pub FunctionInfo: [USB_COMPOSITE_FUNCTION_INFO; 1],
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_COMPOSITE_DEVICE_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_COMPOSITE_DEVICE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_COMPOSITE_DEVICE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_COMPOSITE_DEVICE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_COMPOSITE_DEVICE_INFO {
+impl Default for USB_COMPOSITE_DEVICE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_COMPOSITE_FUNCTION_INFO {
     pub FunctionNumber: u8,
     pub BaseInterfaceNumber: u8,
     pub NumberOfInterfaces: u8,
     pub FunctionIsIdle: super::super::Foundation::BOOLEAN,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_COMPOSITE_FUNCTION_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_COMPOSITE_FUNCTION_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_COMPOSITE_FUNCTION_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::fmt::Debug for USB_COMPOSITE_FUNCTION_INFO {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_COMPOSITE_FUNCTION_INFO").field("FunctionNumber", &self.FunctionNumber).field("BaseInterfaceNumber", &self.BaseInterfaceNumber).field("NumberOfInterfaces", &self.NumberOfInterfaces).field("FunctionIsIdle", &self.FunctionIsIdle).finish()
-    }
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_COMPOSITE_FUNCTION_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::cmp::PartialEq for USB_COMPOSITE_FUNCTION_INFO {
-    fn eq(&self, other: &Self) -> bool {
-        self.FunctionNumber == other.FunctionNumber && self.BaseInterfaceNumber == other.BaseInterfaceNumber && self.NumberOfInterfaces == other.NumberOfInterfaces && self.FunctionIsIdle == other.FunctionIsIdle
-    }
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::cmp::Eq for USB_COMPOSITE_FUNCTION_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_COMPOSITE_FUNCTION_INFO {
+impl Default for USB_COMPOSITE_FUNCTION_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CONFIGURATION_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3429,21 +2461,16 @@ pub struct USB_CONFIGURATION_DESCRIPTOR {
     pub bmAttributes: u8,
     pub MaxPower: u8,
 }
-impl ::core::marker::Copy for USB_CONFIGURATION_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_CONFIGURATION_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONFIGURATION_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CONFIGURATION_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CONFIGURATION_DESCRIPTOR {
+impl Default for USB_CONFIGURATION_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CONFIGURATION_POWER_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3459,21 +2486,16 @@ pub struct USB_CONFIGURATION_POWER_DESCRIPTOR {
     pub TransitionTimeFromD2: u16,
     pub TransitionTimeFromD3: u16,
 }
-impl ::core::marker::Copy for USB_CONFIGURATION_POWER_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_CONFIGURATION_POWER_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONFIGURATION_POWER_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CONFIGURATION_POWER_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CONFIGURATION_POWER_DESCRIPTOR {
+impl Default for USB_CONFIGURATION_POWER_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CONNECTION_NOTIFICATION {
     pub NotificationType: USB_NOTIFICATION_TYPE,
     pub ConnectionNumber: u32,
@@ -3482,21 +2504,16 @@ pub struct USB_CONNECTION_NOTIFICATION {
     pub PowerRequested: u32,
     pub HubNameLength: u32,
 }
-impl ::core::marker::Copy for USB_CONNECTION_NOTIFICATION {}
-impl ::core::clone::Clone for USB_CONNECTION_NOTIFICATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONNECTION_NOTIFICATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CONNECTION_NOTIFICATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CONNECTION_NOTIFICATION {
+impl Default for USB_CONNECTION_NOTIFICATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CONTROLLER_DEVICE_INFO {
     pub PciVendorId: u32,
     pub PciDeviceId: u32,
@@ -3504,21 +2521,16 @@ pub struct USB_CONTROLLER_DEVICE_INFO {
     pub NumberOfRootPorts: u32,
     pub HcFeatureFlags: u32,
 }
-impl ::core::marker::Copy for USB_CONTROLLER_DEVICE_INFO {}
-impl ::core::clone::Clone for USB_CONTROLLER_DEVICE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONTROLLER_DEVICE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CONTROLLER_DEVICE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CONTROLLER_DEVICE_INFO {
+impl Default for USB_CONTROLLER_DEVICE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CONTROLLER_INFO_0 {
     pub PciVendorId: u32,
     pub PciDeviceId: u32,
@@ -3527,40 +2539,30 @@ pub struct USB_CONTROLLER_INFO_0 {
     pub ControllerFlavor: USB_CONTROLLER_FLAVOR,
     pub HcFeatureFlags: u32,
 }
-impl ::core::marker::Copy for USB_CONTROLLER_INFO_0 {}
-impl ::core::clone::Clone for USB_CONTROLLER_INFO_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CONTROLLER_INFO_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CONTROLLER_INFO_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CONTROLLER_INFO_0 {
+impl Default for USB_CONTROLLER_INFO_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_CYCLE_PORT_PARAMS {
     pub ConnectionIndex: u32,
     pub StatusReturned: u32,
 }
-impl ::core::marker::Copy for USB_CYCLE_PORT_PARAMS {}
-impl ::core::clone::Clone for USB_CYCLE_PORT_PARAMS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_CYCLE_PORT_PARAMS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_CYCLE_PORT_PARAMS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_CYCLE_PORT_PARAMS {
+impl Default for USB_CYCLE_PORT_PARAMS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEFAULT_PIPE_SETUP_PACKET {
     pub bmRequestType: BM_REQUEST_TYPE,
     pub bRequest: u8,
@@ -3568,139 +2570,87 @@ pub struct USB_DEFAULT_PIPE_SETUP_PACKET {
     pub wIndex: USB_DEFAULT_PIPE_SETUP_PACKET_0,
     pub wLength: u16,
 }
-impl ::core::marker::Copy for USB_DEFAULT_PIPE_SETUP_PACKET {}
-impl ::core::clone::Clone for USB_DEFAULT_PIPE_SETUP_PACKET {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEFAULT_PIPE_SETUP_PACKET {
+impl Default for USB_DEFAULT_PIPE_SETUP_PACKET {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEFAULT_PIPE_SETUP_PACKET_0 {
     pub Anonymous: USB_DEFAULT_PIPE_SETUP_PACKET_0_0,
     pub W: u16,
 }
-impl ::core::marker::Copy for USB_DEFAULT_PIPE_SETUP_PACKET_0 {}
-impl ::core::clone::Clone for USB_DEFAULT_PIPE_SETUP_PACKET_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEFAULT_PIPE_SETUP_PACKET_0 {
+impl Default for USB_DEFAULT_PIPE_SETUP_PACKET_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
     pub LowByte: u8,
     pub HiByte: u8,
 }
-impl ::core::marker::Copy for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {}
-impl ::core::clone::Clone for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_DEFAULT_PIPE_SETUP_PACKET_0_0").field("LowByte", &self.LowByte).field("HiByte", &self.HiByte).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
-    fn eq(&self, other: &Self) -> bool {
-        self.LowByte == other.LowByte && self.HiByte == other.HiByte
-    }
-}
-impl ::core::cmp::Eq for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {}
-impl ::core::default::Default for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
+impl Default for USB_DEFAULT_PIPE_SETUP_PACKET_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEFAULT_PIPE_SETUP_PACKET_1 {
     pub Anonymous: USB_DEFAULT_PIPE_SETUP_PACKET_1_0,
     pub W: u16,
 }
-impl ::core::marker::Copy for USB_DEFAULT_PIPE_SETUP_PACKET_1 {}
-impl ::core::clone::Clone for USB_DEFAULT_PIPE_SETUP_PACKET_1 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_1 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_1 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEFAULT_PIPE_SETUP_PACKET_1 {
+impl Default for USB_DEFAULT_PIPE_SETUP_PACKET_1 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
     pub LowByte: u8,
     pub HiByte: u8,
 }
-impl ::core::marker::Copy for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {}
-impl ::core::clone::Clone for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_DEFAULT_PIPE_SETUP_PACKET_1_0").field("LowByte", &self.LowByte).field("HiByte", &self.HiByte).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
-    fn eq(&self, other: &Self) -> bool {
-        self.LowByte == other.LowByte && self.HiByte == other.HiByte
-    }
-}
-impl ::core::cmp::Eq for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {}
-impl ::core::default::Default for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
+impl Default for USB_DEFAULT_PIPE_SETUP_PACKET_1_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DESCRIPTOR_REQUEST {
     pub ConnectionIndex: u32,
     pub SetupPacket: USB_DESCRIPTOR_REQUEST_0,
     pub Data: [u8; 1],
 }
-impl ::core::marker::Copy for USB_DESCRIPTOR_REQUEST {}
-impl ::core::clone::Clone for USB_DESCRIPTOR_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DESCRIPTOR_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DESCRIPTOR_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DESCRIPTOR_REQUEST {
+impl Default for USB_DESCRIPTOR_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DESCRIPTOR_REQUEST_0 {
     pub bmRequest: u8,
     pub bRequest: u8,
@@ -3708,21 +2658,16 @@ pub struct USB_DESCRIPTOR_REQUEST_0 {
     pub wIndex: u16,
     pub wLength: u16,
 }
-impl ::core::marker::Copy for USB_DESCRIPTOR_REQUEST_0 {}
-impl ::core::clone::Clone for USB_DESCRIPTOR_REQUEST_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DESCRIPTOR_REQUEST_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DESCRIPTOR_REQUEST_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DESCRIPTOR_REQUEST_0 {
+impl Default for USB_DESCRIPTOR_REQUEST_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3735,78 +2680,58 @@ pub struct USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
     pub bReserved: u32,
     pub AlternateMode: [USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0; 1],
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {
     pub wSVID: u16,
     pub bAlternateMode: u8,
     pub iAlternateModeSetting: u8,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {
+impl Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {
     pub AsUshort: u16,
     pub Anonymous: USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {
+impl Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {
+impl Default for USB_DEVICE_CAPABILITY_BILLBOARD_DESCRIPTOR_1_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3814,63 +2739,31 @@ pub struct USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
     pub bReserved: u8,
     pub ContainerID: [u8; 16],
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR").field("bLength", &self.bLength).field("bDescriptorType", &self.bDescriptorType).field("bDevCapabilityType", &self.bDevCapabilityType).field("bReserved", &self.bReserved).field("ContainerID", &self.ContainerID).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.bLength == other.bLength && self.bDescriptorType == other.bDescriptorType && self.bDevCapabilityType == other.bDevCapabilityType && self.bReserved == other.bReserved && self.ContainerID == other.ContainerID
-    }
-}
-impl ::core::cmp::Eq for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_CONTAINER_ID_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_DEVICE_CAPABILITY_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
     pub bDevCapabilityType: u8,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_DEVICE_CAPABILITY_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_DEVICE_CAPABILITY_DESCRIPTOR").field("bLength", &self.bLength).field("bDescriptorType", &self.bDescriptorType).field("bDevCapabilityType", &self.bDevCapabilityType).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_DEVICE_CAPABILITY_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.bLength == other.bLength && self.bDescriptorType == other.bDescriptorType && self.bDevCapabilityType == other.bDevCapabilityType
-    }
-}
-impl ::core::cmp::Eq for USB_DEVICE_CAPABILITY_DESCRIPTOR {}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3878,58 +2771,43 @@ pub struct USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
     pub bcdDescriptorVersion: u8,
     pub bmAttributes: USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {
     pub AsUlong: u32,
     pub Anonymous: USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {
+impl Default for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {
+impl Default for USB_DEVICE_CAPABILITY_FIRMWARE_STATUS_DESCRIPTOR_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -3943,81 +2821,61 @@ pub struct USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
     pub dwMaxPeakPower: u32,
     pub dwMaxPeakPowerTime: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {
     pub AsUshort: u16,
     pub Anonymous: USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {
+impl Default for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {
+impl Default for USB_DEVICE_CAPABILITY_PD_CONSUMER_PORT_DESCRIPTOR_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
     pub bDevCapabilityType: u8,
     pub bReserved: u8,
-    pub PlatformCapabilityUuid: ::windows_core::GUID,
+    pub PlatformCapabilityUuid: windows_core::GUID,
     pub CapabililityData: [u8; 1],
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_PLATFORM_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -4030,95 +2888,70 @@ pub struct USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
     pub bcdPDVersion: u16,
     pub bcdUSBTypeCVersion: u16,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {
     pub AsUlong: u32,
     pub Anonymous: USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {
+impl Default for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {
+impl Default for USB_DEVICE_CAPABILITY_POWER_DELIVERY_DESCRIPTOR_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {
     pub AsUlong32: u32,
     pub Anonymous: USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -4129,95 +2962,70 @@ pub struct USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
     pub wReserved: u16,
     pub bmSublinkSpeedAttr: [USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_SPEED; 1],
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {
     pub AsUlong: u32,
     pub Anonymous: USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {
     pub AsUshort: u16,
     pub Anonymous: USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEEDPLUS_USB_DESCRIPTOR_1_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -4228,79 +3036,59 @@ pub struct USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
     pub bU1DevExitLat: u8,
     pub wU2DevExitLat: u16,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_SUPERSPEED_USB_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
     pub bDevCapabilityType: u8,
     pub bmAttributes: USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {
+impl Default for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {
     pub AsUlong: u32,
     pub Anonymous: USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {
+impl Default for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {}
-impl ::core::clone::Clone for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {
+impl Default for USB_DEVICE_CAPABILITY_USB20_EXTENSION_DESCRIPTOR_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_CHARACTERISTICS {
     pub Version: u32,
     pub Reserved: [u32; 2],
@@ -4308,21 +3096,16 @@ pub struct USB_DEVICE_CHARACTERISTICS {
     pub MaximumSendPathDelayInMilliSeconds: u32,
     pub MaximumCompletionPathDelayInMilliSeconds: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_CHARACTERISTICS {}
-impl ::core::clone::Clone for USB_DEVICE_CHARACTERISTICS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_CHARACTERISTICS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_CHARACTERISTICS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_CHARACTERISTICS {
+impl Default for USB_DEVICE_CHARACTERISTICS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -4339,21 +3122,16 @@ pub struct USB_DEVICE_DESCRIPTOR {
     pub iSerialNumber: u8,
     pub bNumConfigurations: u8,
 }
-impl ::core::marker::Copy for USB_DEVICE_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_DESCRIPTOR {
+impl Default for USB_DEVICE_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_INFO {
     pub DeviceState: USB_DEVICE_STATE,
     pub PortNumber: u16,
@@ -4370,23 +3148,16 @@ pub struct USB_DEVICE_INFO {
     pub NumberOfOpenPipes: u32,
     pub PipeList: [USB_PIPE_INFO; 1],
 }
-impl ::core::marker::Copy for USB_DEVICE_INFO {}
-impl ::core::clone::Clone for USB_DEVICE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_INFO {
+impl Default for USB_DEVICE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_NODE_INFO {
     pub Sig: u32,
     pub LengthInBytes: u32,
@@ -4395,27 +3166,16 @@ pub struct USB_DEVICE_NODE_INFO {
     pub BusAddress: USB_TOPOLOGY_ADDRESS,
     pub Anonymous: USB_DEVICE_NODE_INFO_0,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_DEVICE_NODE_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_DEVICE_NODE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_NODE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_DEVICE_NODE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_DEVICE_NODE_INFO {
+impl Default for USB_DEVICE_NODE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_NODE_INFO_0 {
     pub UsbDeviceInfo: USB_DEVICE_INFO,
     pub HubDeviceInfo: USB_HUB_DEVICE_INFO,
@@ -4423,25 +3183,16 @@ pub union USB_DEVICE_NODE_INFO_0 {
     pub ControllerDeviceInfo: USB_CONTROLLER_DEVICE_INFO,
     pub DeviceInformation: [u8; 4],
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_DEVICE_NODE_INFO_0 {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_DEVICE_NODE_INFO_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_NODE_INFO_0 {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_DEVICE_NODE_INFO_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_DEVICE_NODE_INFO_0 {
+impl Default for USB_DEVICE_NODE_INFO_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_PERFORMANCE_INFO {
     pub BulkBytes: u32,
     pub ControlDataBytes: u32,
@@ -4467,21 +3218,16 @@ pub struct USB_DEVICE_PERFORMANCE_INFO {
     pub HcPeriodicIdleState: u32,
     pub HcPeriodicCacheFlushCount: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_PERFORMANCE_INFO {}
-impl ::core::clone::Clone for USB_DEVICE_PERFORMANCE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_PERFORMANCE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_PERFORMANCE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_PERFORMANCE_INFO {
+impl Default for USB_DEVICE_PERFORMANCE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_QUALIFIER_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -4493,78 +3239,56 @@ pub struct USB_DEVICE_QUALIFIER_DESCRIPTOR {
     pub bNumConfigurations: u8,
     pub bReserved: u8,
 }
-impl ::core::marker::Copy for USB_DEVICE_QUALIFIER_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_DEVICE_QUALIFIER_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_QUALIFIER_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_QUALIFIER_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_QUALIFIER_DESCRIPTOR {
+impl Default for USB_DEVICE_QUALIFIER_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_STATE {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_DEVICE_STATE {}
-impl ::core::clone::Clone for USB_DEVICE_STATE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_STATE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_STATE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_STATE {
+impl Default for USB_DEVICE_STATE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_DEVICE_STATUS {
     pub AsUshort16: u16,
     pub Anonymous: USB_DEVICE_STATUS_0,
 }
-impl ::core::marker::Copy for USB_DEVICE_STATUS {}
-impl ::core::clone::Clone for USB_DEVICE_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_STATUS {
+impl Default for USB_DEVICE_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_DEVICE_STATUS_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_DEVICE_STATUS_0 {}
-impl ::core::clone::Clone for USB_DEVICE_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DEVICE_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_DEVICE_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_DEVICE_STATUS_0 {
+impl Default for USB_DEVICE_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_DRIVER_VERSION_PARAMETERS {
     pub DriverTrackingCode: u32,
     pub USBDI_Version: u32,
@@ -4573,25 +3297,16 @@ pub struct USB_DRIVER_VERSION_PARAMETERS {
     pub CheckedMiniportDriver: super::super::Foundation::BOOLEAN,
     pub USB_Version: u16,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_DRIVER_VERSION_PARAMETERS {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_DRIVER_VERSION_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_DRIVER_VERSION_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_DRIVER_VERSION_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_DRIVER_VERSION_PARAMETERS {
+impl Default for USB_DRIVER_VERSION_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_ENDPOINT_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -4600,60 +3315,43 @@ pub struct USB_ENDPOINT_DESCRIPTOR {
     pub wMaxPacketSize: u16,
     pub bInterval: u8,
 }
-impl ::core::marker::Copy for USB_ENDPOINT_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_ENDPOINT_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_ENDPOINT_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_ENDPOINT_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_ENDPOINT_DESCRIPTOR {
+impl Default for USB_ENDPOINT_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_ENDPOINT_STATUS {
     pub AsUshort16: u16,
     pub Anonymous: USB_ENDPOINT_STATUS_0,
 }
-impl ::core::marker::Copy for USB_ENDPOINT_STATUS {}
-impl ::core::clone::Clone for USB_ENDPOINT_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_ENDPOINT_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_ENDPOINT_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_ENDPOINT_STATUS {
+impl Default for USB_ENDPOINT_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_ENDPOINT_STATUS_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_ENDPOINT_STATUS_0 {}
-impl ::core::clone::Clone for USB_ENDPOINT_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_ENDPOINT_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_ENDPOINT_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_ENDPOINT_STATUS_0 {
+impl Default for USB_ENDPOINT_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
     pub TimeTrackingHandle: super::super::Foundation::HANDLE,
     pub InputFrameNumber: u32,
@@ -4667,286 +3365,190 @@ pub struct USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
     pub CurrentHardwareMicroFrameNumber: u32,
     pub CurrentUSBFrameNumber: u32,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
+impl Default for USB_FRAME_NUMBER_AND_QPC_FOR_TIME_SYNC_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union USB_FUNCTION_SUSPEND_OPTIONS {
     pub AsUchar: u8,
     pub Anonymous: USB_FUNCTION_SUSPEND_OPTIONS_0,
 }
-impl ::core::marker::Copy for USB_FUNCTION_SUSPEND_OPTIONS {}
-impl ::core::clone::Clone for USB_FUNCTION_SUSPEND_OPTIONS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_FUNCTION_SUSPEND_OPTIONS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_FUNCTION_SUSPEND_OPTIONS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_FUNCTION_SUSPEND_OPTIONS {
+impl Default for USB_FUNCTION_SUSPEND_OPTIONS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_FUNCTION_SUSPEND_OPTIONS_0 {
     pub _bitfield: u8,
 }
-impl ::core::marker::Copy for USB_FUNCTION_SUSPEND_OPTIONS_0 {}
-impl ::core::clone::Clone for USB_FUNCTION_SUSPEND_OPTIONS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_FUNCTION_SUSPEND_OPTIONS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_FUNCTION_SUSPEND_OPTIONS_0 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_FUNCTION_SUSPEND_OPTIONS_0").field("_bitfield", &self._bitfield).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_FUNCTION_SUSPEND_OPTIONS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_FUNCTION_SUSPEND_OPTIONS_0 {
-    fn eq(&self, other: &Self) -> bool {
-        self._bitfield == other._bitfield
-    }
-}
-impl ::core::cmp::Eq for USB_FUNCTION_SUSPEND_OPTIONS_0 {}
-impl ::core::default::Default for USB_FUNCTION_SUSPEND_OPTIONS_0 {
+impl Default for USB_FUNCTION_SUSPEND_OPTIONS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HCD_DRIVERKEY_NAME {
     pub ActualLength: u32,
     pub DriverKeyName: [u16; 1],
 }
-impl ::core::marker::Copy for USB_HCD_DRIVERKEY_NAME {}
-impl ::core::clone::Clone for USB_HCD_DRIVERKEY_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HCD_DRIVERKEY_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HCD_DRIVERKEY_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HCD_DRIVERKEY_NAME {
+impl Default for USB_HCD_DRIVERKEY_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_HIGH_SPEED_MAXPACKET {
     pub us: u16,
 }
-impl ::core::marker::Copy for USB_HIGH_SPEED_MAXPACKET {}
-impl ::core::clone::Clone for USB_HIGH_SPEED_MAXPACKET {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HIGH_SPEED_MAXPACKET {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HIGH_SPEED_MAXPACKET {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HIGH_SPEED_MAXPACKET {
+impl Default for USB_HIGH_SPEED_MAXPACKET {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HIGH_SPEED_MAXPACKET_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_HIGH_SPEED_MAXPACKET_0 {}
-impl ::core::clone::Clone for USB_HIGH_SPEED_MAXPACKET_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HIGH_SPEED_MAXPACKET_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HIGH_SPEED_MAXPACKET_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HIGH_SPEED_MAXPACKET_0 {
+impl Default for USB_HIGH_SPEED_MAXPACKET_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union USB_HUB_30_PORT_REMOTE_WAKE_MASK {
     pub AsUchar8: u8,
     pub Anonymous: USB_HUB_30_PORT_REMOTE_WAKE_MASK_0,
 }
-impl ::core::marker::Copy for USB_HUB_30_PORT_REMOTE_WAKE_MASK {}
-impl ::core::clone::Clone for USB_HUB_30_PORT_REMOTE_WAKE_MASK {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_30_PORT_REMOTE_WAKE_MASK {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_30_PORT_REMOTE_WAKE_MASK {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_30_PORT_REMOTE_WAKE_MASK {
+impl Default for USB_HUB_30_PORT_REMOTE_WAKE_MASK {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
     pub _bitfield: u8,
 }
-impl ::core::marker::Copy for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {}
-impl ::core::clone::Clone for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_HUB_30_PORT_REMOTE_WAKE_MASK_0").field("_bitfield", &self._bitfield).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
-    fn eq(&self, other: &Self) -> bool {
-        self._bitfield == other._bitfield
-    }
-}
-impl ::core::cmp::Eq for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {}
-impl ::core::default::Default for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
+impl Default for USB_HUB_30_PORT_REMOTE_WAKE_MASK_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_CAPABILITIES {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_HUB_CAPABILITIES {}
-impl ::core::clone::Clone for USB_HUB_CAPABILITIES {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_CAPABILITIES {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_CAPABILITIES {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_CAPABILITIES {
+impl Default for USB_HUB_CAPABILITIES {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_CAPABILITIES_EX {
     pub CapabilityFlags: USB_HUB_CAP_FLAGS,
 }
-impl ::core::marker::Copy for USB_HUB_CAPABILITIES_EX {}
-impl ::core::clone::Clone for USB_HUB_CAPABILITIES_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_CAPABILITIES_EX {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_CAPABILITIES_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_CAPABILITIES_EX {
+impl Default for USB_HUB_CAPABILITIES_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_HUB_CAP_FLAGS {
     pub ul: u32,
     pub Anonymous: USB_HUB_CAP_FLAGS_0,
 }
-impl ::core::marker::Copy for USB_HUB_CAP_FLAGS {}
-impl ::core::clone::Clone for USB_HUB_CAP_FLAGS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_CAP_FLAGS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_CAP_FLAGS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_CAP_FLAGS {
+impl Default for USB_HUB_CAP_FLAGS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_CAP_FLAGS_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_HUB_CAP_FLAGS_0 {}
-impl ::core::clone::Clone for USB_HUB_CAP_FLAGS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_CAP_FLAGS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_CAP_FLAGS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_CAP_FLAGS_0 {
+impl Default for USB_HUB_CAP_FLAGS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_HUB_CHANGE {
     pub AsUshort16: u16,
     pub Anonymous: USB_HUB_CHANGE_0,
 }
-impl ::core::marker::Copy for USB_HUB_CHANGE {}
-impl ::core::clone::Clone for USB_HUB_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_CHANGE {
+impl Default for USB_HUB_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_CHANGE_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_HUB_CHANGE_0 {}
-impl ::core::clone::Clone for USB_HUB_CHANGE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_CHANGE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_CHANGE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_CHANGE_0 {
+impl Default for USB_HUB_CHANGE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_DESCRIPTOR {
     pub bDescriptorLength: u8,
     pub bDescriptorType: u8,
@@ -4956,23 +3558,16 @@ pub struct USB_HUB_DESCRIPTOR {
     pub bHubControlCurrent: u8,
     pub bRemoveAndPowerMask: [u8; 64],
 }
-impl ::core::marker::Copy for USB_HUB_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_HUB_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_DESCRIPTOR {
+impl Default for USB_HUB_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_DEVICE_INFO {
     pub HubDescriptor: USB_HUB_DESCRIPTOR,
     pub HubNumber: u32,
@@ -4983,132 +3578,92 @@ pub struct USB_HUB_DEVICE_INFO {
     pub NumberOfHubPorts: u32,
     pub PortInfo: [USB_HUB_PORT_INFORMATION; 1],
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_HUB_DEVICE_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_HUB_DEVICE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_DEVICE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_HUB_DEVICE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_HUB_DEVICE_INFO {
+impl Default for USB_HUB_DEVICE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_DEVICE_UXD_SETTINGS {
     pub Version: u32,
-    pub PnpGuid: ::windows_core::GUID,
-    pub OwnerGuid: ::windows_core::GUID,
+    pub PnpGuid: windows_core::GUID,
+    pub OwnerGuid: windows_core::GUID,
     pub DeleteOnShutdown: u32,
     pub DeleteOnReload: u32,
     pub DeleteOnDisconnect: u32,
     pub Reserved: [u32; 5],
 }
-impl ::core::marker::Copy for USB_HUB_DEVICE_UXD_SETTINGS {}
-impl ::core::clone::Clone for USB_HUB_DEVICE_UXD_SETTINGS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_DEVICE_UXD_SETTINGS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_DEVICE_UXD_SETTINGS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_DEVICE_UXD_SETTINGS {
+impl Default for USB_HUB_DEVICE_UXD_SETTINGS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_INFORMATION {
     pub HubDescriptor: USB_HUB_DESCRIPTOR,
     pub HubIsBusPowered: super::super::Foundation::BOOLEAN,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_HUB_INFORMATION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_HUB_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_HUB_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_HUB_INFORMATION {
+impl Default for USB_HUB_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_INFORMATION_EX {
     pub HubType: USB_HUB_TYPE,
     pub HighestPortNumber: u16,
     pub u: USB_HUB_INFORMATION_EX_0,
 }
-impl ::core::marker::Copy for USB_HUB_INFORMATION_EX {}
-impl ::core::clone::Clone for USB_HUB_INFORMATION_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_INFORMATION_EX {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_INFORMATION_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_INFORMATION_EX {
+impl Default for USB_HUB_INFORMATION_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union USB_HUB_INFORMATION_EX_0 {
     pub UsbHubDescriptor: USB_HUB_DESCRIPTOR,
     pub Usb30HubDescriptor: USB_30_HUB_DESCRIPTOR,
 }
-impl ::core::marker::Copy for USB_HUB_INFORMATION_EX_0 {}
-impl ::core::clone::Clone for USB_HUB_INFORMATION_EX_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_INFORMATION_EX_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_INFORMATION_EX_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_INFORMATION_EX_0 {
+impl Default for USB_HUB_INFORMATION_EX_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_NAME {
     pub ActualLength: u32,
     pub HubName: [u16; 1],
 }
-impl ::core::marker::Copy for USB_HUB_NAME {}
-impl ::core::clone::Clone for USB_HUB_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_NAME {
+impl Default for USB_HUB_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_PORT_INFORMATION {
     pub DeviceState: USB_DEVICE_STATE,
     pub PortNumber: u16,
@@ -5116,141 +3671,101 @@ pub struct USB_HUB_PORT_INFORMATION {
     pub ConnectionIndex: u32,
     pub ConnectionStatus: USB_CONNECTION_STATUS,
 }
-impl ::core::marker::Copy for USB_HUB_PORT_INFORMATION {}
-impl ::core::clone::Clone for USB_HUB_PORT_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_PORT_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_PORT_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_PORT_INFORMATION {
+impl Default for USB_HUB_PORT_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_HUB_STATUS {
     pub AsUshort16: u16,
     pub Anonymous: USB_HUB_STATUS_0,
 }
-impl ::core::marker::Copy for USB_HUB_STATUS {}
-impl ::core::clone::Clone for USB_HUB_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_STATUS {
+impl Default for USB_HUB_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_STATUS_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_HUB_STATUS_0 {}
-impl ::core::clone::Clone for USB_HUB_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_STATUS_0 {
+impl Default for USB_HUB_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_HUB_STATUS_AND_CHANGE {
     pub AsUlong32: u32,
     pub Anonymous: USB_HUB_STATUS_AND_CHANGE_0,
 }
-impl ::core::marker::Copy for USB_HUB_STATUS_AND_CHANGE {}
-impl ::core::clone::Clone for USB_HUB_STATUS_AND_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_STATUS_AND_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_STATUS_AND_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_STATUS_AND_CHANGE {
+impl Default for USB_HUB_STATUS_AND_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USB_HUB_STATUS_AND_CHANGE_0 {
     pub HubStatus: USB_HUB_STATUS,
     pub HubChange: USB_HUB_CHANGE,
 }
-impl ::core::marker::Copy for USB_HUB_STATUS_AND_CHANGE_0 {}
-impl ::core::clone::Clone for USB_HUB_STATUS_AND_CHANGE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_HUB_STATUS_AND_CHANGE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_HUB_STATUS_AND_CHANGE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_HUB_STATUS_AND_CHANGE_0 {
+impl Default for USB_HUB_STATUS_AND_CHANGE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug)]
 pub struct USB_IDLE_CALLBACK_INFO {
     pub IdleCallback: USB_IDLE_CALLBACK,
-    pub IdleContext: *mut ::core::ffi::c_void,
+    pub IdleContext: *mut core::ffi::c_void,
 }
-impl ::core::marker::Copy for USB_IDLE_CALLBACK_INFO {}
-impl ::core::clone::Clone for USB_IDLE_CALLBACK_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_IDLE_CALLBACK_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_IDLE_CALLBACK_INFO {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_IDLE_CALLBACK_INFO").field("IdleContext", &self.IdleContext).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_IDLE_CALLBACK_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_IDLE_CALLBACK_INFO {
+impl Default for USB_IDLE_CALLBACK_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_ID_STRING {
     pub LanguageId: u16,
     pub Pad: u16,
     pub LengthInBytes: u32,
-    pub Buffer: ::windows_core::PWSTR,
+    pub Buffer: windows_core::PWSTR,
 }
-impl ::core::marker::Copy for USB_ID_STRING {}
-impl ::core::clone::Clone for USB_ID_STRING {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_ID_STRING {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_ID_STRING {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_ID_STRING {
+impl Default for USB_ID_STRING {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -5261,32 +3776,16 @@ pub struct USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
     pub bFunctionProtocol: u8,
     pub iFunction: u8,
 }
-impl ::core::marker::Copy for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_INTERFACE_ASSOCIATION_DESCRIPTOR").field("bLength", &self.bLength).field("bDescriptorType", &self.bDescriptorType).field("bFirstInterface", &self.bFirstInterface).field("bInterfaceCount", &self.bInterfaceCount).field("bFunctionClass", &self.bFunctionClass).field("bFunctionSubClass", &self.bFunctionSubClass).field("bFunctionProtocol", &self.bFunctionProtocol).field("iFunction", &self.iFunction).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.bLength == other.bLength && self.bDescriptorType == other.bDescriptorType && self.bFirstInterface == other.bFirstInterface && self.bInterfaceCount == other.bInterfaceCount && self.bFunctionClass == other.bFunctionClass && self.bFunctionSubClass == other.bFunctionSubClass && self.bFunctionProtocol == other.bFunctionProtocol && self.iFunction == other.iFunction
-    }
-}
-impl ::core::cmp::Eq for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {}
-impl ::core::default::Default for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
+impl Default for USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_INTERFACE_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -5298,32 +3797,16 @@ pub struct USB_INTERFACE_DESCRIPTOR {
     pub bInterfaceProtocol: u8,
     pub iInterface: u8,
 }
-impl ::core::marker::Copy for USB_INTERFACE_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_INTERFACE_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_INTERFACE_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_INTERFACE_DESCRIPTOR {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_INTERFACE_DESCRIPTOR").field("bLength", &self.bLength).field("bDescriptorType", &self.bDescriptorType).field("bInterfaceNumber", &self.bInterfaceNumber).field("bAlternateSetting", &self.bAlternateSetting).field("bNumEndpoints", &self.bNumEndpoints).field("bInterfaceClass", &self.bInterfaceClass).field("bInterfaceSubClass", &self.bInterfaceSubClass).field("bInterfaceProtocol", &self.bInterfaceProtocol).field("iInterface", &self.iInterface).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_INTERFACE_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_INTERFACE_DESCRIPTOR {
-    fn eq(&self, other: &Self) -> bool {
-        self.bLength == other.bLength && self.bDescriptorType == other.bDescriptorType && self.bInterfaceNumber == other.bInterfaceNumber && self.bAlternateSetting == other.bAlternateSetting && self.bNumEndpoints == other.bNumEndpoints && self.bInterfaceClass == other.bInterfaceClass && self.bInterfaceSubClass == other.bInterfaceSubClass && self.bInterfaceProtocol == other.bInterfaceProtocol && self.iInterface == other.iInterface
-    }
-}
-impl ::core::cmp::Eq for USB_INTERFACE_DESCRIPTOR {}
-impl ::core::default::Default for USB_INTERFACE_DESCRIPTOR {
+impl Default for USB_INTERFACE_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_INTERFACE_POWER_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -5338,118 +3821,86 @@ pub struct USB_INTERFACE_POWER_DESCRIPTOR {
     pub TransitionTimeFromD2: u16,
     pub TransitionTimeFromD3: u16,
 }
-impl ::core::marker::Copy for USB_INTERFACE_POWER_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_INTERFACE_POWER_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_INTERFACE_POWER_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_INTERFACE_POWER_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_INTERFACE_POWER_DESCRIPTOR {
+impl Default for USB_INTERFACE_POWER_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_INTERFACE_STATUS {
     pub AsUshort16: u16,
     pub Anonymous: USB_INTERFACE_STATUS_0,
 }
-impl ::core::marker::Copy for USB_INTERFACE_STATUS {}
-impl ::core::clone::Clone for USB_INTERFACE_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_INTERFACE_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_INTERFACE_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_INTERFACE_STATUS {
+impl Default for USB_INTERFACE_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_INTERFACE_STATUS_0 {
     pub _bitfield: u16,
 }
-impl ::core::marker::Copy for USB_INTERFACE_STATUS_0 {}
-impl ::core::clone::Clone for USB_INTERFACE_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_INTERFACE_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_INTERFACE_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_INTERFACE_STATUS_0 {
+impl Default for USB_INTERFACE_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_MI_PARENT_INFORMATION {
     pub NumberOfInterfaces: u32,
 }
-impl ::core::marker::Copy for USB_MI_PARENT_INFORMATION {}
-impl ::core::clone::Clone for USB_MI_PARENT_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_MI_PARENT_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_MI_PARENT_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_MI_PARENT_INFORMATION {
+impl Default for USB_MI_PARENT_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_ATTRIBUTES {
     pub ConnectionIndex: u32,
     pub ConnectionStatus: USB_CONNECTION_STATUS,
     pub PortAttributes: u32,
 }
-impl ::core::marker::Copy for USB_NODE_CONNECTION_ATTRIBUTES {}
-impl ::core::clone::Clone for USB_NODE_CONNECTION_ATTRIBUTES {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_ATTRIBUTES {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_ATTRIBUTES {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NODE_CONNECTION_ATTRIBUTES {
+impl Default for USB_NODE_CONNECTION_ATTRIBUTES {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_DRIVERKEY_NAME {
     pub ConnectionIndex: u32,
     pub ActualLength: u32,
     pub DriverKeyName: [u16; 1],
 }
-impl ::core::marker::Copy for USB_NODE_CONNECTION_DRIVERKEY_NAME {}
-impl ::core::clone::Clone for USB_NODE_CONNECTION_DRIVERKEY_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_DRIVERKEY_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_DRIVERKEY_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NODE_CONNECTION_DRIVERKEY_NAME {
+impl Default for USB_NODE_CONNECTION_DRIVERKEY_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_INFORMATION {
     pub ConnectionIndex: u32,
     pub DeviceDescriptor: USB_DEVICE_DESCRIPTOR,
@@ -5461,27 +3912,16 @@ pub struct USB_NODE_CONNECTION_INFORMATION {
     pub ConnectionStatus: USB_CONNECTION_STATUS,
     pub PipeList: [USB_PIPE_INFO; 1],
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_NODE_CONNECTION_INFORMATION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_NODE_CONNECTION_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_NODE_CONNECTION_INFORMATION {
+impl Default for USB_NODE_CONNECTION_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_INFORMATION_EX {
     pub ConnectionIndex: u32,
     pub DeviceDescriptor: USB_DEVICE_DESCRIPTOR,
@@ -5493,249 +3933,173 @@ pub struct USB_NODE_CONNECTION_INFORMATION_EX {
     pub ConnectionStatus: USB_CONNECTION_STATUS,
     pub PipeList: [USB_PIPE_INFO; 1],
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_NODE_CONNECTION_INFORMATION_EX {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_NODE_CONNECTION_INFORMATION_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_NODE_CONNECTION_INFORMATION_EX {
+impl Default for USB_NODE_CONNECTION_INFORMATION_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_INFORMATION_EX_V2 {
     pub ConnectionIndex: u32,
     pub Length: u32,
     pub SupportedUsbProtocols: USB_PROTOCOLS,
     pub Flags: USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS,
 }
-impl ::core::marker::Copy for USB_NODE_CONNECTION_INFORMATION_EX_V2 {}
-impl ::core::clone::Clone for USB_NODE_CONNECTION_INFORMATION_EX_V2 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX_V2 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX_V2 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NODE_CONNECTION_INFORMATION_EX_V2 {
+impl Default for USB_NODE_CONNECTION_INFORMATION_EX_V2 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {
     pub ul: u32,
     pub Anonymous: USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0,
 }
-impl ::core::marker::Copy for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {}
-impl ::core::clone::Clone for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {
+impl Default for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {}
-impl ::core::clone::Clone for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {
+impl Default for USB_NODE_CONNECTION_INFORMATION_EX_V2_FLAGS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_CONNECTION_NAME {
     pub ConnectionIndex: u32,
     pub ActualLength: u32,
     pub NodeName: [u16; 1],
 }
-impl ::core::marker::Copy for USB_NODE_CONNECTION_NAME {}
-impl ::core::clone::Clone for USB_NODE_CONNECTION_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_CONNECTION_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NODE_CONNECTION_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NODE_CONNECTION_NAME {
+impl Default for USB_NODE_CONNECTION_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_NODE_INFORMATION {
     pub NodeType: USB_HUB_NODE,
     pub u: USB_NODE_INFORMATION_0,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_NODE_INFORMATION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_NODE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_NODE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_NODE_INFORMATION {
+impl Default for USB_NODE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub union USB_NODE_INFORMATION_0 {
     pub HubInformation: USB_HUB_INFORMATION,
     pub MiParentInformation: USB_MI_PARENT_INFORMATION,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_NODE_INFORMATION_0 {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_NODE_INFORMATION_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NODE_INFORMATION_0 {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_NODE_INFORMATION_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_NODE_INFORMATION_0 {
+impl Default for USB_NODE_INFORMATION_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_NOTIFICATION {
     pub NotificationType: USB_NOTIFICATION_TYPE,
 }
-impl ::core::marker::Copy for USB_NOTIFICATION {}
-impl ::core::clone::Clone for USB_NOTIFICATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_NOTIFICATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_NOTIFICATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_NOTIFICATION {
+impl Default for USB_NOTIFICATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_OPEN_RAW_DEVICE_PARAMETERS {
     pub PortStatus: u16,
     pub MaxPacketEp0: u16,
 }
-impl ::core::marker::Copy for USB_OPEN_RAW_DEVICE_PARAMETERS {}
-impl ::core::clone::Clone for USB_OPEN_RAW_DEVICE_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_OPEN_RAW_DEVICE_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_OPEN_RAW_DEVICE_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_OPEN_RAW_DEVICE_PARAMETERS {
+impl Default for USB_OPEN_RAW_DEVICE_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_PASS_THRU_PARAMETERS {
-    pub FunctionGUID: ::windows_core::GUID,
+    pub FunctionGUID: windows_core::GUID,
     pub ParameterLength: u32,
     pub Parameters: [u8; 4],
 }
-impl ::core::marker::Copy for USB_PASS_THRU_PARAMETERS {}
-impl ::core::clone::Clone for USB_PASS_THRU_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PASS_THRU_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PASS_THRU_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PASS_THRU_PARAMETERS {
+impl Default for USB_PASS_THRU_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_PIPE_INFO {
     pub EndpointDescriptor: USB_ENDPOINT_DESCRIPTOR,
     pub ScheduleOffset: u32,
 }
-impl ::core::marker::Copy for USB_PIPE_INFO {}
-impl ::core::clone::Clone for USB_PIPE_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PIPE_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PIPE_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PIPE_INFO {
+impl Default for USB_PIPE_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PORT_CHANGE {
     pub AsUshort16: u16,
     pub Usb20PortChange: USB_20_PORT_CHANGE,
     pub Usb30PortChange: USB_30_PORT_CHANGE,
 }
-impl ::core::marker::Copy for USB_PORT_CHANGE {}
-impl ::core::clone::Clone for USB_PORT_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_CHANGE {
+impl Default for USB_PORT_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_PORT_CONNECTOR_PROPERTIES {
     pub ConnectionIndex: u32,
     pub ActualLength: u32,
@@ -5744,193 +4108,141 @@ pub struct USB_PORT_CONNECTOR_PROPERTIES {
     pub CompanionPortNumber: u16,
     pub CompanionHubSymbolicLinkName: [u16; 1],
 }
-impl ::core::marker::Copy for USB_PORT_CONNECTOR_PROPERTIES {}
-impl ::core::clone::Clone for USB_PORT_CONNECTOR_PROPERTIES {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_CONNECTOR_PROPERTIES {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_CONNECTOR_PROPERTIES {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_CONNECTOR_PROPERTIES {
+impl Default for USB_PORT_CONNECTOR_PROPERTIES {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PORT_EXT_STATUS {
     pub AsUlong32: u32,
     pub Anonymous: USB_PORT_EXT_STATUS_0,
 }
-impl ::core::marker::Copy for USB_PORT_EXT_STATUS {}
-impl ::core::clone::Clone for USB_PORT_EXT_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_EXT_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_EXT_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_EXT_STATUS {
+impl Default for USB_PORT_EXT_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_PORT_EXT_STATUS_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_PORT_EXT_STATUS_0 {}
-impl ::core::clone::Clone for USB_PORT_EXT_STATUS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_EXT_STATUS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_EXT_STATUS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_EXT_STATUS_0 {
+impl Default for USB_PORT_EXT_STATUS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PORT_EXT_STATUS_AND_CHANGE {
     pub AsUlong64: u64,
     pub Anonymous: USB_PORT_EXT_STATUS_AND_CHANGE_0,
 }
-impl ::core::marker::Copy for USB_PORT_EXT_STATUS_AND_CHANGE {}
-impl ::core::clone::Clone for USB_PORT_EXT_STATUS_AND_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_EXT_STATUS_AND_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_EXT_STATUS_AND_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_EXT_STATUS_AND_CHANGE {
+impl Default for USB_PORT_EXT_STATUS_AND_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USB_PORT_EXT_STATUS_AND_CHANGE_0 {
     pub PortStatusChange: USB_PORT_STATUS_AND_CHANGE,
     pub PortExtStatus: USB_PORT_EXT_STATUS,
 }
-impl ::core::marker::Copy for USB_PORT_EXT_STATUS_AND_CHANGE_0 {}
-impl ::core::clone::Clone for USB_PORT_EXT_STATUS_AND_CHANGE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_EXT_STATUS_AND_CHANGE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_EXT_STATUS_AND_CHANGE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_EXT_STATUS_AND_CHANGE_0 {
+impl Default for USB_PORT_EXT_STATUS_AND_CHANGE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PORT_PROPERTIES {
     pub ul: u32,
     pub Anonymous: USB_PORT_PROPERTIES_0,
 }
-impl ::core::marker::Copy for USB_PORT_PROPERTIES {}
-impl ::core::clone::Clone for USB_PORT_PROPERTIES {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_PROPERTIES {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_PROPERTIES {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_PROPERTIES {
+impl Default for USB_PORT_PROPERTIES {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_PORT_PROPERTIES_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_PORT_PROPERTIES_0 {}
-impl ::core::clone::Clone for USB_PORT_PROPERTIES_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_PROPERTIES_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_PROPERTIES_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_PROPERTIES_0 {
+impl Default for USB_PORT_PROPERTIES_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PORT_STATUS {
     pub AsUshort16: u16,
     pub Usb20PortStatus: USB_20_PORT_STATUS,
     pub Usb30PortStatus: USB_30_PORT_STATUS,
 }
-impl ::core::marker::Copy for USB_PORT_STATUS {}
-impl ::core::clone::Clone for USB_PORT_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_STATUS {
+impl Default for USB_PORT_STATUS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PORT_STATUS_AND_CHANGE {
     pub AsUlong32: u32,
     pub Anonymous: USB_PORT_STATUS_AND_CHANGE_0,
 }
-impl ::core::marker::Copy for USB_PORT_STATUS_AND_CHANGE {}
-impl ::core::clone::Clone for USB_PORT_STATUS_AND_CHANGE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_STATUS_AND_CHANGE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_STATUS_AND_CHANGE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_STATUS_AND_CHANGE {
+impl Default for USB_PORT_STATUS_AND_CHANGE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct USB_PORT_STATUS_AND_CHANGE_0 {
     pub PortStatus: USB_PORT_STATUS,
     pub PortChange: USB_PORT_CHANGE,
 }
-impl ::core::marker::Copy for USB_PORT_STATUS_AND_CHANGE_0 {}
-impl ::core::clone::Clone for USB_PORT_STATUS_AND_CHANGE_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PORT_STATUS_AND_CHANGE_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PORT_STATUS_AND_CHANGE_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PORT_STATUS_AND_CHANGE_0 {
+impl Default for USB_PORT_STATUS_AND_CHANGE_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_POWER_INFO {
     pub SystemState: WDMUSB_POWER_STATE,
     pub HcDevicePowerState: WDMUSB_POWER_STATE,
@@ -5943,81 +4255,57 @@ pub struct USB_POWER_INFO {
     pub CanWakeup: super::super::Foundation::BOOLEAN,
     pub IsPowered: super::super::Foundation::BOOLEAN,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_POWER_INFO {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_POWER_INFO {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_POWER_INFO {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_POWER_INFO {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_POWER_INFO {
+impl Default for USB_POWER_INFO {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub union USB_PROTOCOLS {
     pub ul: u32,
     pub Anonymous: USB_PROTOCOLS_0,
 }
-impl ::core::marker::Copy for USB_PROTOCOLS {}
-impl ::core::clone::Clone for USB_PROTOCOLS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PROTOCOLS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PROTOCOLS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PROTOCOLS {
+impl Default for USB_PROTOCOLS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_PROTOCOLS_0 {
     pub _bitfield: u32,
 }
-impl ::core::marker::Copy for USB_PROTOCOLS_0 {}
-impl ::core::clone::Clone for USB_PROTOCOLS_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_PROTOCOLS_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_PROTOCOLS_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_PROTOCOLS_0 {
+impl Default for USB_PROTOCOLS_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_ROOT_HUB_NAME {
     pub ActualLength: u32,
     pub RootHubName: [u16; 1],
 }
-impl ::core::marker::Copy for USB_ROOT_HUB_NAME {}
-impl ::core::clone::Clone for USB_ROOT_HUB_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_ROOT_HUB_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_ROOT_HUB_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_ROOT_HUB_NAME {
+impl Default for USB_ROOT_HUB_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_SEND_RAW_COMMAND_PARAMETERS {
     pub Usb_bmRequest: u8,
     pub Usb_bRequest: u8,
@@ -6031,111 +4319,74 @@ pub struct USB_SEND_RAW_COMMAND_PARAMETERS {
     pub UsbdStatusCode: i32,
     pub Data: [u8; 4],
 }
-impl ::core::marker::Copy for USB_SEND_RAW_COMMAND_PARAMETERS {}
-impl ::core::clone::Clone for USB_SEND_RAW_COMMAND_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_SEND_RAW_COMMAND_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_SEND_RAW_COMMAND_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_SEND_RAW_COMMAND_PARAMETERS {
+impl Default for USB_SEND_RAW_COMMAND_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {
     pub TimeTrackingHandle: super::super::Foundation::HANDLE,
     pub IsStartupDelayTolerable: super::super::Foundation::BOOLEAN,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {
+impl Default for USB_START_TRACKING_FOR_TIME_SYNC_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {
     pub TimeTrackingHandle: super::super::Foundation::HANDLE,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {
+impl Default for USB_STOP_TRACKING_FOR_TIME_SYNC_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_STRING_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
     pub bString: [u16; 1],
 }
-impl ::core::marker::Copy for USB_STRING_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_STRING_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_STRING_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_STRING_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_STRING_DESCRIPTOR {
+impl Default for USB_STRING_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
     pub wReserved: u16,
     pub dwBytesPerInterval: u32,
 }
-impl ::core::marker::Copy for USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {
+impl Default for USB_SUPERSPEEDPLUS_ISOCH_ENDPOINT_COMPANION_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
     pub bLength: u8,
     pub bDescriptorType: u8,
@@ -6143,99 +4394,57 @@ pub struct USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
     pub bmAttributes: USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0,
     pub wBytesPerInterval: u16,
 }
-impl ::core::marker::Copy for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {}
-impl ::core::clone::Clone for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
+impl Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub union USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {
     pub AsUchar: u8,
     pub Bulk: USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0,
     pub Isochronous: USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1,
 }
-impl ::core::marker::Copy for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {}
-impl ::core::clone::Clone for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {
+impl Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
     pub _bitfield: u8,
 }
-impl ::core::marker::Copy for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {}
-impl ::core::clone::Clone for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0").field("_bitfield", &self._bitfield).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
-    fn eq(&self, other: &Self) -> bool {
-        self._bitfield == other._bitfield
-    }
-}
-impl ::core::cmp::Eq for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {}
-impl ::core::default::Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
+impl Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
     pub _bitfield: u8,
 }
-impl ::core::marker::Copy for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {}
-impl ::core::clone::Clone for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1").field("_bitfield", &self._bitfield).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
-    fn eq(&self, other: &Self) -> bool {
-        self._bitfield == other._bitfield
-    }
-}
-impl ::core::cmp::Eq for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {}
-impl ::core::default::Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
+impl Default for USB_SUPERSPEED_ENDPOINT_COMPANION_DESCRIPTOR_0_1 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct USB_TOPOLOGY_ADDRESS {
     pub PciBusNumber: u32,
     pub PciDeviceNumber: u32,
@@ -6245,206 +4454,141 @@ pub struct USB_TOPOLOGY_ADDRESS {
     pub HubPortNumber: [u16; 5],
     pub Reserved2: u16,
 }
-impl ::core::marker::Copy for USB_TOPOLOGY_ADDRESS {}
-impl ::core::clone::Clone for USB_TOPOLOGY_ADDRESS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_TOPOLOGY_ADDRESS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for USB_TOPOLOGY_ADDRESS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("USB_TOPOLOGY_ADDRESS").field("PciBusNumber", &self.PciBusNumber).field("PciDeviceNumber", &self.PciDeviceNumber).field("PciFunctionNumber", &self.PciFunctionNumber).field("Reserved", &self.Reserved).field("RootHubPortNumber", &self.RootHubPortNumber).field("HubPortNumber", &self.HubPortNumber).field("Reserved2", &self.Reserved2).finish()
-    }
-}
-impl ::windows_core::TypeKind for USB_TOPOLOGY_ADDRESS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for USB_TOPOLOGY_ADDRESS {
-    fn eq(&self, other: &Self) -> bool {
-        self.PciBusNumber == other.PciBusNumber && self.PciDeviceNumber == other.PciDeviceNumber && self.PciFunctionNumber == other.PciFunctionNumber && self.Reserved == other.Reserved && self.RootHubPortNumber == other.RootHubPortNumber && self.HubPortNumber == other.HubPortNumber && self.Reserved2 == other.Reserved2
-    }
-}
-impl ::core::cmp::Eq for USB_TOPOLOGY_ADDRESS {}
-impl ::core::default::Default for USB_TOPOLOGY_ADDRESS {
+impl Default for USB_TOPOLOGY_ADDRESS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_TRANSPORT_CHARACTERISTICS {
     pub Version: u32,
     pub TransportCharacteristicsFlags: u32,
     pub CurrentRoundtripLatencyInMilliSeconds: u64,
     pub MaxPotentialBandwidth: u64,
 }
-impl ::core::marker::Copy for USB_TRANSPORT_CHARACTERISTICS {}
-impl ::core::clone::Clone for USB_TRANSPORT_CHARACTERISTICS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_TRANSPORT_CHARACTERISTICS {
+impl Default for USB_TRANSPORT_CHARACTERISTICS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {
     pub Handle: USB_CHANGE_REGISTRATION_HANDLE,
     pub UsbTransportCharacteristics: USB_TRANSPORT_CHARACTERISTICS,
 }
-impl ::core::marker::Copy for USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {}
-impl ::core::clone::Clone for USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {
+impl Default for USB_TRANSPORT_CHARACTERISTICS_CHANGE_NOTIFICATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {
     pub ChangeNotificationInputFlags: u32,
     pub Handle: USB_CHANGE_REGISTRATION_HANDLE,
     pub UsbTransportCharacteristics: USB_TRANSPORT_CHARACTERISTICS,
 }
-impl ::core::marker::Copy for USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {}
-impl ::core::clone::Clone for USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {
+impl Default for USB_TRANSPORT_CHARACTERISTICS_CHANGE_REGISTRATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {
     pub Handle: USB_CHANGE_REGISTRATION_HANDLE,
 }
-impl ::core::marker::Copy for USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {}
-impl ::core::clone::Clone for USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {
+impl Default for USB_TRANSPORT_CHARACTERISTICS_CHANGE_UNREGISTRATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_UNICODE_NAME {
     pub Length: u32,
     pub String: [u16; 1],
 }
-impl ::core::marker::Copy for USB_UNICODE_NAME {}
-impl ::core::clone::Clone for USB_UNICODE_NAME {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_UNICODE_NAME {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_UNICODE_NAME {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_UNICODE_NAME {
+impl Default for USB_UNICODE_NAME {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct USB_USB2HW_VERSION_PARAMETERS {
     pub Usb2HwRevision: u8,
 }
-impl ::core::marker::Copy for USB_USB2HW_VERSION_PARAMETERS {}
-impl ::core::clone::Clone for USB_USB2HW_VERSION_PARAMETERS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for USB_USB2HW_VERSION_PARAMETERS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for USB_USB2HW_VERSION_PARAMETERS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for USB_USB2HW_VERSION_PARAMETERS {
+impl Default for USB_USB2HW_VERSION_PARAMETERS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
-pub struct WINUSB_INTERFACE_HANDLE(pub isize);
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct WINUSB_INTERFACE_HANDLE(pub *mut core::ffi::c_void);
 impl WINUSB_INTERFACE_HANDLE {
     pub fn is_invalid(&self) -> bool {
-        self.0 == 0
+        self.0.is_null()
     }
 }
-impl ::core::default::Default for WINUSB_INTERFACE_HANDLE {
+impl windows_core::Free for WINUSB_INTERFACE_HANDLE {
+    #[inline]
+    unsafe fn free(&mut self) {
+        if !self.is_invalid() {
+            _ = WinUsb_Free(*self);
+        }
+    }
+}
+impl Default for WINUSB_INTERFACE_HANDLE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
-impl ::core::clone::Clone for WINUSB_INTERFACE_HANDLE {
-    fn clone(&self) -> Self {
-        *self
-    }
-}
-impl ::core::marker::Copy for WINUSB_INTERFACE_HANDLE {}
-impl ::core::fmt::Debug for WINUSB_INTERFACE_HANDLE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_tuple("WINUSB_INTERFACE_HANDLE").field(&self.0).finish()
-    }
-}
-impl ::windows_core::TypeKind for WINUSB_INTERFACE_HANDLE {
-    type TypeKind = ::windows_core::CopyType;
+impl windows_core::TypeKind for WINUSB_INTERFACE_HANDLE {
+    type TypeKind = windows_core::CopyType;
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WINUSB_PIPE_INFORMATION {
     pub PipeType: USBD_PIPE_TYPE,
     pub PipeId: u8,
     pub MaximumPacketSize: u16,
     pub Interval: u8,
 }
-impl ::core::marker::Copy for WINUSB_PIPE_INFORMATION {}
-impl ::core::clone::Clone for WINUSB_PIPE_INFORMATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WINUSB_PIPE_INFORMATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for WINUSB_PIPE_INFORMATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("WINUSB_PIPE_INFORMATION").field("PipeType", &self.PipeType).field("PipeId", &self.PipeId).field("MaximumPacketSize", &self.MaximumPacketSize).field("Interval", &self.Interval).finish()
-    }
-}
-impl ::windows_core::TypeKind for WINUSB_PIPE_INFORMATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for WINUSB_PIPE_INFORMATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.PipeType == other.PipeType && self.PipeId == other.PipeId && self.MaximumPacketSize == other.MaximumPacketSize && self.Interval == other.Interval
-    }
-}
-impl ::core::cmp::Eq for WINUSB_PIPE_INFORMATION {}
-impl ::core::default::Default for WINUSB_PIPE_INFORMATION {
+impl Default for WINUSB_PIPE_INFORMATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct WINUSB_PIPE_INFORMATION_EX {
     pub PipeType: USBD_PIPE_TYPE,
     pub PipeId: u8,
@@ -6452,32 +4596,16 @@ pub struct WINUSB_PIPE_INFORMATION_EX {
     pub Interval: u8,
     pub MaximumBytesPerInterval: u32,
 }
-impl ::core::marker::Copy for WINUSB_PIPE_INFORMATION_EX {}
-impl ::core::clone::Clone for WINUSB_PIPE_INFORMATION_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WINUSB_PIPE_INFORMATION_EX {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for WINUSB_PIPE_INFORMATION_EX {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("WINUSB_PIPE_INFORMATION_EX").field("PipeType", &self.PipeType).field("PipeId", &self.PipeId).field("MaximumPacketSize", &self.MaximumPacketSize).field("Interval", &self.Interval).field("MaximumBytesPerInterval", &self.MaximumBytesPerInterval).finish()
-    }
-}
-impl ::windows_core::TypeKind for WINUSB_PIPE_INFORMATION_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for WINUSB_PIPE_INFORMATION_EX {
-    fn eq(&self, other: &Self) -> bool {
-        self.PipeType == other.PipeType && self.PipeId == other.PipeId && self.MaximumPacketSize == other.MaximumPacketSize && self.Interval == other.Interval && self.MaximumBytesPerInterval == other.MaximumBytesPerInterval
-    }
-}
-impl ::core::cmp::Eq for WINUSB_PIPE_INFORMATION_EX {}
-impl ::core::default::Default for WINUSB_PIPE_INFORMATION_EX {
+impl Default for WINUSB_PIPE_INFORMATION_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C, packed(1))]
+#[derive(Clone, Copy)]
 pub struct WINUSB_SETUP_PACKET {
     pub RequestType: u8,
     pub Request: u8,
@@ -6485,64 +4613,43 @@ pub struct WINUSB_SETUP_PACKET {
     pub Index: u16,
     pub Length: u16,
 }
-impl ::core::marker::Copy for WINUSB_SETUP_PACKET {}
-impl ::core::clone::Clone for WINUSB_SETUP_PACKET {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for WINUSB_SETUP_PACKET {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::windows_core::TypeKind for WINUSB_SETUP_PACKET {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::default::Default for WINUSB_SETUP_PACKET {
+impl Default for WINUSB_SETUP_PACKET {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_BULK_OR_INTERRUPT_TRANSFER {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub TransferFlags: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
 }
-impl ::core::marker::Copy for _URB_BULK_OR_INTERRUPT_TRANSFER {}
-impl ::core::clone::Clone for _URB_BULK_OR_INTERRUPT_TRANSFER {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_BULK_OR_INTERRUPT_TRANSFER {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_BULK_OR_INTERRUPT_TRANSFER {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_BULK_OR_INTERRUPT_TRANSFER").field("Hdr", &self.Hdr).field("PipeHandle", &self.PipeHandle).field("TransferFlags", &self.TransferFlags).field("TransferBufferLength", &self.TransferBufferLength).field("TransferBuffer", &self.TransferBuffer).field("TransferBufferMDL", &self.TransferBufferMDL).field("UrbLink", &self.UrbLink).field("hca", &self.hca).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_BULK_OR_INTERRUPT_TRANSFER {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_BULK_OR_INTERRUPT_TRANSFER {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.TransferFlags == other.TransferFlags && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca
-    }
-}
-impl ::core::cmp::Eq for _URB_BULK_OR_INTERRUPT_TRANSFER {}
-impl ::core::default::Default for _URB_BULK_OR_INTERRUPT_TRANSFER {
+impl Default for _URB_BULK_OR_INTERRUPT_TRANSFER {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_DESCRIPTOR_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub Reserved0: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub Reserved1: u16,
@@ -6551,53 +4658,23 @@ pub struct _URB_CONTROL_DESCRIPTOR_REQUEST {
     pub LanguageId: u16,
     pub Reserved2: u16,
 }
-impl ::core::marker::Copy for _URB_CONTROL_DESCRIPTOR_REQUEST {}
-impl ::core::clone::Clone for _URB_CONTROL_DESCRIPTOR_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_DESCRIPTOR_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_DESCRIPTOR_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_DESCRIPTOR_REQUEST")
-            .field("Hdr", &self.Hdr)
-            .field("Reserved", &self.Reserved)
-            .field("Reserved0", &self.Reserved0)
-            .field("TransferBufferLength", &self.TransferBufferLength)
-            .field("TransferBuffer", &self.TransferBuffer)
-            .field("TransferBufferMDL", &self.TransferBufferMDL)
-            .field("UrbLink", &self.UrbLink)
-            .field("hca", &self.hca)
-            .field("Reserved1", &self.Reserved1)
-            .field("Index", &self.Index)
-            .field("DescriptorType", &self.DescriptorType)
-            .field("LanguageId", &self.LanguageId)
-            .field("Reserved2", &self.Reserved2)
-            .finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_DESCRIPTOR_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_DESCRIPTOR_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.Reserved0 == other.Reserved0 && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.Reserved1 == other.Reserved1 && self.Index == other.Index && self.DescriptorType == other.DescriptorType && self.LanguageId == other.LanguageId && self.Reserved2 == other.Reserved2
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_DESCRIPTOR_REQUEST {}
-impl ::core::default::Default for _URB_CONTROL_DESCRIPTOR_REQUEST {
+impl Default for _URB_CONTROL_DESCRIPTOR_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_FEATURE_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub Reserved2: u32,
     pub Reserved3: u32,
-    pub Reserved4: *mut ::core::ffi::c_void,
-    pub Reserved5: *mut ::core::ffi::c_void,
+    pub Reserved4: *mut core::ffi::c_void,
+    pub Reserved5: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub Reserved0: u16,
@@ -6605,228 +4682,132 @@ pub struct _URB_CONTROL_FEATURE_REQUEST {
     pub Index: u16,
     pub Reserved1: u16,
 }
-impl ::core::marker::Copy for _URB_CONTROL_FEATURE_REQUEST {}
-impl ::core::clone::Clone for _URB_CONTROL_FEATURE_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_FEATURE_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_FEATURE_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_FEATURE_REQUEST").field("Hdr", &self.Hdr).field("Reserved", &self.Reserved).field("Reserved2", &self.Reserved2).field("Reserved3", &self.Reserved3).field("Reserved4", &self.Reserved4).field("Reserved5", &self.Reserved5).field("UrbLink", &self.UrbLink).field("hca", &self.hca).field("Reserved0", &self.Reserved0).field("FeatureSelector", &self.FeatureSelector).field("Index", &self.Index).field("Reserved1", &self.Reserved1).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_FEATURE_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_FEATURE_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.Reserved2 == other.Reserved2 && self.Reserved3 == other.Reserved3 && self.Reserved4 == other.Reserved4 && self.Reserved5 == other.Reserved5 && self.UrbLink == other.UrbLink && self.hca == other.hca && self.Reserved0 == other.Reserved0 && self.FeatureSelector == other.FeatureSelector && self.Index == other.Index && self.Reserved1 == other.Reserved1
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_FEATURE_REQUEST {}
-impl ::core::default::Default for _URB_CONTROL_FEATURE_REQUEST {
+impl Default for _URB_CONTROL_FEATURE_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_GET_CONFIGURATION_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub Reserved0: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub Reserved1: [u8; 8],
 }
-impl ::core::marker::Copy for _URB_CONTROL_GET_CONFIGURATION_REQUEST {}
-impl ::core::clone::Clone for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_GET_CONFIGURATION_REQUEST").field("Hdr", &self.Hdr).field("Reserved", &self.Reserved).field("Reserved0", &self.Reserved0).field("TransferBufferLength", &self.TransferBufferLength).field("TransferBuffer", &self.TransferBuffer).field("TransferBufferMDL", &self.TransferBufferMDL).field("UrbLink", &self.UrbLink).field("hca", &self.hca).field("Reserved1", &self.Reserved1).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.Reserved0 == other.Reserved0 && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.Reserved1 == other.Reserved1
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_GET_CONFIGURATION_REQUEST {}
-impl ::core::default::Default for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
+impl Default for _URB_CONTROL_GET_CONFIGURATION_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_GET_INTERFACE_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub Reserved0: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub Reserved1: [u8; 4],
     pub Interface: u16,
     pub Reserved2: u16,
 }
-impl ::core::marker::Copy for _URB_CONTROL_GET_INTERFACE_REQUEST {}
-impl ::core::clone::Clone for _URB_CONTROL_GET_INTERFACE_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_GET_INTERFACE_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_GET_INTERFACE_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_GET_INTERFACE_REQUEST").field("Hdr", &self.Hdr).field("Reserved", &self.Reserved).field("Reserved0", &self.Reserved0).field("TransferBufferLength", &self.TransferBufferLength).field("TransferBuffer", &self.TransferBuffer).field("TransferBufferMDL", &self.TransferBufferMDL).field("UrbLink", &self.UrbLink).field("hca", &self.hca).field("Reserved1", &self.Reserved1).field("Interface", &self.Interface).field("Reserved2", &self.Reserved2).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_GET_INTERFACE_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_GET_INTERFACE_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.Reserved0 == other.Reserved0 && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.Reserved1 == other.Reserved1 && self.Interface == other.Interface && self.Reserved2 == other.Reserved2
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_GET_INTERFACE_REQUEST {}
-impl ::core::default::Default for _URB_CONTROL_GET_INTERFACE_REQUEST {
+impl Default for _URB_CONTROL_GET_INTERFACE_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_GET_STATUS_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub Reserved0: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub Reserved1: [u8; 4],
     pub Index: u16,
     pub Reserved2: u16,
 }
-impl ::core::marker::Copy for _URB_CONTROL_GET_STATUS_REQUEST {}
-impl ::core::clone::Clone for _URB_CONTROL_GET_STATUS_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_GET_STATUS_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_GET_STATUS_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_GET_STATUS_REQUEST").field("Hdr", &self.Hdr).field("Reserved", &self.Reserved).field("Reserved0", &self.Reserved0).field("TransferBufferLength", &self.TransferBufferLength).field("TransferBuffer", &self.TransferBuffer).field("TransferBufferMDL", &self.TransferBufferMDL).field("UrbLink", &self.UrbLink).field("hca", &self.hca).field("Reserved1", &self.Reserved1).field("Index", &self.Index).field("Reserved2", &self.Reserved2).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_GET_STATUS_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_GET_STATUS_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.Reserved0 == other.Reserved0 && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.Reserved1 == other.Reserved1 && self.Index == other.Index && self.Reserved2 == other.Reserved2
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_GET_STATUS_REQUEST {}
-impl ::core::default::Default for _URB_CONTROL_GET_STATUS_REQUEST {
+impl Default for _URB_CONTROL_GET_STATUS_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_TRANSFER {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub TransferFlags: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub SetupPacket: [u8; 8],
 }
-impl ::core::marker::Copy for _URB_CONTROL_TRANSFER {}
-impl ::core::clone::Clone for _URB_CONTROL_TRANSFER {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_TRANSFER {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_TRANSFER {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_TRANSFER").field("Hdr", &self.Hdr).field("PipeHandle", &self.PipeHandle).field("TransferFlags", &self.TransferFlags).field("TransferBufferLength", &self.TransferBufferLength).field("TransferBuffer", &self.TransferBuffer).field("TransferBufferMDL", &self.TransferBufferMDL).field("UrbLink", &self.UrbLink).field("hca", &self.hca).field("SetupPacket", &self.SetupPacket).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_TRANSFER {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_TRANSFER {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.TransferFlags == other.TransferFlags && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.SetupPacket == other.SetupPacket
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_TRANSFER {}
-impl ::core::default::Default for _URB_CONTROL_TRANSFER {
+impl Default for _URB_CONTROL_TRANSFER {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_TRANSFER_EX {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub TransferFlags: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub Timeout: u32,
     pub hca: _URB_HCD_AREA,
     pub SetupPacket: [u8; 8],
 }
-impl ::core::marker::Copy for _URB_CONTROL_TRANSFER_EX {}
-impl ::core::clone::Clone for _URB_CONTROL_TRANSFER_EX {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_TRANSFER_EX {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_TRANSFER_EX {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_TRANSFER_EX").field("Hdr", &self.Hdr).field("PipeHandle", &self.PipeHandle).field("TransferFlags", &self.TransferFlags).field("TransferBufferLength", &self.TransferBufferLength).field("TransferBuffer", &self.TransferBuffer).field("TransferBufferMDL", &self.TransferBufferMDL).field("Timeout", &self.Timeout).field("hca", &self.hca).field("SetupPacket", &self.SetupPacket).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_TRANSFER_EX {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_TRANSFER_EX {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.TransferFlags == other.TransferFlags && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.Timeout == other.Timeout && self.hca == other.hca && self.SetupPacket == other.SetupPacket
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_TRANSFER_EX {}
-impl ::core::default::Default for _URB_CONTROL_TRANSFER_EX {
+impl Default for _URB_CONTROL_TRANSFER_EX {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub TransferFlags: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub RequestTypeReservedBits: u8,
@@ -6835,237 +4816,111 @@ pub struct _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
     pub Index: u16,
     pub Reserved1: u16,
 }
-impl ::core::marker::Copy for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {}
-impl ::core::clone::Clone for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_CONTROL_VENDOR_OR_CLASS_REQUEST")
-            .field("Hdr", &self.Hdr)
-            .field("Reserved", &self.Reserved)
-            .field("TransferFlags", &self.TransferFlags)
-            .field("TransferBufferLength", &self.TransferBufferLength)
-            .field("TransferBuffer", &self.TransferBuffer)
-            .field("TransferBufferMDL", &self.TransferBufferMDL)
-            .field("UrbLink", &self.UrbLink)
-            .field("hca", &self.hca)
-            .field("RequestTypeReservedBits", &self.RequestTypeReservedBits)
-            .field("Request", &self.Request)
-            .field("Value", &self.Value)
-            .field("Index", &self.Index)
-            .field("Reserved1", &self.Reserved1)
-            .finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.TransferFlags == other.TransferFlags && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.RequestTypeReservedBits == other.RequestTypeReservedBits && self.Request == other.Request && self.Value == other.Value && self.Index == other.Index && self.Reserved1 == other.Reserved1
-    }
-}
-impl ::core::cmp::Eq for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {}
-impl ::core::default::Default for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
+impl Default for _URB_CONTROL_VENDOR_OR_CLASS_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_FRAME_LENGTH_CONTROL {
     pub Hdr: _URB_HEADER,
 }
-impl ::core::marker::Copy for _URB_FRAME_LENGTH_CONTROL {}
-impl ::core::clone::Clone for _URB_FRAME_LENGTH_CONTROL {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_FRAME_LENGTH_CONTROL {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_FRAME_LENGTH_CONTROL {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_FRAME_LENGTH_CONTROL").field("Hdr", &self.Hdr).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_FRAME_LENGTH_CONTROL {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_FRAME_LENGTH_CONTROL {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr
-    }
-}
-impl ::core::cmp::Eq for _URB_FRAME_LENGTH_CONTROL {}
-impl ::core::default::Default for _URB_FRAME_LENGTH_CONTROL {
+impl Default for _URB_FRAME_LENGTH_CONTROL {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_GET_CURRENT_FRAME_NUMBER {
     pub Hdr: _URB_HEADER,
     pub FrameNumber: u32,
 }
-impl ::core::marker::Copy for _URB_GET_CURRENT_FRAME_NUMBER {}
-impl ::core::clone::Clone for _URB_GET_CURRENT_FRAME_NUMBER {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_GET_CURRENT_FRAME_NUMBER {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_GET_CURRENT_FRAME_NUMBER {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_GET_CURRENT_FRAME_NUMBER").field("Hdr", &self.Hdr).field("FrameNumber", &self.FrameNumber).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_GET_CURRENT_FRAME_NUMBER {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_GET_CURRENT_FRAME_NUMBER {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.FrameNumber == other.FrameNumber
-    }
-}
-impl ::core::cmp::Eq for _URB_GET_CURRENT_FRAME_NUMBER {}
-impl ::core::default::Default for _URB_GET_CURRENT_FRAME_NUMBER {
+impl Default for _URB_GET_CURRENT_FRAME_NUMBER {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_GET_FRAME_LENGTH {
     pub Hdr: _URB_HEADER,
     pub FrameLength: u32,
     pub FrameNumber: u32,
 }
-impl ::core::marker::Copy for _URB_GET_FRAME_LENGTH {}
-impl ::core::clone::Clone for _URB_GET_FRAME_LENGTH {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_GET_FRAME_LENGTH {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_GET_FRAME_LENGTH {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_GET_FRAME_LENGTH").field("Hdr", &self.Hdr).field("FrameLength", &self.FrameLength).field("FrameNumber", &self.FrameNumber).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_GET_FRAME_LENGTH {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_GET_FRAME_LENGTH {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.FrameLength == other.FrameLength && self.FrameNumber == other.FrameNumber
-    }
-}
-impl ::core::cmp::Eq for _URB_GET_FRAME_LENGTH {}
-impl ::core::default::Default for _URB_GET_FRAME_LENGTH {
+impl Default for _URB_GET_FRAME_LENGTH {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub MaximumSendPathDelayInMilliSeconds: u32,
     pub MaximumCompletionPathDelayInMilliSeconds: u32,
 }
-impl ::core::marker::Copy for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {}
-impl ::core::clone::Clone for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS").field("Hdr", &self.Hdr).field("PipeHandle", &self.PipeHandle).field("MaximumSendPathDelayInMilliSeconds", &self.MaximumSendPathDelayInMilliSeconds).field("MaximumCompletionPathDelayInMilliSeconds", &self.MaximumCompletionPathDelayInMilliSeconds).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.MaximumSendPathDelayInMilliSeconds == other.MaximumSendPathDelayInMilliSeconds && self.MaximumCompletionPathDelayInMilliSeconds == other.MaximumCompletionPathDelayInMilliSeconds
-    }
-}
-impl ::core::cmp::Eq for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {}
-impl ::core::default::Default for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
+impl Default for _URB_GET_ISOCH_PIPE_TRANSFER_PATH_DELAYS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_HCD_AREA {
-    pub Reserved8: [*mut ::core::ffi::c_void; 8],
+    pub Reserved8: [*mut core::ffi::c_void; 8],
 }
-impl ::core::marker::Copy for _URB_HCD_AREA {}
-impl ::core::clone::Clone for _URB_HCD_AREA {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_HCD_AREA {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_HCD_AREA {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_HCD_AREA").field("Reserved8", &self.Reserved8).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_HCD_AREA {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_HCD_AREA {
-    fn eq(&self, other: &Self) -> bool {
-        self.Reserved8 == other.Reserved8
-    }
-}
-impl ::core::cmp::Eq for _URB_HCD_AREA {}
-impl ::core::default::Default for _URB_HCD_AREA {
+impl Default for _URB_HCD_AREA {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_HEADER {
     pub Length: u16,
     pub Function: u16,
     pub Status: i32,
-    pub UsbdDeviceHandle: *mut ::core::ffi::c_void,
+    pub UsbdDeviceHandle: *mut core::ffi::c_void,
     pub UsbdFlags: u32,
 }
-impl ::core::marker::Copy for _URB_HEADER {}
-impl ::core::clone::Clone for _URB_HEADER {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_HEADER {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_HEADER {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_HEADER").field("Length", &self.Length).field("Function", &self.Function).field("Status", &self.Status).field("UsbdDeviceHandle", &self.UsbdDeviceHandle).field("UsbdFlags", &self.UsbdFlags).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_HEADER {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_HEADER {
-    fn eq(&self, other: &Self) -> bool {
-        self.Length == other.Length && self.Function == other.Function && self.Status == other.Status && self.UsbdDeviceHandle == other.UsbdDeviceHandle && self.UsbdFlags == other.UsbdFlags
-    }
-}
-impl ::core::cmp::Eq for _URB_HEADER {}
-impl ::core::default::Default for _URB_HEADER {
+impl Default for _URB_HEADER {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_ISOCH_TRANSFER {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub TransferFlags: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub StartFrame: u32,
@@ -7073,86 +4928,41 @@ pub struct _URB_ISOCH_TRANSFER {
     pub ErrorCount: u32,
     pub IsoPacket: [USBD_ISO_PACKET_DESCRIPTOR; 1],
 }
-impl ::core::marker::Copy for _URB_ISOCH_TRANSFER {}
-impl ::core::clone::Clone for _URB_ISOCH_TRANSFER {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_ISOCH_TRANSFER {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_ISOCH_TRANSFER {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_ISOCH_TRANSFER")
-            .field("Hdr", &self.Hdr)
-            .field("PipeHandle", &self.PipeHandle)
-            .field("TransferFlags", &self.TransferFlags)
-            .field("TransferBufferLength", &self.TransferBufferLength)
-            .field("TransferBuffer", &self.TransferBuffer)
-            .field("TransferBufferMDL", &self.TransferBufferMDL)
-            .field("UrbLink", &self.UrbLink)
-            .field("hca", &self.hca)
-            .field("StartFrame", &self.StartFrame)
-            .field("NumberOfPackets", &self.NumberOfPackets)
-            .field("ErrorCount", &self.ErrorCount)
-            .field("IsoPacket", &self.IsoPacket)
-            .finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_ISOCH_TRANSFER {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_ISOCH_TRANSFER {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.TransferFlags == other.TransferFlags && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self.StartFrame == other.StartFrame && self.NumberOfPackets == other.NumberOfPackets && self.ErrorCount == other.ErrorCount && self.IsoPacket == other.IsoPacket
-    }
-}
-impl ::core::cmp::Eq for _URB_ISOCH_TRANSFER {}
-impl ::core::default::Default for _URB_ISOCH_TRANSFER {
+impl Default for _URB_ISOCH_TRANSFER {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_OPEN_STATIC_STREAMS {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub NumberOfStreams: u32,
     pub StreamInfoVersion: u16,
     pub StreamInfoSize: u16,
     pub Streams: *mut USBD_STREAM_INFORMATION,
 }
-impl ::core::marker::Copy for _URB_OPEN_STATIC_STREAMS {}
-impl ::core::clone::Clone for _URB_OPEN_STATIC_STREAMS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_OPEN_STATIC_STREAMS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_OPEN_STATIC_STREAMS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_OPEN_STATIC_STREAMS").field("Hdr", &self.Hdr).field("PipeHandle", &self.PipeHandle).field("NumberOfStreams", &self.NumberOfStreams).field("StreamInfoVersion", &self.StreamInfoVersion).field("StreamInfoSize", &self.StreamInfoSize).field("Streams", &self.Streams).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_OPEN_STATIC_STREAMS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_OPEN_STATIC_STREAMS {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.NumberOfStreams == other.NumberOfStreams && self.StreamInfoVersion == other.StreamInfoVersion && self.StreamInfoSize == other.StreamInfoSize && self.Streams == other.Streams
-    }
-}
-impl ::core::cmp::Eq for _URB_OPEN_STATIC_STREAMS {}
-impl ::core::default::Default for _URB_OPEN_STATIC_STREAMS {
+impl Default for _URB_OPEN_STATIC_STREAMS {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub Reserved: *mut ::core::ffi::c_void,
+    pub Reserved: *mut core::ffi::c_void,
     pub Reserved0: u32,
     pub TransferBufferLength: u32,
-    pub TransferBuffer: *mut ::core::ffi::c_void,
-    pub TransferBufferMDL: *mut ::core::ffi::c_void,
+    pub TransferBuffer: *mut core::ffi::c_void,
+    pub TransferBufferMDL: *mut core::ffi::c_void,
     pub UrbLink: *mut URB,
     pub hca: _URB_HCD_AREA,
     pub _bitfield: u8,
@@ -7162,168 +4972,72 @@ pub struct _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
     pub MS_FeatureDescriptorIndex: u16,
     pub Reserved3: u16,
 }
-impl ::core::marker::Copy for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {}
-impl ::core::clone::Clone for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_OS_FEATURE_DESCRIPTOR_REQUEST")
-            .field("Hdr", &self.Hdr)
-            .field("Reserved", &self.Reserved)
-            .field("Reserved0", &self.Reserved0)
-            .field("TransferBufferLength", &self.TransferBufferLength)
-            .field("TransferBuffer", &self.TransferBuffer)
-            .field("TransferBufferMDL", &self.TransferBufferMDL)
-            .field("UrbLink", &self.UrbLink)
-            .field("hca", &self.hca)
-            .field("_bitfield", &self._bitfield)
-            .field("Reserved2", &self.Reserved2)
-            .field("InterfaceNumber", &self.InterfaceNumber)
-            .field("MS_PageIndex", &self.MS_PageIndex)
-            .field("MS_FeatureDescriptorIndex", &self.MS_FeatureDescriptorIndex)
-            .field("Reserved3", &self.Reserved3)
-            .finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.Reserved == other.Reserved && self.Reserved0 == other.Reserved0 && self.TransferBufferLength == other.TransferBufferLength && self.TransferBuffer == other.TransferBuffer && self.TransferBufferMDL == other.TransferBufferMDL && self.UrbLink == other.UrbLink && self.hca == other.hca && self._bitfield == other._bitfield && self.Reserved2 == other.Reserved2 && self.InterfaceNumber == other.InterfaceNumber && self.MS_PageIndex == other.MS_PageIndex && self.MS_FeatureDescriptorIndex == other.MS_FeatureDescriptorIndex && self.Reserved3 == other.Reserved3
-    }
-}
-impl ::core::cmp::Eq for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {}
-impl ::core::default::Default for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
+impl Default for _URB_OS_FEATURE_DESCRIPTOR_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_PIPE_REQUEST {
     pub Hdr: _URB_HEADER,
-    pub PipeHandle: *mut ::core::ffi::c_void,
+    pub PipeHandle: *mut core::ffi::c_void,
     pub Reserved: u32,
 }
-impl ::core::marker::Copy for _URB_PIPE_REQUEST {}
-impl ::core::clone::Clone for _URB_PIPE_REQUEST {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_PIPE_REQUEST {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_PIPE_REQUEST {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_PIPE_REQUEST").field("Hdr", &self.Hdr).field("PipeHandle", &self.PipeHandle).field("Reserved", &self.Reserved).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_PIPE_REQUEST {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_PIPE_REQUEST {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.PipeHandle == other.PipeHandle && self.Reserved == other.Reserved
-    }
-}
-impl ::core::cmp::Eq for _URB_PIPE_REQUEST {}
-impl ::core::default::Default for _URB_PIPE_REQUEST {
+impl Default for _URB_PIPE_REQUEST {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_SELECT_CONFIGURATION {
     pub Hdr: _URB_HEADER,
     pub ConfigurationDescriptor: *mut USB_CONFIGURATION_DESCRIPTOR,
-    pub ConfigurationHandle: *mut ::core::ffi::c_void,
+    pub ConfigurationHandle: *mut core::ffi::c_void,
     pub Interface: USBD_INTERFACE_INFORMATION,
 }
-impl ::core::marker::Copy for _URB_SELECT_CONFIGURATION {}
-impl ::core::clone::Clone for _URB_SELECT_CONFIGURATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_SELECT_CONFIGURATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_SELECT_CONFIGURATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_SELECT_CONFIGURATION").field("Hdr", &self.Hdr).field("ConfigurationDescriptor", &self.ConfigurationDescriptor).field("ConfigurationHandle", &self.ConfigurationHandle).field("Interface", &self.Interface).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_SELECT_CONFIGURATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_SELECT_CONFIGURATION {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.ConfigurationDescriptor == other.ConfigurationDescriptor && self.ConfigurationHandle == other.ConfigurationHandle && self.Interface == other.Interface
-    }
-}
-impl ::core::cmp::Eq for _URB_SELECT_CONFIGURATION {}
-impl ::core::default::Default for _URB_SELECT_CONFIGURATION {
+impl Default for _URB_SELECT_CONFIGURATION {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_SELECT_INTERFACE {
     pub Hdr: _URB_HEADER,
-    pub ConfigurationHandle: *mut ::core::ffi::c_void,
+    pub ConfigurationHandle: *mut core::ffi::c_void,
     pub Interface: USBD_INTERFACE_INFORMATION,
 }
-impl ::core::marker::Copy for _URB_SELECT_INTERFACE {}
-impl ::core::clone::Clone for _URB_SELECT_INTERFACE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_SELECT_INTERFACE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_SELECT_INTERFACE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_SELECT_INTERFACE").field("Hdr", &self.Hdr).field("ConfigurationHandle", &self.ConfigurationHandle).field("Interface", &self.Interface).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_SELECT_INTERFACE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_SELECT_INTERFACE {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.ConfigurationHandle == other.ConfigurationHandle && self.Interface == other.Interface
-    }
-}
-impl ::core::cmp::Eq for _URB_SELECT_INTERFACE {}
-impl ::core::default::Default for _URB_SELECT_INTERFACE {
+impl Default for _URB_SELECT_INTERFACE {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct _URB_SET_FRAME_LENGTH {
     pub Hdr: _URB_HEADER,
     pub FrameLengthDelta: i32,
 }
-impl ::core::marker::Copy for _URB_SET_FRAME_LENGTH {}
-impl ::core::clone::Clone for _URB_SET_FRAME_LENGTH {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for _URB_SET_FRAME_LENGTH {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::fmt::Debug for _URB_SET_FRAME_LENGTH {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
-        f.debug_struct("_URB_SET_FRAME_LENGTH").field("Hdr", &self.Hdr).field("FrameLengthDelta", &self.FrameLengthDelta).finish()
-    }
-}
-impl ::windows_core::TypeKind for _URB_SET_FRAME_LENGTH {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::cmp::PartialEq for _URB_SET_FRAME_LENGTH {
-    fn eq(&self, other: &Self) -> bool {
-        self.Hdr == other.Hdr && self.FrameLengthDelta == other.FrameLengthDelta
-    }
-}
-impl ::core::cmp::Eq for _URB_SET_FRAME_LENGTH {}
-impl ::core::default::Default for _URB_SET_FRAME_LENGTH {
+impl Default for _URB_SET_FRAME_LENGTH {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
-pub type USB_IDLE_CALLBACK = ::core::option::Option<unsafe extern "system" fn(context: *const ::core::ffi::c_void) -> ()>;
+pub type USB_IDLE_CALLBACK = Option<unsafe extern "system" fn(context: *const core::ffi::c_void)>;

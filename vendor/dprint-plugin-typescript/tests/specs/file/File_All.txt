@@ -1,0 +1,24 @@
+== should print out comments ==
+// 1
+/* 2 */
+
+[expect]
+// 1
+/* 2 */
+
+== should print out the directives ==
+"use strict";
+   "use strict";
+a;
+
+[expect]
+"use strict";
+"use strict";
+a;
+
+== multiple block comments on same line should be placed on their own lines ==
+/*1*//*2*/
+
+[expect]
+/*1*/
+/*2*/

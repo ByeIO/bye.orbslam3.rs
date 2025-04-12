@@ -1,16 +1,15 @@
-#[cfg(feature = "trace")]
-use crate::device::trace;
+pub use crate::pipeline_cache::PipelineCacheValidationError;
 use crate::{
     binding_model::{CreateBindGroupLayoutError, CreatePipelineLayoutError, PipelineLayout},
     command::ColorAttachmentError,
     device::{Device, DeviceError, MissingDownlevelFlags, MissingFeatures, RenderPassContext},
-    hal_api::HalApi,
-    id::{ComputePipelineId, PipelineLayoutId, RenderPipelineId, ShaderModuleId},
-    resource::{Resource, ResourceInfo, ResourceType},
+    id::{PipelineCacheId, PipelineLayoutId, ShaderModuleId},
+    resource::{InvalidResourceError, Labeled, TrackingData},
     resource_log, validation, Label,
 };
 use arrayvec::ArrayVec;
-use std::{borrow::Cow, error::Error, fmt, marker::PhantomData, num::NonZeroU32, sync::Arc};
+use naga::error::ShaderError;
+use std::{borrow::Cow, marker::PhantomData, mem::ManuallyDrop, num::NonZeroU32, sync::Arc};
 use thiserror::Error;
 
 /// Information about buffer bindings, which
@@ -26,6 +25,10 @@ pub(crate) struct LateSizedBufferGroup {
 pub enum ShaderModuleSource<'a> {
     #[cfg(feature = "wgsl")]
     Wgsl(Cow<'a, str>),
+    #[cfg(feature = "glsl")]
+    Glsl(Cow<'a, str>, naga::front::glsl::Options),
+    #[cfg(feature = "spirv")]
+    SpirV(Cow<'a, [u32]>, naga::front::spv::Options),
     Naga(Cow<'static, naga::Module>),
     /// Dummy variant because `Naga` doesn't have a lifetime and without enough active features it
     /// could be the last one active.
@@ -34,123 +37,70 @@ pub enum ShaderModuleSource<'a> {
 }
 
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ShaderModuleDescriptor<'a> {
     pub label: Label<'a>,
     #[cfg_attr(feature = "serde", serde(default))]
-    pub shader_bound_checks: wgt::ShaderBoundChecks,
+    pub runtime_checks: wgt::ShaderRuntimeChecks,
 }
 
 #[derive(Debug)]
-pub struct ShaderModule<A: HalApi> {
-    pub(crate) raw: Option<A::ShaderModule>,
-    pub(crate) device: Arc<Device<A>>,
+pub struct ShaderModule {
+    pub(crate) raw: ManuallyDrop<Box<dyn hal::DynShaderModule>>,
+    pub(crate) device: Arc<Device>,
     pub(crate) interface: Option<validation::Interface>,
-    pub(crate) info: ResourceInfo<ShaderModuleId>,
+    /// The `label` from the descriptor used to create the resource.
     pub(crate) label: String,
 }
 
-impl<A: HalApi> Drop for ShaderModule<A> {
+impl Drop for ShaderModule {
     fn drop(&mut self) {
-        if let Some(raw) = self.raw.take() {
-            resource_log!("Destroy raw ShaderModule {:?}", self.info.label());
-            #[cfg(feature = "trace")]
-            if let Some(t) = self.device.trace.lock().as_mut() {
-                t.add(trace::Action::DestroyShaderModule(self.info.id()));
-            }
-            unsafe {
-                use hal::Device;
-                self.device.raw().destroy_shader_module(raw);
-            }
+        resource_log!("Destroy raw {}", self.error_ident());
+        // SAFETY: We are in the Drop impl and we don't use self.raw anymore after this point.
+        let raw = unsafe { ManuallyDrop::take(&mut self.raw) };
+        unsafe {
+            self.device.raw().destroy_shader_module(raw);
         }
     }
 }
 
-impl<A: HalApi> Resource<ShaderModuleId> for ShaderModule<A> {
-    const TYPE: ResourceType = "ShaderModule";
+crate::impl_resource_type!(ShaderModule);
+crate::impl_labeled!(ShaderModule);
+crate::impl_parent_device!(ShaderModule);
+crate::impl_storage_item!(ShaderModule);
 
-    fn as_info(&self) -> &ResourceInfo<ShaderModuleId> {
-        &self.info
+impl ShaderModule {
+    pub(crate) fn raw(&self) -> &dyn hal::DynShaderModule {
+        self.raw.as_ref()
     }
 
-    fn as_info_mut(&mut self) -> &mut ResourceInfo<ShaderModuleId> {
-        &mut self.info
-    }
-
-    fn label(&self) -> String {
-        self.label.clone()
-    }
-}
-
-impl<A: HalApi> ShaderModule<A> {
-    pub(crate) fn raw(&self) -> &A::ShaderModule {
-        self.raw.as_ref().unwrap()
-    }
-}
-
-#[derive(Clone, Debug)]
-pub struct ShaderError<E> {
-    pub source: String,
-    pub label: Option<String>,
-    pub inner: Box<E>,
-}
-#[cfg(feature = "wgsl")]
-impl fmt::Display for ShaderError<naga::front::wgsl::ParseError> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let label = self.label.as_deref().unwrap_or_default();
-        let string = self.inner.emit_to_string(&self.source);
-        write!(f, "\nShader '{label}' parsing {string}")
-    }
-}
-impl fmt::Display for ShaderError<naga::WithSpan<naga::valid::ValidationError>> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use codespan_reporting::{
-            diagnostic::{Diagnostic, Label},
-            files::SimpleFile,
-            term,
-        };
-
-        let label = self.label.as_deref().unwrap_or_default();
-        let files = SimpleFile::new(label, &self.source);
-        let config = term::Config::default();
-        let mut writer = term::termcolor::NoColor::new(Vec::new());
-
-        let diagnostic = Diagnostic::error().with_labels(
-            self.inner
-                .spans()
-                .map(|&(span, ref desc)| {
-                    Label::primary((), span.to_range().unwrap()).with_message(desc.to_owned())
-                })
-                .collect(),
-        );
-
-        term::emit(&mut writer, &config, &files, &diagnostic).expect("cannot write error");
-
-        write!(
-            f,
-            "\nShader validation {}",
-            String::from_utf8_lossy(&writer.into_inner())
-        )
-    }
-}
-impl<E> Error for ShaderError<E>
-where
-    ShaderError<E>: fmt::Display,
-    E: Error + 'static,
-{
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        Some(&self.inner)
+    pub(crate) fn finalize_entry_point_name(
+        &self,
+        stage_bit: wgt::ShaderStages,
+        entry_point: Option<&str>,
+    ) -> Result<String, validation::StageError> {
+        match &self.interface {
+            Some(interface) => interface.finalize_entry_point_name(stage_bit, entry_point),
+            None => entry_point
+                .map(|ep| ep.to_string())
+                .ok_or(validation::StageError::NoEntryPointFound),
+        }
     }
 }
 
 //Note: `Clone` would require `WithSpan: Clone`.
-#[derive(Debug, Error)]
+#[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 pub enum CreateShaderModuleError {
-    #[cfg(feature = "wgsl")]
+    #[cfg(any(feature = "wgsl", feature = "indirect-validation"))]
     #[error(transparent)]
     Parsing(#[from] ShaderError<naga::front::wgsl::ParseError>),
+    #[cfg(feature = "glsl")]
+    #[error(transparent)]
+    ParsingGlsl(#[from] ShaderError<naga::front::glsl::ParseErrors>),
+    #[cfg(feature = "spirv")]
+    #[error(transparent)]
+    ParsingSpirV(#[from] ShaderError<naga::front::spv::Error>),
     #[error("Failed to generate the backend-specific code")]
     Generation,
     #[error(transparent)]
@@ -169,27 +119,59 @@ pub enum CreateShaderModuleError {
     },
 }
 
-impl CreateShaderModuleError {
-    pub fn location(&self, source: &str) -> Option<naga::SourceLocation> {
-        match *self {
-            #[cfg(feature = "wgsl")]
-            CreateShaderModuleError::Parsing(ref err) => err.inner.location(source),
-            CreateShaderModuleError::Validation(ref err) => err.inner.location(source),
-            _ => None,
-        }
-    }
+/// Describes a programmable pipeline stage.
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct ProgrammableStageDescriptor<'a> {
+    /// The compiled shader module for this stage.
+    pub module: ShaderModuleId,
+    /// The name of the entry point in the compiled shader. The name is selected using the
+    /// following logic:
+    ///
+    /// * If `Some(name)` is specified, there must be a function with this name in the shader.
+    /// * If a single entry point associated with this stage must be in the shader, then proceed as
+    ///   if `Some(…)` was specified with that entry point's name.
+    pub entry_point: Option<Cow<'a, str>>,
+    /// Specifies the values of pipeline-overridable constants in the shader module.
+    ///
+    /// If an `@id` attribute was specified on the declaration,
+    /// the key must be the pipeline constant ID as a decimal ASCII number; if not,
+    /// the key must be the constant's identifier name.
+    ///
+    /// The value may represent any of WGSL's concrete scalar types.
+    pub constants: Cow<'a, naga::back::PipelineConstants>,
+    /// Whether workgroup scoped memory will be initialized with zero values for this stage.
+    ///
+    /// This is required by the WebGPU spec, but may have overhead which can be avoided
+    /// for cross-platform applications
+    pub zero_initialize_workgroup_memory: bool,
 }
 
 /// Describes a programmable pipeline stage.
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
-pub struct ProgrammableStageDescriptor<'a> {
+pub struct ResolvedProgrammableStageDescriptor<'a> {
     /// The compiled shader module for this stage.
-    pub module: ShaderModuleId,
-    /// The name of the entry point in the compiled shader. There must be a function with this name
-    /// in the shader.
-    pub entry_point: Cow<'a, str>,
+    pub module: Arc<ShaderModule>,
+    /// The name of the entry point in the compiled shader. The name is selected using the
+    /// following logic:
+    ///
+    /// * If `Some(name)` is specified, there must be a function with this name in the shader.
+    /// * If a single entry point associated with this stage must be in the shader, then proceed as
+    ///   if `Some(…)` was specified with that entry point's name.
+    pub entry_point: Option<Cow<'a, str>>,
+    /// Specifies the values of pipeline-overridable constants in the shader module.
+    ///
+    /// If an `@id` attribute was specified on the declaration,
+    /// the key must be the pipeline constant ID as a decimal ASCII number; if not,
+    /// the key must be the constant's identifier name.
+    ///
+    /// The value may represent any of WGSL's concrete scalar types.
+    pub constants: Cow<'a, naga::back::PipelineConstants>,
+    /// Whether workgroup scoped memory will be initialized with zero values for this stage.
+    ///
+    /// This is required by the WebGPU spec, but may have overhead which can be avoided
+    /// for cross-platform applications
+    pub zero_initialize_workgroup_memory: bool,
 }
 
 /// Number of implicit bind groups derived at pipeline creation.
@@ -198,6 +180,8 @@ pub type ImplicitBindGroupCount = u8;
 #[derive(Clone, Debug, Error)]
 #[non_exhaustive]
 pub enum ImplicitLayoutError {
+    #[error("The implicit_pipeline_ids arg is required")]
+    MissingImplicitPipelineIds,
     #[error("Missing IDs for deriving {0} bind groups")]
     MissingIds(ImplicitBindGroupCount),
     #[error("Unable to reflect the shader {0:?} interface")]
@@ -210,14 +194,27 @@ pub enum ImplicitLayoutError {
 
 /// Describes a compute pipeline.
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct ComputePipelineDescriptor<'a> {
     pub label: Label<'a>,
     /// The layout of bind groups for this pipeline.
     pub layout: Option<PipelineLayoutId>,
     /// The compiled compute stage and its entry point.
     pub stage: ProgrammableStageDescriptor<'a>,
+    /// The pipeline cache to use when creating this pipeline.
+    pub cache: Option<PipelineCacheId>,
+}
+
+/// Describes a compute pipeline.
+#[derive(Clone, Debug)]
+pub struct ResolvedComputePipelineDescriptor<'a> {
+    pub label: Label<'a>,
+    /// The layout of bind groups for this pipeline.
+    pub layout: Option<Arc<PipelineLayout>>,
+    /// The compiled compute stage and its entry point.
+    pub stage: ResolvedProgrammableStageDescriptor<'a>,
+    /// The pipeline cache to use when creating this pipeline.
+    pub cache: Option<Arc<PipelineCache>>,
 }
 
 #[derive(Clone, Debug, Error)]
@@ -225,68 +222,99 @@ pub struct ComputePipelineDescriptor<'a> {
 pub enum CreateComputePipelineError {
     #[error(transparent)]
     Device(#[from] DeviceError),
-    #[error("Pipeline layout is invalid")]
-    InvalidLayout,
     #[error("Unable to derive an implicit layout")]
     Implicit(#[from] ImplicitLayoutError),
     #[error("Error matching shader requirements against the pipeline")]
     Stage(#[from] validation::StageError),
     #[error("Internal error: {0}")]
     Internal(String),
+    #[error("Pipeline constant error: {0}")]
+    PipelineConstants(String),
     #[error(transparent)]
     MissingDownlevelFlags(#[from] MissingDownlevelFlags),
+    #[error(transparent)]
+    InvalidResource(#[from] InvalidResourceError),
 }
 
 #[derive(Debug)]
-pub struct ComputePipeline<A: HalApi> {
-    pub(crate) raw: Option<A::ComputePipeline>,
-    pub(crate) layout: Arc<PipelineLayout<A>>,
-    pub(crate) device: Arc<Device<A>>,
-    pub(crate) _shader_module: Arc<ShaderModule<A>>,
+pub struct ComputePipeline {
+    pub(crate) raw: ManuallyDrop<Box<dyn hal::DynComputePipeline>>,
+    pub(crate) layout: Arc<PipelineLayout>,
+    pub(crate) device: Arc<Device>,
+    pub(crate) _shader_module: Arc<ShaderModule>,
     pub(crate) late_sized_buffer_groups: ArrayVec<LateSizedBufferGroup, { hal::MAX_BIND_GROUPS }>,
-    pub(crate) info: ResourceInfo<ComputePipelineId>,
+    /// The `label` from the descriptor used to create the resource.
+    pub(crate) label: String,
+    pub(crate) tracking_data: TrackingData,
 }
 
-impl<A: HalApi> Drop for ComputePipeline<A> {
+impl Drop for ComputePipeline {
     fn drop(&mut self) {
-        if let Some(raw) = self.raw.take() {
-            resource_log!("Destroy raw ComputePipeline {:?}", self.info.label());
-
-            #[cfg(feature = "trace")]
-            if let Some(t) = self.device.trace.lock().as_mut() {
-                t.add(trace::Action::DestroyComputePipeline(self.info.id()));
-            }
-
-            unsafe {
-                use hal::Device;
-                self.device.raw().destroy_compute_pipeline(raw);
-            }
+        resource_log!("Destroy raw {}", self.error_ident());
+        // SAFETY: We are in the Drop impl and we don't use self.raw anymore after this point.
+        let raw = unsafe { ManuallyDrop::take(&mut self.raw) };
+        unsafe {
+            self.device.raw().destroy_compute_pipeline(raw);
         }
     }
 }
 
-impl<A: HalApi> Resource<ComputePipelineId> for ComputePipeline<A> {
-    const TYPE: ResourceType = "ComputePipeline";
+crate::impl_resource_type!(ComputePipeline);
+crate::impl_labeled!(ComputePipeline);
+crate::impl_parent_device!(ComputePipeline);
+crate::impl_storage_item!(ComputePipeline);
+crate::impl_trackable!(ComputePipeline);
 
-    fn as_info(&self) -> &ResourceInfo<ComputePipelineId> {
-        &self.info
-    }
-
-    fn as_info_mut(&mut self) -> &mut ResourceInfo<ComputePipelineId> {
-        &mut self.info
+impl ComputePipeline {
+    pub(crate) fn raw(&self) -> &dyn hal::DynComputePipeline {
+        self.raw.as_ref()
     }
 }
 
-impl<A: HalApi> ComputePipeline<A> {
-    pub(crate) fn raw(&self) -> &A::ComputePipeline {
-        self.raw.as_ref().unwrap()
+#[derive(Clone, Debug, Error)]
+#[non_exhaustive]
+pub enum CreatePipelineCacheError {
+    #[error(transparent)]
+    Device(#[from] DeviceError),
+    #[error("Pipeline cache validation failed")]
+    Validation(#[from] PipelineCacheValidationError),
+    #[error(transparent)]
+    MissingFeatures(#[from] MissingFeatures),
+}
+
+#[derive(Debug)]
+pub struct PipelineCache {
+    pub(crate) raw: ManuallyDrop<Box<dyn hal::DynPipelineCache>>,
+    pub(crate) device: Arc<Device>,
+    /// The `label` from the descriptor used to create the resource.
+    pub(crate) label: String,
+}
+
+impl Drop for PipelineCache {
+    fn drop(&mut self) {
+        resource_log!("Destroy raw {}", self.error_ident());
+        // SAFETY: We are in the Drop impl and we don't use self.raw anymore after this point.
+        let raw = unsafe { ManuallyDrop::take(&mut self.raw) };
+        unsafe {
+            self.device.raw().destroy_pipeline_cache(raw);
+        }
+    }
+}
+
+crate::impl_resource_type!(PipelineCache);
+crate::impl_labeled!(PipelineCache);
+crate::impl_parent_device!(PipelineCache);
+crate::impl_storage_item!(PipelineCache);
+
+impl PipelineCache {
+    pub(crate) fn raw(&self) -> &dyn hal::DynPipelineCache {
+        self.raw.as_ref()
     }
 }
 
 /// Describes how the vertex buffer is interpreted.
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct VertexBufferLayout<'a> {
     /// The stride, in bytes, between elements of this buffer.
@@ -299,8 +327,7 @@ pub struct VertexBufferLayout<'a> {
 
 /// Describes the vertex process in a render pipeline.
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct VertexState<'a> {
     /// The compiled vertex stage and its entry point.
     pub stage: ProgrammableStageDescriptor<'a>,
@@ -308,10 +335,18 @@ pub struct VertexState<'a> {
     pub buffers: Cow<'a, [VertexBufferLayout<'a>]>,
 }
 
+/// Describes the vertex process in a render pipeline.
+#[derive(Clone, Debug)]
+pub struct ResolvedVertexState<'a> {
+    /// The compiled vertex stage and its entry point.
+    pub stage: ResolvedProgrammableStageDescriptor<'a>,
+    /// The format of any vertex buffers used with this pipeline.
+    pub buffers: Cow<'a, [VertexBufferLayout<'a>]>,
+}
+
 /// Describes fragment processing in a render pipeline.
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct FragmentState<'a> {
     /// The compiled fragment stage and its entry point.
     pub stage: ProgrammableStageDescriptor<'a>,
@@ -319,10 +354,18 @@ pub struct FragmentState<'a> {
     pub targets: Cow<'a, [Option<wgt::ColorTargetState>]>,
 }
 
+/// Describes fragment processing in a render pipeline.
+#[derive(Clone, Debug)]
+pub struct ResolvedFragmentState<'a> {
+    /// The compiled fragment stage and its entry point.
+    pub stage: ResolvedProgrammableStageDescriptor<'a>,
+    /// The effect of draw calls on the color aspect of the output target.
+    pub targets: Cow<'a, [Option<wgt::ColorTargetState>]>,
+}
+
 /// Describes a render (graphics) pipeline.
 #[derive(Clone, Debug)]
-#[cfg_attr(feature = "trace", derive(serde::Serialize))]
-#[cfg_attr(feature = "replay", derive(serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct RenderPipelineDescriptor<'a> {
     pub label: Label<'a>,
     /// The layout of bind groups for this pipeline.
@@ -330,19 +373,52 @@ pub struct RenderPipelineDescriptor<'a> {
     /// The vertex processing state for this pipeline.
     pub vertex: VertexState<'a>,
     /// The properties of the pipeline at the primitive assembly and rasterization level.
-    #[cfg_attr(any(feature = "replay", feature = "trace"), serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub primitive: wgt::PrimitiveState,
     /// The effect of draw calls on the depth and stencil aspects of the output target, if any.
-    #[cfg_attr(any(feature = "replay", feature = "trace"), serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub depth_stencil: Option<wgt::DepthStencilState>,
     /// The multi-sampling properties of the pipeline.
-    #[cfg_attr(any(feature = "replay", feature = "trace"), serde(default))]
+    #[cfg_attr(feature = "serde", serde(default))]
     pub multisample: wgt::MultisampleState,
     /// The fragment processing state for this pipeline.
     pub fragment: Option<FragmentState<'a>>,
     /// If the pipeline will be used with a multiview render pass, this indicates how many array
     /// layers the attachments will have.
     pub multiview: Option<NonZeroU32>,
+    /// The pipeline cache to use when creating this pipeline.
+    pub cache: Option<PipelineCacheId>,
+}
+
+/// Describes a render (graphics) pipeline.
+#[derive(Clone, Debug)]
+pub struct ResolvedRenderPipelineDescriptor<'a> {
+    pub label: Label<'a>,
+    /// The layout of bind groups for this pipeline.
+    pub layout: Option<Arc<PipelineLayout>>,
+    /// The vertex processing state for this pipeline.
+    pub vertex: ResolvedVertexState<'a>,
+    /// The properties of the pipeline at the primitive assembly and rasterization level.
+    pub primitive: wgt::PrimitiveState,
+    /// The effect of draw calls on the depth and stencil aspects of the output target, if any.
+    pub depth_stencil: Option<wgt::DepthStencilState>,
+    /// The multi-sampling properties of the pipeline.
+    pub multisample: wgt::MultisampleState,
+    /// The fragment processing state for this pipeline.
+    pub fragment: Option<ResolvedFragmentState<'a>>,
+    /// If the pipeline will be used with a multiview render pass, this indicates how many array
+    /// layers the attachments will have.
+    pub multiview: Option<NonZeroU32>,
+    /// The pipeline cache to use when creating this pipeline.
+    pub cache: Option<Arc<PipelineCache>>,
+}
+
+#[derive(Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+pub struct PipelineCacheDescriptor<'a> {
+    pub label: Label<'a>,
+    pub data: Option<Cow<'a, [u8]>>,
+    pub fallback: bool,
 }
 
 #[derive(Clone, Debug, Error)]
@@ -354,15 +430,13 @@ pub enum ColorStateError {
     FormatNotBlendable(wgt::TextureFormat),
     #[error("Format {0:?} does not have a color aspect")]
     FormatNotColor(wgt::TextureFormat),
-    #[error("Sample count {0} is not supported by format {1:?} on this device. The WebGPU spec guarentees {2:?} samples are supported by this format. With the TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES feature your device supports {3:?}.")]
+    #[error("Sample count {0} is not supported by format {1:?} on this device. The WebGPU spec guarantees {2:?} samples are supported by this format. With the TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES feature your device supports {3:?}.")]
     InvalidSampleCount(u32, wgt::TextureFormat, Vec<u32>, Vec<u32>),
     #[error("Output format {pipeline} is incompatible with the shader {shader}")]
     IncompatibleFormat {
         pipeline: validation::NumericType,
         shader: validation::NumericType,
     },
-    #[error("Blend factors for {0:?} must be `One`")]
-    InvalidMinMaxBlendFactors(wgt::BlendComponent),
     #[error("Invalid write mask {0:?}")]
     InvalidWriteMask(wgt::ColorWrites),
 }
@@ -376,7 +450,7 @@ pub enum DepthStencilStateError {
     FormatNotDepth(wgt::TextureFormat),
     #[error("Format {0:?} does not have a stencil aspect, but stencil test/write is enabled")]
     FormatNotStencil(wgt::TextureFormat),
-    #[error("Sample count {0} is not supported by format {1:?} on this device. The WebGPU spec guarentees {2:?} samples are supported by this format. With the TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES feature your device supports {3:?}.")]
+    #[error("Sample count {0} is not supported by format {1:?} on this device. The WebGPU spec guarantees {2:?} samples are supported by this format. With the TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES feature your device supports {3:?}.")]
     InvalidSampleCount(u32, wgt::TextureFormat, Vec<u32>, Vec<u32>),
 }
 
@@ -387,8 +461,6 @@ pub enum CreateRenderPipelineError {
     ColorAttachment(#[from] ColorAttachmentError),
     #[error(transparent)]
     Device(#[from] DeviceError),
-    #[error("Pipeline layout is invalid")]
-    InvalidLayout,
     #[error("Unable to derive an implicit layout")]
     Implicit(#[from] ImplicitLayoutError),
     #[error("Color state [{0}] is invalid")]
@@ -403,6 +475,12 @@ pub enum CreateRenderPipelineError {
     TooManyVertexAttributes { given: u32, limit: u32 },
     #[error("Vertex buffer {index} stride {given} exceeds the limit {limit}")]
     VertexStrideTooLarge { index: u32, given: u32, limit: u32 },
+    #[error("Vertex attribute at location {location} stride {given} exceeds the limit {limit}")]
+    VertexAttributeStrideTooLarge {
+        location: wgt::ShaderLocation,
+        given: u32,
+        limit: u32,
+    },
     #[error("Vertex buffer {index} stride {stride} does not respect `VERTEX_STRIDE_ALIGNMENT`")]
     UnalignedVertexStride {
         index: u32,
@@ -437,6 +515,11 @@ pub enum CreateRenderPipelineError {
         stage: wgt::ShaderStages,
         error: String,
     },
+    #[error("Pipeline constant error in {stage:?} shader: {error}")]
+    PipelineConstants {
+        stage: wgt::ShaderStages,
+        error: String,
+    },
     #[error("In the provided shader, the type given for group {group} binding {binding} has a size of {size}. As the device does not support `DownlevelFlags::BUFFER_BINDINGS_NOT_16_BYTE_ALIGNED`, the type must have a size that is a multiple of 16 bytes.")]
     UnalignedShader { group: u32, binding: u32, size: u64 },
     #[error("Using the blend factor {factor:?} for render target {target} is not possible. Only the first render target may be used when dual-source blending.")]
@@ -448,6 +531,13 @@ pub enum CreateRenderPipelineError {
     PipelineExpectsShaderToUseDualSourceBlending,
     #[error("Shader entry point expects the pipeline to make use of dual-source blending.")]
     ShaderExpectsPipelineToUseDualSourceBlending,
+    #[error("{}", concat!(
+        "At least one color attachment or depth-stencil attachment was expected, ",
+        "but no render target for the pipeline was specified."
+    ))]
+    NoTargetSpecified,
+    #[error(transparent)]
+    InvalidResource(#[from] InvalidResourceError),
 }
 
 bitflags::bitflags! {
@@ -467,6 +557,9 @@ pub struct VertexStep {
     /// The byte stride in the buffer between one attribute value and the next.
     pub stride: wgt::BufferAddress,
 
+    /// The byte size required to fit the last vertex in the stream.
+    pub last_stride: wgt::BufferAddress,
+
     /// Whether the buffer is indexed by vertex number or instance number.
     pub mode: wgt::VertexStepMode,
 }
@@ -475,58 +568,47 @@ impl Default for VertexStep {
     fn default() -> Self {
         Self {
             stride: 0,
+            last_stride: 0,
             mode: wgt::VertexStepMode::Vertex,
         }
     }
 }
 
 #[derive(Debug)]
-pub struct RenderPipeline<A: HalApi> {
-    pub(crate) raw: Option<A::RenderPipeline>,
-    pub(crate) device: Arc<Device<A>>,
-    pub(crate) layout: Arc<PipelineLayout<A>>,
-    pub(crate) _shader_modules:
-        ArrayVec<Arc<ShaderModule<A>>, { hal::MAX_CONCURRENT_SHADER_STAGES }>,
+pub struct RenderPipeline {
+    pub(crate) raw: ManuallyDrop<Box<dyn hal::DynRenderPipeline>>,
+    pub(crate) device: Arc<Device>,
+    pub(crate) layout: Arc<PipelineLayout>,
+    pub(crate) _shader_modules: ArrayVec<Arc<ShaderModule>, { hal::MAX_CONCURRENT_SHADER_STAGES }>,
     pub(crate) pass_context: RenderPassContext,
     pub(crate) flags: PipelineFlags,
     pub(crate) strip_index_format: Option<wgt::IndexFormat>,
     pub(crate) vertex_steps: Vec<VertexStep>,
     pub(crate) late_sized_buffer_groups: ArrayVec<LateSizedBufferGroup, { hal::MAX_BIND_GROUPS }>,
-    pub(crate) info: ResourceInfo<RenderPipelineId>,
+    /// The `label` from the descriptor used to create the resource.
+    pub(crate) label: String,
+    pub(crate) tracking_data: TrackingData,
 }
 
-impl<A: HalApi> Drop for RenderPipeline<A> {
+impl Drop for RenderPipeline {
     fn drop(&mut self) {
-        if let Some(raw) = self.raw.take() {
-            resource_log!("Destroy raw RenderPipeline {:?}", self.info.label());
-
-            #[cfg(feature = "trace")]
-            if let Some(t) = self.device.trace.lock().as_mut() {
-                t.add(trace::Action::DestroyRenderPipeline(self.info.id()));
-            }
-
-            unsafe {
-                use hal::Device;
-                self.device.raw().destroy_render_pipeline(raw);
-            }
+        resource_log!("Destroy raw {}", self.error_ident());
+        // SAFETY: We are in the Drop impl and we don't use self.raw anymore after this point.
+        let raw = unsafe { ManuallyDrop::take(&mut self.raw) };
+        unsafe {
+            self.device.raw().destroy_render_pipeline(raw);
         }
     }
 }
 
-impl<A: HalApi> Resource<RenderPipelineId> for RenderPipeline<A> {
-    const TYPE: ResourceType = "RenderPipeline";
+crate::impl_resource_type!(RenderPipeline);
+crate::impl_labeled!(RenderPipeline);
+crate::impl_parent_device!(RenderPipeline);
+crate::impl_storage_item!(RenderPipeline);
+crate::impl_trackable!(RenderPipeline);
 
-    fn as_info(&self) -> &ResourceInfo<RenderPipelineId> {
-        &self.info
-    }
-
-    fn as_info_mut(&mut self) -> &mut ResourceInfo<RenderPipelineId> {
-        &mut self.info
-    }
-}
-
-impl<A: HalApi> RenderPipeline<A> {
-    pub(crate) fn raw(&self) -> &A::RenderPipeline {
-        self.raw.as_ref().unwrap()
+impl RenderPipeline {
+    pub(crate) fn raw(&self) -> &dyn hal::DynRenderPipeline {
+        self.raw.as_ref()
     }
 }

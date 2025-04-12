@@ -12,11 +12,16 @@
 [package]
 edition = "2021"
 name = "glow"
-version = "0.13.1"
+version = "0.16.0"
 authors = [
     "Joshua Groves <josh@joshgroves.com>",
     "Dzmitry Malyshau <kvarkus@gmail.com>",
 ]
+build = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "GL on Whatever: a set of bindings to run GL (Open GL, OpenGL ES, and WebGL) anywhere, and avoid target-specific code."
 homepage = "https://github.com/grovesNL/glow.git"
 readme = "README.md"
@@ -46,16 +51,16 @@ optional = true
 debug_automatic_glGetError = []
 debug_trace_calls = []
 
-[target."cfg(target_arch = \"wasm32\")".dependencies.js-sys]
+[target.'cfg(target_arch = "wasm32")'.dependencies.js-sys]
 version = "~0.3"
 
-[target."cfg(target_arch = \"wasm32\")".dependencies.slotmap]
+[target.'cfg(target_arch = "wasm32")'.dependencies.slotmap]
 version = "1"
 
-[target."cfg(target_arch = \"wasm32\")".dependencies.wasm-bindgen]
+[target.'cfg(target_arch = "wasm32")'.dependencies.wasm-bindgen]
 version = "~0.2"
 
-[target."cfg(target_arch = \"wasm32\")".dependencies.web_sys]
+[target.'cfg(target_arch = "wasm32")'.dependencies.web_sys]
 version = "~0.3.60"
 features = [
     "Document",
@@ -64,6 +69,7 @@ features = [
     "HtmlImageElement",
     "HtmlVideoElement",
     "ImageBitmap",
+    "ImageData",
     "VideoFrame",
     "WebGlActiveInfo",
     "WebGlBuffer",
@@ -75,6 +81,7 @@ features = [
     "WebGl2RenderingContext",
     "WebGlSampler",
     "WebGlShader",
+    "WebGlShaderPrecisionFormat",
     "WebGlSync",
     "WebGlTexture",
     "WebGlTransformFeedback",

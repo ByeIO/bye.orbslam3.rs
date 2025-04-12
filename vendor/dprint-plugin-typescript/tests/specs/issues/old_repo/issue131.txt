@@ -1,0 +1,11 @@
+-- file.tsx --
+~~ indentWidth: 2, jsx.multiLineParens: never ~~
+== should format as-is ==
+const View = () => (
+  <div class="deno">land</div>
+);
+
+[expect]
+const View = () => (
+  <div class="deno">land</div>
+);

@@ -1,0 +1,178 @@
+~~ lineWidth: 50 ~~
+== should format when only having a module specifier ==
+import    "test"  ;
+
+[expect]
+import "test";
+
+== should format when using a default and namespace import ==
+import
+    myVar,
+    *   as   nameSpace   from    'test'  ;
+
+[expect]
+import myVar, * as nameSpace from "test";
+
+== should format when using a default and named imports ==
+import
+    myVar,
+    { n1, n2, n3
+}   from    "test"  ;
+
+[expect]
+import myVar, { n1, n2, n3 } from "test";
+
+== should format when using a default import ==
+import
+    myVar   from    "test"  ;
+
+[expect]
+import myVar from "test";
+
+== should format when using a namespace import ==
+import
+    *     as   nameSpace   from    "test"  ;
+
+[expect]
+import * as nameSpace from "test";
+
+== should format when using named imports ==
+import {n1,n2,n3} from    "test"  ;
+
+[expect]
+import { n1, n2, n3 } from "test";
+
+== should format a type only import ==
+import   type   { n1 } from "test";
+
+[expect]
+import type { n1 } from "test";
+
+== should format a type only import specifiers ==
+import   {  type   n1 } from "test";
+import type{  type   n1 } from "test";
+
+[expect]
+import { type n1 } from "test";
+import type { n1 } from "test";
+
+== should format when has zero named imports ==
+import {} from "test";
+
+[expect]
+import {} from "test";
+
+== should format when has zero named imports and is type-only import ==
+import type {} from "test";
+
+[expect]
+import type {} from "test";
+
+== should remain single line when has no named imports and exceeding the line width ==
+import {} from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+import {} from "testingtttttttttttttttttttttttttttttt";
+
+== should remain single line when has one named import and exceeding the line width ==
+import { testingThisOut } from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+import { testingThisOut } from "testingtttttttttttttttttttttttttttttt";
+
+== should remain single line when has one named import with alias and exceeding the line width ==
+import { testingThisOut as alias } from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+import { testingThisOut as alias } from "testingtttttttttttttttttttttttttttttt";
+
+== should not be single line when has two named imports and exceeding the line width ==
+import { test, testingThisOut } from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+import {
+    test,
+    testingThisOut,
+} from "testingtttttttttttttttttttttttttttttt";
+
+== should sort the import declarations in alphabetical order based on the module specifiers ==
+import { a } from "./a.ts";
+import { a } from "../a.ts";
+import { a } from "../../b.ts";
+import { a } from "../../a.ts";
+import { a } from "b.ts";
+import { a } from "a.ts";
+import { a } from "c.ts";
+
+import { a } from "a.ts";
+
+[expect]
+import { a } from "a.ts";
+import { a } from "b.ts";
+import { a } from "c.ts";
+import { a } from "../../a.ts";
+import { a } from "../../b.ts";
+import { a } from "../a.ts";
+import { a } from "./a.ts";
+
+import { a } from "a.ts";
+
+== should sort the imports in alphabetical order ==
+import { d, c, B, a, E, f2, f, f1} from "test";
+import { b as a, a as b } from "test";
+import { a as ab, a as aa } from "test";
+import { a as   ab, a as aa } from "test";
+import { a as   ab, a } from "test";
+import { a, a as   ab } from "test";
+
+[expect]
+import { a, B, c, d, E, f, f1, f2 } from "test";
+import { a as b, b as a } from "test";
+import { a as aa, a as ab } from "test";
+import { a as aa, a as ab } from "test";
+import { a, a as ab } from "test";
+import { a, a as ab } from "test";
+
+== should prefer single line by default ==
+import {
+    a
+} from "test";
+import {
+    b // test
+} from "test";
+
+[expect]
+import { a } from "test";
+import {
+    b, // test
+} from "test";
+
+== should support import assertions ==
+import test from "a" assert {type: "json"};
+import asdf from "testing.json" assert {type:"json"};
+
+[expect]
+import test from "a" assert { type: "json" };
+import asdf from "testing.json" assert {
+    type: "json",
+};
+
+== should support import attributes ==
+import test from "a" with {type: "json"};
+import asdf from "testing.json" with {type:"json"};
+
+[expect]
+import test from "a" with { type: "json" };
+import asdf from "testing.json" with {
+    type: "json",
+};
+
+== source phase imports ==
+import source    a from "a";
+import   defer b from "b";
+import    defer { c } from "c";
+
+[expect]
+import source a from "a";
+import defer b from "b";
+import defer { c } from "c";

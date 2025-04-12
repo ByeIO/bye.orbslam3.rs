@@ -1,0 +1,6 @@
+-- file.tsx --
+== should format ==
+const t = <   ></>;
+
+[expect]
+const t = <></>;

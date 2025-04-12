@@ -1,10 +1,10 @@
-use std::io::{self, IoSlice, Read, Write};
+use std::io::{self, BufRead as _, IoSlice, Read, Write};
 use std::ops::{Deref, DerefMut};
 use std::pin::Pin;
 use std::task::{Context, Poll};
 
 use rustls::{ConnectionCommon, SideData};
-use tokio::io::{AsyncRead, AsyncWrite, ReadBuf};
+use tokio::io::{AsyncBufRead, AsyncRead, AsyncWrite, ReadBuf};
 
 mod handshake;
 pub(crate) use handshake::{IoSession, MidHandshake};
@@ -98,7 +98,7 @@ where
             Err(err) => return Poll::Ready(Err(err)),
         };
 
-        let stats = self.session.process_new_packets().map_err(|err| {
+        self.session.process_new_packets().map_err(|err| {
             // In case we have an alert to send describing this error,
             // try a last-gasp write -- but don't predate the primary
             // error.
@@ -107,52 +107,11 @@ where
             io::Error::new(io::ErrorKind::InvalidData, err)
         })?;
 
-        if stats.peer_has_closed() && self.session.is_handshaking() {
-            return Poll::Ready(Err(io::Error::new(
-                io::ErrorKind::UnexpectedEof,
-                "tls handshake alert",
-            )));
-        }
-
         Poll::Ready(Ok(n))
     }
 
     pub fn write_io(&mut self, cx: &mut Context) -> Poll<io::Result<usize>> {
-        struct Writer<'a, 'b, T> {
-            io: &'a mut T,
-            cx: &'a mut Context<'b>,
-        }
-
-        impl<'a, 'b, T: Unpin> Writer<'a, 'b, T> {
-            #[inline]
-            fn poll_with<U>(
-                &mut self,
-                f: impl FnOnce(Pin<&mut T>, &mut Context<'_>) -> Poll<io::Result<U>>,
-            ) -> io::Result<U> {
-                match f(Pin::new(self.io), self.cx) {
-                    Poll::Ready(result) => result,
-                    Poll::Pending => Err(io::ErrorKind::WouldBlock.into()),
-                }
-            }
-        }
-
-        impl<'a, 'b, T: AsyncWrite + Unpin> Write for Writer<'a, 'b, T> {
-            #[inline]
-            fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-                self.poll_with(|io, cx| io.poll_write(cx, buf))
-            }
-
-            #[inline]
-            fn write_vectored(&mut self, bufs: &[IoSlice<'_>]) -> io::Result<usize> {
-                self.poll_with(|io, cx| io.poll_write_vectored(cx, bufs))
-            }
-
-            fn flush(&mut self) -> io::Result<()> {
-                self.poll_with(|io, cx| io.poll_flush(cx))
-            }
-        }
-
-        let mut writer = Writer { io: self.io, cx };
+        let mut writer = SyncWriteAdapter { io: self.io, cx };
 
         match self.session.write_tls(&mut writer) {
             Err(ref err) if err.kind() == io::ErrorKind::WouldBlock => Poll::Pending,
@@ -171,6 +130,7 @@ where
 
             while self.session.wants_write() {
                 match self.write_io(cx) {
+                    Poll::Ready(Ok(0)) => return Poll::Ready(Err(io::ErrorKind::WriteZero.into())),
                     Poll::Ready(Ok(n)) => {
                         wrlen += n;
                         need_flush = true;
@@ -220,18 +180,11 @@ where
             };
         }
     }
-}
 
-impl<'a, IO: AsyncRead + AsyncWrite + Unpin, C, SD> AsyncRead for Stream<'a, IO, C>
-where
-    C: DerefMut + Deref<Target = ConnectionCommon<SD>>,
-    SD: SideData,
-{
-    fn poll_read(
-        mut self: Pin<&mut Self>,
-        cx: &mut Context<'_>,
-        buf: &mut ReadBuf<'_>,
-    ) -> Poll<io::Result<()>> {
+    pub(crate) fn poll_fill_buf(mut self, cx: &mut Context<'_>) -> Poll<io::Result<&'a [u8]>>
+    where
+        SD: 'a,
+    {
         let mut io_pending = false;
 
         // read a packet
@@ -249,22 +202,13 @@ where
             }
         }
 
-        match self.session.reader().read(buf.initialize_unfilled()) {
-            // If Rustls returns `Ok(0)` (while `buf` is non-empty), the peer closed the
-            // connection with a `CloseNotify` message and no more data will be forthcoming.
-            //
-            // Rustls yielded more data: advance the buffer, then see if more data is coming.
-            //
-            // We don't need to modify `self.eof` here, because it is only a temporary mark.
-            // rustls will only return 0 if is has received `CloseNotify`,
-            // in which case no additional processing is required.
-            Ok(n) => {
-                buf.advance(n);
-                Poll::Ready(Ok(()))
+        match self.session.reader().into_first_chunk() {
+            Ok(buf) => {
+                // Note that this could be empty (i.e. EOF) if a `CloseNotify` has been
+                // received and there is no more buffered data.
+                Poll::Ready(Ok(buf))
             }
-
-            // Rustls doesn't have more data to yield, but it believes the connection is open.
-            Err(ref err) if err.kind() == io::ErrorKind::WouldBlock => {
+            Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
                 if !io_pending {
                     // If `wants_read()` is satisfied, rustls will not return `WouldBlock`.
                     // but if it does, we can try again.
@@ -276,13 +220,51 @@ where
 
                 Poll::Pending
             }
-
-            Err(err) => Poll::Ready(Err(err)),
+            Err(e) => Poll::Ready(Err(e)),
         }
     }
 }
 
-impl<'a, IO: AsyncRead + AsyncWrite + Unpin, C, SD> AsyncWrite for Stream<'a, IO, C>
+impl<'a, IO: AsyncRead + AsyncWrite + Unpin, C, SD> AsyncRead for Stream<'a, IO, C>
+where
+    C: DerefMut + Deref<Target = ConnectionCommon<SD>>,
+    SD: SideData + 'a,
+{
+    fn poll_read(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut ReadBuf<'_>,
+    ) -> Poll<io::Result<()>> {
+        let data = ready!(self.as_mut().poll_fill_buf(cx))?;
+        let amount = buf.remaining().min(data.len());
+        buf.put_slice(&data[..amount]);
+        self.session.reader().consume(amount);
+        Poll::Ready(Ok(()))
+    }
+}
+
+impl<'a, IO: AsyncRead + AsyncWrite + Unpin, C, SD> AsyncBufRead for Stream<'a, IO, C>
+where
+    C: DerefMut + Deref<Target = ConnectionCommon<SD>>,
+    SD: SideData + 'a,
+{
+    fn poll_fill_buf(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<&[u8]>> {
+        let this = self.get_mut();
+        Stream {
+            // reborrow
+            io: this.io,
+            session: this.session,
+            ..*this
+        }
+        .poll_fill_buf(cx)
+    }
+
+    fn consume(mut self: Pin<&mut Self>, amt: usize) {
+        self.session.reader().consume(amt);
+    }
+}
+
+impl<IO: AsyncRead + AsyncWrite + Unpin, C, SD> AsyncWrite for Stream<'_, IO, C>
 where
     C: DerefMut + Deref<Target = ConnectionCommon<SD>>,
     SD: SideData,
@@ -323,19 +305,66 @@ where
         Poll::Ready(Ok(pos))
     }
 
+    fn poll_write_vectored(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        bufs: &[IoSlice<'_>],
+    ) -> Poll<io::Result<usize>> {
+        if bufs.iter().all(|buf| buf.is_empty()) {
+            return Poll::Ready(Ok(0));
+        }
+
+        loop {
+            let mut would_block = false;
+            let written = self.session.writer().write_vectored(bufs)?;
+
+            while self.session.wants_write() {
+                match self.write_io(cx) {
+                    Poll::Ready(Ok(0)) | Poll::Pending => {
+                        would_block = true;
+                        break;
+                    }
+                    Poll::Ready(Ok(_)) => (),
+                    Poll::Ready(Err(err)) => return Poll::Ready(Err(err)),
+                }
+            }
+
+            return match (written, would_block) {
+                (0, true) => Poll::Pending,
+                (0, false) => continue,
+                (n, _) => Poll::Ready(Ok(n)),
+            };
+        }
+    }
+
+    #[inline]
+    fn is_write_vectored(&self) -> bool {
+        true
+    }
+
     fn poll_flush(mut self: Pin<&mut Self>, cx: &mut Context) -> Poll<io::Result<()>> {
         self.session.writer().flush()?;
         while self.session.wants_write() {
-            ready!(self.write_io(cx))?;
+            if ready!(self.write_io(cx))? == 0 {
+                return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+            }
         }
         Pin::new(&mut self.io).poll_flush(cx)
     }
 
     fn poll_shutdown(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
         while self.session.wants_write() {
-            ready!(self.write_io(cx))?;
+            if ready!(self.write_io(cx))? == 0 {
+                return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+            }
         }
-        Pin::new(&mut self.io).poll_shutdown(cx)
+
+        Poll::Ready(match ready!(Pin::new(&mut self.io).poll_shutdown(cx)) {
+            Ok(()) => Ok(()),
+            // When trying to shutdown, not being connected seems fine
+            Err(err) if err.kind() == io::ErrorKind::NotConnected => Ok(()),
+            Err(err) => Err(err),
+        })
     }
 }
 
@@ -348,7 +377,7 @@ pub struct SyncReadAdapter<'a, 'b, T> {
     pub cx: &'a mut Context<'b>,
 }
 
-impl<'a, 'b, T: AsyncRead + Unpin> Read for SyncReadAdapter<'a, 'b, T> {
+impl<T: AsyncRead + Unpin> Read for SyncReadAdapter<'_, '_, T> {
     #[inline]
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         let mut buf = ReadBuf::new(buf);
@@ -357,6 +386,44 @@ impl<'a, 'b, T: AsyncRead + Unpin> Read for SyncReadAdapter<'a, 'b, T> {
             Poll::Ready(Err(err)) => Err(err),
             Poll::Pending => Err(io::ErrorKind::WouldBlock.into()),
         }
+    }
+}
+
+/// An adapter that implements a [`Write`] interface for [`AsyncWrite`] types and an
+/// associated [`Context`].
+///
+/// Turns `Poll::Pending` into `WouldBlock`.
+pub struct SyncWriteAdapter<'a, 'b, T> {
+    pub io: &'a mut T,
+    pub cx: &'a mut Context<'b>,
+}
+
+impl<T: Unpin> SyncWriteAdapter<'_, '_, T> {
+    #[inline]
+    fn poll_with<U>(
+        &mut self,
+        f: impl FnOnce(Pin<&mut T>, &mut Context<'_>) -> Poll<io::Result<U>>,
+    ) -> io::Result<U> {
+        match f(Pin::new(self.io), self.cx) {
+            Poll::Ready(result) => result,
+            Poll::Pending => Err(io::ErrorKind::WouldBlock.into()),
+        }
+    }
+}
+
+impl<T: AsyncWrite + Unpin> Write for SyncWriteAdapter<'_, '_, T> {
+    #[inline]
+    fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
+        self.poll_with(|io, cx| io.poll_write(cx, buf))
+    }
+
+    #[inline]
+    fn write_vectored(&mut self, bufs: &[IoSlice<'_>]) -> io::Result<usize> {
+        self.poll_with(|io, cx| io.poll_write_vectored(cx, bufs))
+    }
+
+    fn flush(&mut self) -> io::Result<()> {
+        self.poll_with(|io, cx| io.poll_flush(cx))
     }
 }
 

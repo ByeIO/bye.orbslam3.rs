@@ -1,0 +1,44 @@
+# mod.ts
+declare function foo(): number;
+export function bar() {};
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:2:1
+  | 
+2 | export function bar() {};
+  | ^
+
+# output.txt
+Defined in file:///mod.ts:2:1
+
+function bar(): void
+
+
+# output.json
+[
+  {
+    "name": "bar",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 2,
+      "col": 0,
+      "byteIndex": 32
+    },
+    "declarationKind": "export",
+    "kind": "function",
+    "functionDef": {
+      "params": [],
+      "returnType": {
+        "repr": "void",
+        "kind": "keyword",
+        "keyword": "void"
+      },
+      "hasBody": true,
+      "isAsync": false,
+      "isGenerator": false,
+      "typeParams": []
+    }
+  }
+]

@@ -75,7 +75,23 @@ impl FunctionTracer<'_> {
                         self.expressions_used.insert(pointer);
                         self.trace_atomic_function(fun);
                         self.expressions_used.insert(value);
-                        self.expressions_used.insert(result);
+                        if let Some(result) = result {
+                            self.expressions_used.insert(result);
+                        }
+                    }
+                    St::ImageAtomic {
+                        image,
+                        coordinate,
+                        array_index,
+                        fun: _,
+                        value,
+                    } => {
+                        self.expressions_used.insert(image);
+                        self.expressions_used.insert(coordinate);
+                        if let Some(array_index) = array_index {
+                            self.expressions_used.insert(array_index);
+                        }
+                        self.expressions_used.insert(value);
                     }
                     St::WorkGroupUniformLoad { pointer, result } => {
                         self.expressions_used.insert(pointer);
@@ -96,6 +112,39 @@ impl FunctionTracer<'_> {
                     St::RayQuery { query, ref fun } => {
                         self.expressions_used.insert(query);
                         self.trace_ray_query_function(fun);
+                    }
+                    St::SubgroupBallot { result, predicate } => {
+                        if let Some(predicate) = predicate {
+                            self.expressions_used.insert(predicate);
+                        }
+                        self.expressions_used.insert(result);
+                    }
+                    St::SubgroupCollectiveOperation {
+                        op: _,
+                        collective_op: _,
+                        argument,
+                        result,
+                    } => {
+                        self.expressions_used.insert(argument);
+                        self.expressions_used.insert(result);
+                    }
+                    St::SubgroupGather {
+                        mode,
+                        argument,
+                        result,
+                    } => {
+                        match mode {
+                            crate::GatherMode::BroadcastFirst => {}
+                            crate::GatherMode::Broadcast(index)
+                            | crate::GatherMode::Shuffle(index)
+                            | crate::GatherMode::ShuffleDown(index)
+                            | crate::GatherMode::ShuffleUp(index)
+                            | crate::GatherMode::ShuffleXor(index) => {
+                                self.expressions_used.insert(index);
+                            }
+                        }
+                        self.expressions_used.insert(argument);
+                        self.expressions_used.insert(result);
                     }
 
                     // Trivial statements.
@@ -222,7 +271,23 @@ impl FunctionMap {
                         adjust(pointer);
                         self.adjust_atomic_function(fun);
                         adjust(value);
-                        adjust(result);
+                        if let Some(ref mut result) = *result {
+                            adjust(result);
+                        }
+                    }
+                    St::ImageAtomic {
+                        ref mut image,
+                        ref mut coordinate,
+                        ref mut array_index,
+                        fun: _,
+                        ref mut value,
+                    } => {
+                        adjust(image);
+                        adjust(coordinate);
+                        if let Some(ref mut array_index) = *array_index {
+                            adjust(array_index);
+                        }
+                        adjust(value);
                     }
                     St::WorkGroupUniformLoad {
                         ref mut pointer,
@@ -249,6 +314,40 @@ impl FunctionMap {
                     } => {
                         adjust(query);
                         self.adjust_ray_query_function(fun);
+                    }
+                    St::SubgroupBallot {
+                        ref mut result,
+                        ref mut predicate,
+                    } => {
+                        if let Some(ref mut predicate) = *predicate {
+                            adjust(predicate);
+                        }
+                        adjust(result);
+                    }
+                    St::SubgroupCollectiveOperation {
+                        op: _,
+                        collective_op: _,
+                        ref mut argument,
+                        ref mut result,
+                    } => {
+                        adjust(argument);
+                        adjust(result);
+                    }
+                    St::SubgroupGather {
+                        ref mut mode,
+                        ref mut argument,
+                        ref mut result,
+                    } => {
+                        match *mode {
+                            crate::GatherMode::BroadcastFirst => {}
+                            crate::GatherMode::Broadcast(ref mut index)
+                            | crate::GatherMode::Shuffle(ref mut index)
+                            | crate::GatherMode::ShuffleDown(ref mut index)
+                            | crate::GatherMode::ShuffleUp(ref mut index)
+                            | crate::GatherMode::ShuffleXor(ref mut index) => adjust(index),
+                        }
+                        adjust(argument);
+                        adjust(result);
                     }
 
                     // Trivial statements.

@@ -1,0 +1,98 @@
+# mod.ts
+// Should not show a diagnostic for MyNamespace because MyInternal was marked as internal
+/** Comment */
+export type PrivateProp = typeof MyNamespace.MyInternal;
+
+namespace MyNamespace {
+  /** @internal */
+  export class MyInternal {
+  }
+}
+
+# output.txt
+Defined in file:///mod.ts:3:1
+
+type PrivateProp = typeof MyNamespace.MyInternal
+  Comment
+
+Defined in file:///mod.ts:5:1
+
+private namespace MyNamespace
+
+  class MyInternal
+
+    @internal
+
+
+# output.json
+[
+  {
+    "name": "PrivateProp",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 3,
+      "col": 0,
+      "byteIndex": 105
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "Comment"
+    },
+    "kind": "typeAlias",
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "MyNamespace.MyInternal",
+        "kind": "typeQuery",
+        "typeQuery": "MyNamespace.MyInternal"
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "name": "MyNamespace",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 5,
+      "col": 0,
+      "byteIndex": 163
+    },
+    "declarationKind": "private",
+    "kind": "namespace",
+    "namespaceDef": {
+      "elements": [
+        {
+          "name": "MyInternal",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 7,
+            "col": 2,
+            "byteIndex": 208
+          },
+          "declarationKind": "export",
+          "jsDoc": {
+            "tags": [
+              {
+                "kind": "internal"
+              }
+            ]
+          },
+          "kind": "class",
+          "classDef": {
+            "isAbstract": false,
+            "constructors": [],
+            "properties": [],
+            "indexSignatures": [],
+            "methods": [],
+            "extends": null,
+            "implements": [],
+            "typeParams": [],
+            "superTypeParams": []
+          }
+        }
+      ]
+    }
+  }
+]

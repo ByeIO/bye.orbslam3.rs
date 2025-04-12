@@ -74,8 +74,6 @@ const DEFAULT_NO_ARGS_TEMPLATE: &str = "\
 {usage-heading} {usage}{after-help}\
     ";
 
-const SHORT_SIZE: usize = 4; // See `fn short` for the 4
-
 /// Help template writer
 ///
 /// Wraps a writer stream providing different methods to generate help for `clap` objects.
@@ -470,8 +468,6 @@ impl HelpTemplate<'_, '_> {
         debug!("HelpTemplate::write_args {_category}");
         // The shortest an arg can legally be is 2 (i.e. '-x')
         let mut longest = 2;
-        let mut longest_without_short = 2;
-        let mut has_short = false;
         let mut ord_v = BTreeMap::new();
 
         // Determine the longest
@@ -481,21 +477,8 @@ impl HelpTemplate<'_, '_> {
             // args alignment
             should_show_arg(self.use_long, arg)
         }) {
-            if !has_short && arg.get_short().is_some() {
-                has_short = true;
-            }
-
             if longest_filter(arg) {
-                let width = display_width(&arg.to_string());
-                let actual_width = if arg.is_positional() {
-                    width
-                } else {
-                    width + SHORT_SIZE
-                };
-                longest = longest.max(actual_width);
-                if !has_short {
-                    longest_without_short = longest_without_short.max(width);
-                }
+                longest = longest.max(display_width(&arg.to_string()));
                 debug!(
                     "HelpTemplate::write_args: arg={:?} longest={}",
                     arg.get_id(),
@@ -507,10 +490,6 @@ impl HelpTemplate<'_, '_> {
             ord_v.insert(key, arg);
         }
 
-        if !has_short {
-            longest = longest_without_short;
-        }
-
         let next_line_help = self.will_args_wrap(args, longest);
 
         for (i, (_, arg)) in ord_v.iter().enumerate() {
@@ -520,22 +499,20 @@ impl HelpTemplate<'_, '_> {
                     self.writer.push_str("\n");
                 }
             }
-            self.write_arg(arg, next_line_help, longest, has_short);
+            self.write_arg(arg, next_line_help, longest);
         }
     }
 
     /// Writes help for an argument to the wrapped stream.
-    fn write_arg(&mut self, arg: &Arg, next_line_help: bool, longest: usize, has_short: bool) {
+    fn write_arg(&mut self, arg: &Arg, next_line_help: bool, longest: usize) {
         let spec_vals = &self.spec_vals(arg);
 
         self.writer.push_str(TAB);
-        if has_short {
-            self.short(arg);
-        }
+        self.short(arg);
         self.long(arg);
         self.writer
             .push_styled(&arg.stylize_arg_suffix(self.styles, None));
-        self.align_to_about(arg, next_line_help, longest, has_short);
+        self.align_to_about(arg, next_line_help, longest);
 
         let about = if self.use_long {
             arg.get_long_help()
@@ -578,7 +555,7 @@ impl HelpTemplate<'_, '_> {
     }
 
     /// Write alignment padding between arg's switches/values and its about message.
-    fn align_to_about(&mut self, arg: &Arg, next_line_help: bool, longest: usize, has_short: bool) {
+    fn align_to_about(&mut self, arg: &Arg, next_line_help: bool, longest: usize) {
         debug!(
             "HelpTemplate::align_to_about: arg={}, next_line_help={}, longest={}",
             arg.get_id(),
@@ -590,10 +567,7 @@ impl HelpTemplate<'_, '_> {
             debug!("HelpTemplate::align_to_about: printing long help so skip alignment");
             0
         } else if !arg.is_positional() {
-            let mut self_len = display_width(&arg.to_string());
-            if has_short {
-                self_len += SHORT_SIZE;
-            }
+            let self_len = display_width(&arg.to_string());
             // Since we're writing spaces from the tab point we first need to know if we
             // had a long and short, or just short
             let padding = if arg.get_long().is_some() {
@@ -646,8 +620,10 @@ impl HelpTemplate<'_, '_> {
 
         let spaces = if next_line_help {
             TAB.len() + NEXT_LINE_INDENT.len()
-        } else {
+        } else if arg.map(|a| a.is_positional()).unwrap_or(true) {
             longest + TAB_WIDTH * 2
+        } else {
+            longest + TAB_WIDTH * 2 + 4 // See `fn short` for the 4
         };
         let trailing_indent = spaces; // Don't indent any further than the first line is indented
         let trailing_indent = self.get_spaces(trailing_indent);
@@ -748,7 +724,11 @@ impl HelpTemplate<'_, '_> {
                 .or_else(|| arg.get_long_help())
                 .unwrap_or_default();
             let h_w = h.display_width() + display_width(spec_vals);
-            let taken = longest + TAB_WIDTH * 2;
+            let taken = if arg.is_positional() {
+                longest + TAB_WIDTH * 2
+            } else {
+                longest + TAB_WIDTH * 2 + 4 // See `fn short` for the 4
+            };
             self.term_w >= taken
                 && (taken as f32 / self.term_w as f32) > 0.40
                 && h_w > (self.term_w - taken)
@@ -900,17 +880,9 @@ impl HelpTemplate<'_, '_> {
                 .or_else(|| subcommand.get_long_about())
                 .unwrap_or_default();
 
-            let _ = write!(self.writer, "{header}{heading}:{header:#}",);
+            let _ = write!(self.writer, "{header}{heading}:{header:#}\n",);
             if !about.is_empty() {
-                let _ = write!(self.writer, "\n{about}",);
-            }
-
-            let args = subcommand
-                .get_arguments()
-                .filter(|arg| should_show_arg(self.use_long, arg) && !arg.is_global_set())
-                .collect::<Vec<_>>();
-            if !args.is_empty() {
-                self.writer.push_str("\n");
+                let _ = write!(self.writer, "{about}\n",);
             }
 
             let mut sub_help = HelpTemplate {
@@ -922,6 +894,10 @@ impl HelpTemplate<'_, '_> {
                 term_w: self.term_w,
                 use_long: self.use_long,
             };
+            let args = subcommand
+                .get_arguments()
+                .filter(|arg| should_show_arg(self.use_long, arg) && !arg.is_global_set())
+                .collect::<Vec<_>>();
             sub_help.write_args(&args, heading, option_sort_key);
             if subcommand.is_flatten_help_set() {
                 sub_help.write_flat_subcommands(subcommand, first);

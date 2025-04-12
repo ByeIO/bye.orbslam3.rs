@@ -1,0 +1,291 @@
+-- file.tsx --
+~~ lineWidth: 50 ~~
+== should format when single line ==
+const t = <Test>Test</Test>;
+
+[expect]
+const t = <Test>Test</Test>;
+
+== should format when multi line ==
+const t = <Test>
+Test</Test>;
+
+[expect]
+const t = (
+    <Test>
+        Test
+    </Test>
+);
+
+== should use multi lines even when empty (since someone may want it that way in order to insert statements later) ==
+const t = <Test>
+</Test>;
+
+[expect]
+const t = (
+    <Test>
+    </Test>
+);
+
+== should format elements inside ==
+const t = <Test>
+Text
+
+<Element />
+<Element />
+
+Text
+<Element />
+Text
+
+
+<Element />
+
+Text
+
+    </Test>;
+
+[expect]
+const t = (
+    <Test>
+        Text
+
+        <Element />
+        <Element />
+
+        Text
+        <Element />
+        Text
+
+        <Element />
+
+        Text
+    </Test>
+);
+
+== should format when self closing ==
+const t = <Test />;
+
+[expect]
+const t = <Test />;
+
+== should format when element exceeds line width with no children ==
+const t = <TestingThisOutTestingThisOutTestingTe />;
+const u = <TestingThisOutTest></TestingThisOutTest>;
+
+[expect]
+const t = (
+    <TestingThisOutTestingThisOutTestingTe />
+);
+const u = (
+    <TestingThisOutTest></TestingThisOutTest>
+);
+
+== should make the children multi-line when they exceed the line width ==
+const t = <Test><Test /><Test /><Test /><Test /><Test /></Test>;
+
+[expect]
+const t = (
+    <Test>
+        <Test />
+        <Test />
+        <Test />
+        <Test />
+        <Test />
+    </Test>
+);
+
+== should make the jsx element multi-line once it contains a jsx element or fragment ==
+const t1 = <div><test /></div>;
+const t2 = <div><a>Test</a></div>;
+const t3 = <div><></></div>;
+
+[expect]
+const t1 = (
+    <div>
+        <test />
+    </div>
+);
+const t2 = (
+    <div>
+        <a>Test</a>
+    </div>
+);
+const t3 = (
+    <div>
+        <></>
+    </div>
+);
+
+== should make JSX elements that are beside each other multi-line ==
+const t = <div>
+    <Test /><Test />
+</div>;
+
+[expect]
+const t = (
+    <div>
+        <Test />
+        <Test />
+    </div>
+);
+
+== should make JSX elements that have a space between them not multi-line ==
+const t = <div>
+    <Test /> <Test />
+</div>;
+
+[expect]
+const t = (
+    <div>
+        <Test /> <Test />
+    </div>
+);
+
+== should make the children multi-line when the header exceeds the line width ==
+const t = <Test testingThisOut={5} otherAttr={longVariable}><Test /></Test>;
+
+[expect]
+const t = (
+    <Test
+        testingThisOut={5}
+        otherAttr={longVariable}
+    >
+        <Test />
+    </Test>
+);
+
+== should keep jsx expressions on the same line if there is text separating them ==
+const t = <Element>
+    {title}:{other}
+</Element>;
+
+[expect]
+const t = (
+    <Element>
+        {title}:{other}
+    </Element>
+);
+
+== should keep jsx text on the same line for a following text ==
+const t = <Element>
+    {title}:
+    {other}
+</Element>;
+
+[expect]
+const t = (
+    <Element>
+        {title}:
+        {other}
+    </Element>
+);
+
+== should keep jsx text on the same line for a preceding text with and without a space ==
+const t = <Element>
+    Test: {title}
+    Test{other}
+</Element>;
+
+[expect]
+const t = (
+    <Element>
+        Test: {title}
+        Test{other}
+    </Element>
+);
+
+== should keep jsx text on the same line for the following text with and without a space ==
+const t = <Element>
+    {title} test
+    {other}test
+</Element>;
+
+[expect]
+const t = (
+    <Element>
+        {title} test
+        {other}test
+    </Element>
+);
+
+== should leave a space between the text and expression when single line ==
+return (<E>Test: {type}</E>);
+return (<E>Test:   {type}</E>);
+return (<E>{type} test</E>);
+return (<E>{type}  test</E>);
+
+[expect]
+return <E>Test: {type}</E>;
+return <E>Test: {type}</E>;
+return <E>{type} test</E>;
+return <E>{type} test</E>;
+
+== should keep multi-line jsx element with single string attribute on same line ==
+const t = (
+    <Element test="testing this out with some string that is long">
+        Test
+    </Element>
+);
+const u = (
+    <Element test="testing this out with some string that is long" />
+);
+
+[expect]
+const t = (
+    <Element test="testing this out with some string that is long">
+        Test
+    </Element>
+);
+const u = (
+    <Element test="testing this out with some string that is long" />
+);
+
+== should not keep long multi-line jsx element with single string attribute on same line when has type arg ==
+const t = (
+    <Element<arg> test="testing this out with some string that is long">
+        Test
+    </Element>
+);
+
+[expect]
+const t = (
+    <Element<arg>
+        test="testing this out with some string that is long"
+    >
+        Test
+    </Element>
+);
+
+== should try to keep jsx parened expr inlined within binary expressions ==
+const t = <div>
+    {someCondition && (
+        <td className="some-class-name">
+            {someValue}
+        </td>
+    )}
+</div>;
+// this has the && right at the line width max so the newline will happen before
+const testing = someConditionLongEnoughTestTest && (
+    <td className="some-class-name">
+        {someValue}
+    </td>
+);
+
+[expect]
+const t = (
+    <div>
+        {someCondition && (
+            <td className="some-class-name">
+                {someValue}
+            </td>
+        )}
+    </div>
+);
+// this has the && right at the line width max so the newline will happen before
+const testing = someConditionLongEnoughTestTest
+    && (
+        <td className="some-class-name">
+            {someValue}
+        </td>
+    );

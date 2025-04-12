@@ -1,0 +1,300 @@
+# mod.ts
+// the internal tag will suppress diagnostics
+
+/** @internal */
+type PrivateType = string;
+
+/** @internal */
+export class MyClass {
+  // will ignore missing jsdocs on all these members
+  test;
+
+  method() {
+    return Math.random();
+  }
+
+  privateTypeUse: PrivateType;
+}
+
+/** Test */
+export class Other {
+  /** @internal */
+  test;
+
+  /** @internal */
+  method() {
+    return Math.random();
+  }
+}
+
+// also should work with @ignore
+
+/** @ignore */
+type OtherPrivateType = string;
+
+export type Test = OtherPrivateType;
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+  --> /mod.ts:34:1
+   | 
+34 | export type Test = OtherPrivateType;
+   | ^
+
+# output.txt
+Defined in file:///mod.ts:7:1
+
+class MyClass
+
+  @internal
+
+  test
+  privateTypeUse: PrivateType
+  method()
+
+Defined in file:///mod.ts:19:1
+
+class Other
+  Test
+
+  test
+
+    @internal
+  method()
+
+    @internal
+
+Defined in file:///mod.ts:4:1
+
+private type PrivateType = string
+
+  @internal
+
+Defined in file:///mod.ts:34:1
+
+type Test = OtherPrivateType
+
+
+# output.json
+[
+  {
+    "name": "MyClass",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 7,
+      "col": 0,
+      "byteIndex": 109
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "tags": [
+        {
+          "kind": "internal"
+        }
+      ]
+    },
+    "kind": "class",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [
+        {
+          "tsType": null,
+          "readonly": false,
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "test",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 9,
+            "col": 2,
+            "byteIndex": 187
+          }
+        },
+        {
+          "tsType": {
+            "repr": "PrivateType",
+            "kind": "typeRef",
+            "typeRef": {
+              "typeParams": null,
+              "typeName": "PrivateType"
+            }
+          },
+          "readonly": false,
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "privateTypeUse",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 15,
+            "col": 2,
+            "byteIndex": 240
+          }
+        }
+      ],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "method",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 11,
+            "col": 2,
+            "byteIndex": 196
+          }
+        }
+      ],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "name": "Other",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 19,
+      "col": 0,
+      "byteIndex": 284
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "Test"
+    },
+    "kind": "class",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [
+        {
+          "jsDoc": {
+            "tags": [
+              {
+                "kind": "internal"
+              }
+            ]
+          },
+          "tsType": null,
+          "readonly": false,
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "test",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 21,
+            "col": 2,
+            "byteIndex": 326
+          }
+        }
+      ],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "tags": [
+              {
+                "kind": "internal"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "method",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 24,
+            "col": 2,
+            "byteIndex": 354
+          }
+        }
+      ],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "name": "Test",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 34,
+      "col": 0,
+      "byteIndex": 480
+    },
+    "declarationKind": "export",
+    "kind": "typeAlias",
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "OtherPrivateType",
+        "kind": "typeRef",
+        "typeRef": {
+          "typeParams": null,
+          "typeName": "OtherPrivateType"
+        }
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "name": "PrivateType",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 4,
+      "col": 0,
+      "byteIndex": 64
+    },
+    "declarationKind": "private",
+    "jsDoc": {
+      "tags": [
+        {
+          "kind": "internal"
+        }
+      ]
+    },
+    "kind": "typeAlias",
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "string",
+        "kind": "keyword",
+        "keyword": "string"
+      },
+      "typeParams": []
+    }
+  }
+]

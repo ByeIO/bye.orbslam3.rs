@@ -8,11 +8,18 @@
 #![allow(deprecated)]
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
+// Silence clippy warnings as a stopgap to get CI working.
+#![allow(clippy::enum_variant_names)]
+#![allow(clippy::identity_op)]
+#![allow(clippy::let_and_return)]
+#![allow(clippy::missing_safety_doc)]
+#![allow(clippy::missing_transmute_annotations)]
+#![allow(clippy::new_ret_no_self)]
+#![allow(clippy::new_without_default)]
+#![allow(clippy::too_many_arguments)]
+#![allow(clippy::transmute_ptr_to_ref)]
+#![allow(clippy::unit_arg)]
 
-#[macro_use]
-pub extern crate bitflags;
-#[macro_use]
-pub extern crate log;
 #[macro_use]
 pub extern crate objc;
 #[macro_use]
@@ -20,13 +27,7 @@ pub extern crate foreign_types;
 #[macro_use]
 pub extern crate paste;
 
-use std::{
-    borrow::{Borrow, ToOwned},
-    marker::PhantomData,
-    mem,
-    ops::Deref,
-    os::raw::c_void,
-};
+use std::{borrow::Borrow, marker::PhantomData, mem, ops::Deref, os::raw::c_void};
 
 use core_graphics_types::{base::CGFloat, geometry::CGSize};
 use foreign_types::ForeignType;
@@ -546,7 +547,8 @@ impl MetalLayerRef {
     }
 }
 
-mod accelerator_structure;
+mod acceleration_structure;
+mod acceleration_structure_pass;
 mod argument;
 mod blitpass;
 mod buffer;
@@ -577,7 +579,8 @@ mod vertexdescriptor;
 
 #[rustfmt::skip]
 pub use {
-    accelerator_structure::*,
+    acceleration_structure::*,
+    acceleration_structure_pass::*,
     argument::*,
     blitpass::*,
     buffer::*,

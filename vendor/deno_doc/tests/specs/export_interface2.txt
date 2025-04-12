@@ -1,0 +1,77 @@
+# mod.ts
+export interface TypedIface<T> {
+    something(): T
+}
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:1:1
+  | 
+1 | export interface TypedIface<T> {
+  | ^
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:2:5
+  | 
+2 |     something(): T
+  |     ^
+
+# output.txt
+Defined in file:///mod.ts:1:1
+
+interface TypedIface<T>
+
+  something(): T
+
+
+# output.json
+[
+  {
+    "name": "TypedIface",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 1,
+      "col": 0,
+      "byteIndex": 0
+    },
+    "declarationKind": "export",
+    "kind": "interface",
+    "interfaceDef": {
+      "extends": [],
+      "constructors": [],
+      "methods": [
+        {
+          "name": "something",
+          "kind": "method",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 2,
+            "col": 4,
+            "byteIndex": 37
+          },
+          "params": [],
+          "optional": false,
+          "returnType": {
+            "repr": "T",
+            "kind": "typeRef",
+            "typeRef": {
+              "typeParams": null,
+              "typeName": "T"
+            }
+          },
+          "typeParams": []
+        }
+      ],
+      "properties": [],
+      "callSignatures": [],
+      "indexSignatures": [],
+      "typeParams": [
+        {
+          "name": "T"
+        }
+      ]
+    }
+  }
+]

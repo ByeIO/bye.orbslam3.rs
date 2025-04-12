@@ -4,7 +4,6 @@ use std::io::prelude::*;
 use std::path::Path;
 use std::str;
 
-use crate::header::BLOCK_SIZE;
 use crate::header::GNU_SPARSE_HEADERS_COUNT;
 use crate::header::{path2bytes, HeaderMode};
 use crate::GnuExtSparseHeader;
@@ -519,7 +518,7 @@ impl EntryWriter<'_> {
         prepare_header_path(obj.as_write(), header, path)?;
 
         // Reserve space for header, will be overwritten once data is written.
-        obj.write_all([0u8; BLOCK_SIZE as usize].as_ref())?;
+        obj.write_all([0u8; 512].as_ref())?;
 
         Ok(EntryWriter {
             obj,
@@ -545,14 +544,13 @@ impl EntryWriter<'_> {
 
     fn do_finish(&mut self) -> io::Result<()> {
         // Pad with zeros if necessary.
-        let buf = [0u8; BLOCK_SIZE as usize];
-        let remaining = BLOCK_SIZE.wrapping_sub(self.written) % BLOCK_SIZE;
+        let buf = [0u8; 512];
+        let remaining = u64::wrapping_sub(512, self.written) % 512;
         self.obj.write_all(&buf[..remaining as usize])?;
         let written = (self.written + remaining) as i64;
 
         // Seek back to the header position.
-        self.obj
-            .seek(io::SeekFrom::Current(-written - BLOCK_SIZE as i64))?;
+        self.obj.seek(io::SeekFrom::Current(-written - 512))?;
 
         self.header.set_size(self.written);
         self.header.set_cksum();
@@ -591,9 +589,9 @@ fn append(mut dst: &mut dyn Write, header: &Header, mut data: &mut dyn Read) -> 
 }
 
 fn pad_zeroes(dst: &mut dyn Write, len: u64) -> io::Result<()> {
-    let buf = [0; BLOCK_SIZE as usize];
-    let remaining = BLOCK_SIZE - (len % BLOCK_SIZE);
-    if remaining < BLOCK_SIZE {
+    let buf = [0; 512];
+    let remaining = 512 - (len % 512);
+    if remaining < 512 {
         dst.write_all(&buf[..remaining as usize])?;
     }
     Ok(())
@@ -770,7 +768,7 @@ fn prepare_header_path(dst: &mut dyn Write, header: &mut Header, path: &Path) ->
             Ok(s) => s,
             Err(e) => str::from_utf8(&data[..e.valid_up_to()]).unwrap(),
         };
-        header.set_truncated_path_for_gnu_header(&truncated)?;
+        header.set_path(truncated)?;
     }
     Ok(())
 }
@@ -1116,9 +1114,8 @@ impl<W: Write> Drop for Builder<W> {
 mod tests {
     use super::*;
 
-    /// Should be multiple of 4KiB on ext4, multiple of 32KiB on FreeBSD/UFS, multiple of 64KiB on
-    /// ppc64el
-    const SPARSE_BLOCK_SIZE: u64 = 64 * 1024;
+    /// Should be multiple of 4KiB on ext4, multiple of 32KiB on FreeBSD/UFS.
+    const SPARSE_BLOCK_SIZE: u64 = 32768;
 
     #[test]
     fn test_find_sparse_entries() {

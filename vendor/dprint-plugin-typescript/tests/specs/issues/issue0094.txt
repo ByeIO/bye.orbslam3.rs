@@ -1,0 +1,50 @@
+-- test.jsx --
+~~ lineWidth: 80, jsx.multiLineParens: never ~~
+== should format block comments in jsx expr container ==
+const render = items => (
+  <div>{ /* eslint-disable */
+     items.map(item => null)
+      /* eslint-enable */    }</div>
+);
+
+[expect]
+const render = items => (
+    <div>
+        {
+            /* eslint-disable */
+            items.map(item => null)
+            /* eslint-enable */
+        }
+    </div>
+);
+
+== should handle comment before and after spread ==
+<div {/* c */...a}/>;
+<div {...a /* c */}/>;
+
+[expect]
+<div {/* c */ ...a} />;
+<div {...a /* c */} />;
+
+== should not panic and put space in correct spot ==
+// Test
+
+// Test
+x = <div>
+    <first>f</first> <first>f</first> <first>f</first> <first>f</first> <first>f</first> <first>f</first>
+  </div>;
+
+[expect]
+// Test
+
+// Test
+x = <div>
+    <first>f</first> <first>f</first> <first>f</first> <first>f</first>{" "}
+    <first>f</first> <first>f</first>
+</div>;
+
+== should use the proper number of backslashes when converting this scenario ==
+<div id={'\'\"\\\''} />;
+
+[expect]
+<div id={"'\"\\'"} />;

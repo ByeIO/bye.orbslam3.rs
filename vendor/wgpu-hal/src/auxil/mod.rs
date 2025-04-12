@@ -44,7 +44,7 @@ pub mod db {
 /// Interestingly, the index itself can't reach that high, because the minimum
 /// element size is 4 bytes, but the compiler toolchain still computes the
 /// offset at some intermediate point, internally, as i32.
-pub const MAX_I32_BINDING_SIZE: u32 = 1 << 31;
+pub const MAX_I32_BINDING_SIZE: u32 = (1 << 31) - 1;
 
 pub fn map_naga_stage(stage: naga::ShaderStage) -> wgt::ShaderStages {
     match stage {
@@ -113,26 +113,5 @@ impl crate::TextureCopy {
         let max_src_size = self.src_base.max_copy_size(full_src_size);
         let max_dst_size = self.dst_base.max_copy_size(full_dst_size);
         self.size = self.size.min(&max_src_size).min(&max_dst_size);
-    }
-}
-
-/// Construct a `CStr` from a byte slice, up to the first zero byte.
-///
-/// Return a `CStr` extending from the start of `bytes` up to and
-/// including the first zero byte. If there is no zero byte in
-/// `bytes`, return `None`.
-///
-/// This can be removed when `CStr::from_bytes_until_nul` is stabilized.
-/// ([#95027](https://github.com/rust-lang/rust/issues/95027))
-#[allow(dead_code)]
-pub(crate) fn cstr_from_bytes_until_nul(bytes: &[std::os::raw::c_char]) -> Option<&std::ffi::CStr> {
-    if bytes.contains(&0) {
-        // Safety for `CStr::from_ptr`:
-        // - We've ensured that the slice does contain a null terminator.
-        // - The range is valid to read, because the slice covers it.
-        // - The memory won't be changed, because the slice borrows it.
-        unsafe { Some(std::ffi::CStr::from_ptr(bytes.as_ptr())) }
-    } else {
-        None
     }
 }

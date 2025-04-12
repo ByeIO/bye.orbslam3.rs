@@ -11,30 +11,16 @@ use crate::stream::raw::{InBuffer, Operation, OutBuffer};
 /// It can be used with either compression or decompression, and forwards the
 /// output to a wrapped `Write`.
 pub struct Writer<W, D> {
-    /// Either an encoder or a decoder.
+    writer: W,
     operation: D,
 
-    /// Where we send the output of the operation.
-    writer: W,
-
-    /// Offset into the buffer
-    ///
-    /// Only things after this matter. Things before have already been sent to the writer.
     offset: usize,
-
-    /// Output buffer
-    ///
-    /// Where the operation writes, before it gets flushed to the writer
     buffer: Vec<u8>,
 
     // When `true`, indicates that nothing should be added to the buffer.
     // All that's left if to empty the buffer.
     finished: bool,
 
-    /// When `true`, the operation just finished a frame.
-    ///
-    /// Only happens when decompressing.
-    /// The context needs to be re-initialized to process the next frame.
     finished_frame: bool,
 }
 
@@ -43,46 +29,17 @@ where
     W: Write,
     D: Operation,
 {
-    /// Creates a new `Writer` with a fixed buffer capacity of 32KB
+    /// Creates a new `Writer`.
     ///
     /// All output from the given operation will be forwarded to `writer`.
     pub fn new(writer: W, operation: D) -> Self {
-        // 32KB buffer? That's what flate2 uses
-        Self::new_with_capacity(writer, operation, 32 * 1024)
-    }
-
-    /// Creates a new `Writer` with user defined capacity.
-    ///
-    /// All output from the given operation will be forwarded to `writer`.
-    pub fn new_with_capacity(
-        writer: W,
-        operation: D,
-        capacity: usize,
-    ) -> Self {
-        Self::with_output_buffer(
-            Vec::with_capacity(capacity),
-            writer,
-            operation,
-        )
-    }
-
-    /// Creates a new `Writer` using the given output buffer.
-    ///
-    /// The output buffer _must_ have pre-allocated capacity (its capacity will not be changed after).
-    ///
-    /// Usually you would use `Vec::with_capacity(desired_buffer_size)`.
-    pub fn with_output_buffer(
-        output_buffer: Vec<u8>,
-        writer: W,
-        operation: D,
-    ) -> Self {
         Writer {
             writer,
             operation,
 
             offset: 0,
             // 32KB buffer? That's what flate2 uses
-            buffer: output_buffer,
+            buffer: Vec::with_capacity(32 * 1024),
 
             finished: false,
             finished_frame: false,
@@ -217,12 +174,6 @@ where
     D: Operation,
 {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        if self.finished {
-            return Err(io::Error::new(
-                io::ErrorKind::Other,
-                "encoder is finished",
-            ));
-        }
         // Keep trying until _something_ has been consumed.
         // As soon as some input has been taken, we cannot afford
         // to take any chance: if an error occurs, the user couldn't know
@@ -326,28 +277,6 @@ mod tests {
     }
 
     #[test]
-    fn test_compress_with_capacity() {
-        use crate::stream::raw::Encoder;
-
-        let input = b"AbcdefghAbcdefgh.";
-
-        // Test writer
-        let mut output = Vec::new();
-        {
-            let mut writer = Writer::new_with_capacity(
-                &mut output,
-                Encoder::new(1).unwrap(),
-                64,
-            );
-            assert_eq!(writer.buffer.capacity(), 64);
-            writer.write_all(input).unwrap();
-            writer.finish().unwrap();
-        }
-        let decoded = crate::decode_all(&output[..]).unwrap();
-        assert_eq!(&decoded, input);
-    }
-
-    #[test]
     fn test_decompress() {
         use crate::stream::raw::Decoder;
 
@@ -362,28 +291,6 @@ mod tests {
             writer.finish().unwrap();
         }
         // println!("Output: {:?}", output);
-        assert_eq!(&output, input);
-    }
-
-    #[test]
-    fn test_decompress_with_capacity() {
-        use crate::stream::raw::Decoder;
-
-        let input = b"AbcdefghAbcdefgh.";
-        let compressed = crate::encode_all(&input[..], 1).unwrap();
-
-        // Test writer
-        let mut output = Vec::new();
-        {
-            let mut writer = Writer::new_with_capacity(
-                &mut output,
-                Decoder::new().unwrap(),
-                64,
-            );
-            assert_eq!(writer.buffer.capacity(), 64);
-            writer.write_all(&compressed).unwrap();
-            writer.finish().unwrap();
-        }
         assert_eq!(&output, input);
     }
 }

@@ -1,25 +1,30 @@
 pub trait IChatItem_Impl: Sized {
-    fn ItemKind(&self) -> ::windows_core::Result<ChatItemKind>;
+    fn ItemKind(&self) -> windows_core::Result<ChatItemKind>;
 }
-impl ::windows_core::RuntimeName for IChatItem {
+impl windows_core::RuntimeName for IChatItem {
     const NAME: &'static str = "Windows.ApplicationModel.Chat.IChatItem";
 }
 impl IChatItem_Vtbl {
-    pub const fn new<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IChatItem_Impl, const OFFSET: isize>() -> IChatItem_Vtbl {
-        unsafe extern "system" fn ItemKind<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IChatItem_Impl, const OFFSET: isize>(this: *mut ::core::ffi::c_void, result__: *mut ChatItemKind) -> ::windows_core::HRESULT {
-            let this = (this as *const *const ()).offset(OFFSET) as *const Identity;
-            let this = (*this).get_impl();
-            match this.ItemKind() {
-                ::core::result::Result::Ok(ok__) => {
-                    ::core::ptr::write(result__, ::core::mem::transmute_copy(&ok__));
-                    ::windows_core::HRESULT(0)
+    pub const fn new<Identity: windows_core::IUnknownImpl, const OFFSET: isize>() -> IChatItem_Vtbl
+    where
+        Identity: IChatItem_Impl,
+    {
+        unsafe extern "system" fn ItemKind<Identity: windows_core::IUnknownImpl, const OFFSET: isize>(this: *mut core::ffi::c_void, result__: *mut ChatItemKind) -> windows_core::HRESULT
+        where
+            Identity: IChatItem_Impl,
+        {
+            let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
+            match IChatItem_Impl::ItemKind(this) {
+                Ok(ok__) => {
+                    result__.write(core::mem::transmute_copy(&ok__));
+                    windows_core::HRESULT(0)
                 }
-                ::core::result::Result::Err(err) => err.into(),
+                Err(err) => err.into(),
             }
         }
-        Self { base__: ::windows_core::IInspectable_Vtbl::new::<Identity, IChatItem, OFFSET>(), ItemKind: ItemKind::<Identity, Impl, OFFSET> }
+        Self { base__: windows_core::IInspectable_Vtbl::new::<Identity, IChatItem, OFFSET>(), ItemKind: ItemKind::<Identity, OFFSET> }
     }
-    pub unsafe fn matches(iid: *const ::windows_core::GUID) -> bool {
-        *iid == <IChatItem as ::windows_core::ComInterface>::IID
+    pub fn matches(iid: &windows_core::GUID) -> bool {
+        iid == &<IChatItem as windows_core::Interface>::IID
     }
 }

@@ -20,7 +20,7 @@ pub enum Origin {
 #[derive(Debug, Default, Clone, Eq)]
 pub struct EntryMap {
     /// We use a IndexMap here so that we can sort the entries by their binding index,
-    /// guarenteeing that the hash of equivilant layouts will be the same.
+    /// guaranteeing that the hash of equivalent layouts will be the same.
     inner: FastIndexMap<u32, wgt::BindGroupLayoutEntry>,
     /// We keep track of whether the map is sorted or not, so that we can assert that
     /// it is sorted, so that PartialEq and Hash will be stable.
@@ -58,7 +58,7 @@ impl EntryMap {
         assert!(self.sorted);
     }
 
-    /// Create a new [`BindGroupLayoutEntryMap`] from a slice of [`wgt::BindGroupLayoutEntry`]s.
+    /// Create a new [`EntryMap`] from a slice of [`wgt::BindGroupLayoutEntry`]s.
     ///
     /// Errors if there are duplicate bindings or if any binding index is greater than
     /// the device's limits.
@@ -68,7 +68,7 @@ impl EntryMap {
     ) -> Result<Self, binding_model::CreateBindGroupLayoutError> {
         let mut inner = FastIndexMap::with_capacity_and_hasher(entries.len(), Default::default());
         for entry in entries {
-            if entry.binding > device_limits.max_bindings_per_bind_group {
+            if entry.binding >= device_limits.max_bindings_per_bind_group {
                 return Err(
                     binding_model::CreateBindGroupLayoutError::InvalidBindingIndex {
                         binding: entry.binding,
@@ -125,5 +125,10 @@ impl EntryMap {
     pub fn entry(&mut self, key: u32) -> indexmap::map::Entry<'_, u32, wgt::BindGroupLayoutEntry> {
         self.sorted = false;
         self.inner.entry(key)
+    }
+
+    pub fn sort(&mut self) {
+        self.inner.sort_unstable_keys();
+        self.sorted = true;
     }
 }

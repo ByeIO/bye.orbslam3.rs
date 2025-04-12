@@ -1,0 +1,108 @@
+~~ lineWidth: 35 ~~
+== should print decorator ==
+const t = @dec class Test {
+};
+
+[expect]
+const t = @dec class Test {
+};
+
+== should print multiple decorators ==
+const t = @dec     @dec2 class Test {
+};
+
+[expect]
+const t = @dec @dec2 class Test {
+};
+
+== should print multiple decorators that go over the line width ==
+const t = @decorator1 @decorator2 @decorator3 @decorator4 class Test {
+};
+
+[expect]
+const t = @decorator1
+    @decorator2
+    @decorator3
+    @decorator4
+    class Test {
+    };
+
+== should use newlines if the first two decorators are on different lines ==
+let t = @d
+@e
+class Test {
+};
+
+[expect]
+let t = @d
+    @e
+    class Test {
+    };
+
+== should handle preceeding comment blocks ==
+const t = @decorator1
+    @decorator2
+    @decorator3
+    @decorator4
+    /* test*/ class Test {
+    };
+
+[expect]
+const t = @decorator1
+    @decorator2
+    @decorator3
+    @decorator4
+    /* test*/ class Test {
+    };
+
+== should handle preceeding comment lines ==
+const t = @decorator1
+    @decorator2
+    @decorator3
+    // test
+    class Test {
+    };
+
+[expect]
+const t = @decorator1
+    @decorator2
+    @decorator3
+    // test
+    class Test {
+    };
+
+== should handle comments before the decorators ==
+const t = // test
+    // asdf
+    @decorator1
+    @decorator2
+    @decorator3
+    class Test {
+    };
+
+[expect]
+const t = // test
+    // asdf
+    @decorator1
+    @decorator2
+    @decorator3
+    class Test {
+    };
+
+== should handle comments before the decorators with a comment block on the line with the first decorator ==
+const t = // test
+    // asdf
+    /* test */ @decorator1
+    @decorator2
+    @decorator3
+    class Test {
+    };
+
+[expect]
+const t = // test
+    // asdf
+    /* test */ @decorator1
+    @decorator2
+    @decorator3
+    class Test {
+    };

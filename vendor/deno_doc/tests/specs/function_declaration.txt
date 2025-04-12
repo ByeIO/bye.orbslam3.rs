@@ -1,0 +1,43 @@
+# mod.ts
+export function fun() {}
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:1:1
+  | 
+1 | export function fun() {}
+  | ^
+
+# output.txt
+Defined in file:///mod.ts:1:1
+
+function fun(): void
+
+
+# output.json
+[
+  {
+    "name": "fun",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 1,
+      "col": 0,
+      "byteIndex": 0
+    },
+    "declarationKind": "export",
+    "kind": "function",
+    "functionDef": {
+      "params": [],
+      "returnType": {
+        "repr": "void",
+        "kind": "keyword",
+        "keyword": "void"
+      },
+      "hasBody": true,
+      "isAsync": false,
+      "isGenerator": false,
+      "typeParams": []
+    }
+  }
+]

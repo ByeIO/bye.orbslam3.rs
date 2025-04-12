@@ -4,6 +4,7 @@ use std::sync::{atomic::AtomicU8, Arc};
 use wgt::AstcChannel;
 
 use crate::auxil::db;
+use crate::gles::ShaderClearProgram;
 
 // https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
 
@@ -103,7 +104,7 @@ impl super::Adapter {
         }
     }
 
-    fn make_info(vendor_orig: String, renderer_orig: String) -> wgt::AdapterInfo {
+    fn make_info(vendor_orig: String, renderer_orig: String, version: String) -> wgt::AdapterInfo {
         let vendor = vendor_orig.to_lowercase();
         let renderer = renderer_orig.to_lowercase();
 
@@ -183,8 +184,8 @@ impl super::Adapter {
             vendor: vendor_id,
             device: 0,
             device_type: inferred_device_type,
-            driver: String::new(),
-            driver_info: String::new(),
+            driver: "".to_owned(),
+            driver_info: version,
             backend: wgt::Backend::Gl,
         }
     }
@@ -371,6 +372,8 @@ impl super::Adapter {
         } else {
             vertex_shader_storage_textures.min(fragment_shader_storage_textures)
         };
+        let indirect_execution =
+            supported((3, 1), (4, 3)) || extensions.contains("GL_ARB_multi_draw_indirect");
 
         let mut downlevel_flags = wgt::DownlevelFlags::empty()
             | wgt::DownlevelFlags::NON_POWER_OF_TWO_MIPMAPPED_TEXTURES
@@ -382,10 +385,7 @@ impl super::Adapter {
             wgt::DownlevelFlags::FRAGMENT_WRITABLE_STORAGE,
             max_storage_block_size != 0,
         );
-        downlevel_flags.set(
-            wgt::DownlevelFlags::INDIRECT_EXECUTION,
-            supported((3, 1), (4, 3)) || extensions.contains("GL_ARB_multi_draw_indirect"),
-        );
+        downlevel_flags.set(wgt::DownlevelFlags::INDIRECT_EXECUTION, indirect_execution);
         downlevel_flags.set(wgt::DownlevelFlags::BASE_VERTEX, supported((3, 2), (3, 2)));
         downlevel_flags.set(
             wgt::DownlevelFlags::INDEPENDENT_BLEND,
@@ -435,7 +435,8 @@ impl super::Adapter {
         let mut features = wgt::Features::empty()
             | wgt::Features::TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES
             | wgt::Features::CLEAR_TEXTURE
-            | wgt::Features::PUSH_CONSTANTS;
+            | wgt::Features::PUSH_CONSTANTS
+            | wgt::Features::DEPTH32FLOAT_STENCIL8;
         features.set(
             wgt::Features::ADDRESS_MODE_CLAMP_TO_BORDER | wgt::Features::ADDRESS_MODE_CLAMP_TO_ZERO,
             extensions.contains("GL_EXT_texture_border_clamp")
@@ -469,9 +470,11 @@ impl super::Adapter {
             wgt::Features::SHADER_EARLY_DEPTH_TEST,
             supported((3, 1), (4, 2)) || extensions.contains("GL_ARB_shader_image_load_store"),
         );
-        features.set(wgt::Features::SHADER_UNUSED_VERTEX_OUTPUT, true);
+        // We emulate MDI with a loop of draw calls.
+        features.set(wgt::Features::MULTI_DRAW_INDIRECT, indirect_execution);
         if extensions.contains("GL_ARB_timer_query") {
             features.set(wgt::Features::TIMESTAMP_QUERY, true);
+            features.set(wgt::Features::TIMESTAMP_QUERY_INSIDE_ENCODERS, true);
             features.set(wgt::Features::TIMESTAMP_QUERY_INSIDE_PASSES, true);
         }
         let gl_bcn_exts = [
@@ -501,11 +504,14 @@ impl super::Adapter {
             wgt::Features::TEXTURE_COMPRESSION_BC,
             bcn_exts.iter().all(|&ext| extensions.contains(ext)),
         );
+        features.set(
+            wgt::Features::TEXTURE_COMPRESSION_BC_SLICED_3D,
+            bcn_exts.iter().all(|&ext| extensions.contains(ext)), // BC guaranteed Sliced 3D
+        );
         let has_etc = if cfg!(any(webgl, Emscripten)) {
             extensions.contains("WEBGL_compressed_texture_etc")
         } else {
-            // This is a required part of GLES3, but not part of Desktop GL at all.
-            es_ver.is_some()
+            es_ver.is_some() || extensions.contains("GL_ARB_ES3_compatibility")
         };
         features.set(wgt::Features::TEXTURE_COMPRESSION_ETC2, has_etc);
 
@@ -652,6 +658,16 @@ impl super::Adapter {
             0
         };
 
+        let max_color_attachments = unsafe {
+            gl.get_parameter_i32(glow::MAX_COLOR_ATTACHMENTS)
+                .min(gl.get_parameter_i32(glow::MAX_DRAW_BUFFERS))
+                .min(crate::MAX_COLOR_ATTACHMENTS as i32) as u32
+        };
+
+        // 16 bytes per sample is the maximum size of a color attachment.
+        let max_color_attachment_bytes_per_sample =
+            max_color_attachments * wgt::TextureFormat::MAX_TARGET_PIXEL_BYTE_COST;
+
         let limits = wgt::Limits {
             max_texture_dimension_1d: max_texture_size,
             max_texture_dimension_2d: max_texture_size,
@@ -716,12 +732,26 @@ impl super::Adapter {
             } else {
                 !0
             },
+            min_subgroup_size: 0,
+            max_subgroup_size: 0,
             max_push_constant_size: super::MAX_PUSH_CONSTANTS as u32 * 4,
             min_uniform_buffer_offset_alignment,
             min_storage_buffer_offset_alignment,
-            max_inter_stage_shader_components: unsafe {
-                gl.get_parameter_i32(glow::MAX_VARYING_COMPONENTS)
-            } as u32,
+            max_inter_stage_shader_components: {
+                // MAX_VARYING_COMPONENTS may return 0, because it is deprecated since OpenGL 3.2 core,
+                // and an OpenGL Context with the core profile and with forward-compatibility=true,
+                // will make deprecated constants unavailable.
+                let max_varying_components =
+                    unsafe { gl.get_parameter_i32(glow::MAX_VARYING_COMPONENTS) } as u32;
+                if max_varying_components == 0 {
+                    // default value for max_inter_stage_shader_components
+                    60
+                } else {
+                    max_varying_components
+                }
+            },
+            max_color_attachments,
+            max_color_attachment_bytes_per_sample,
             max_compute_workgroup_storage_size: if supports_work_group_params {
                 (unsafe { gl.get_parameter_i32(glow::MAX_COMPUTE_SHARED_MEMORY_SIZE) } as u32)
             } else {
@@ -752,7 +782,7 @@ impl super::Adapter {
             },
             max_compute_workgroups_per_dimension,
             max_buffer_size: i32::MAX as u64,
-            max_non_sampler_bindings: std::u32::MAX,
+            max_non_sampler_bindings: u32::MAX,
         };
 
         let mut workarounds = super::Workarounds::empty();
@@ -779,6 +809,7 @@ impl super::Adapter {
         }
 
         let downlevel_defaults = wgt::DownlevelLimits {};
+        let max_samples = unsafe { gl.get_parameter_i32(glow::MAX_SAMPLES) };
 
         // Drop the GL guard so we can move the context into AdapterShared
         // ( on Wasm the gl handle is just a ref so we tell clippy to allow
@@ -793,13 +824,15 @@ impl super::Adapter {
                     private_caps,
                     workarounds,
                     features,
+                    limits: limits.clone(),
                     shading_language_version,
                     next_shader_id: Default::default(),
                     program_cache: Default::default(),
                     es: es_ver.is_some(),
+                    max_msaa_samples: max_samples,
                 }),
             },
-            info: Self::make_info(vendor, renderer),
+            info: Self::make_info(vendor, renderer, version),
             features,
             capabilities: crate::Capabilities {
                 limits,
@@ -811,6 +844,18 @@ impl super::Adapter {
                 alignments: crate::Alignments {
                     buffer_copy_offset: wgt::BufferSize::new(4).unwrap(),
                     buffer_copy_pitch: wgt::BufferSize::new(4).unwrap(),
+                    // #6151: `wgpu_hal::gles` doesn't ask Naga to inject bounds
+                    // checks in GLSL, and it doesn't request extensions like
+                    // `KHR_robust_buffer_access_behavior` that would provide
+                    // them, so we can't really implement the checks promised by
+                    // [`crate::BufferBinding`].
+                    //
+                    // Since this is a pre-existing condition, for the time
+                    // being, provide 1 as the value here, to cause as little
+                    // trouble as possible.
+                    uniform_bounds_check_alignment: wgt::BufferSize::new(1).unwrap(),
+                    raw_tlas_instance_size: 0,
+                    ray_tracing_scratch_buffer_alignment: 0,
                 },
             },
         })
@@ -825,7 +870,14 @@ impl super::Adapter {
         let source = if es {
             format!("#version 300 es\nprecision lowp float;\n{source}")
         } else {
-            format!("#version 130\n{source}")
+            let version = gl.version();
+            if version.major == 3 && version.minor == 0 {
+                // OpenGL 3.0 only supports this format
+                format!("#version 130\n{source}")
+            } else {
+                // OpenGL 3.1+ support this format
+                format!("#version 140\n{source}")
+            }
         };
         let shader = unsafe { gl.create_shader(shader_type) }.expect("Could not create shader");
         unsafe { gl.shader_source(shader, &source) };
@@ -846,7 +898,7 @@ impl super::Adapter {
     unsafe fn create_shader_clear_program(
         gl: &glow::Context,
         es: bool,
-    ) -> Option<(glow::Program, glow::UniformLocation)> {
+    ) -> Option<ShaderClearProgram> {
         let program = unsafe { gl.create_program() }.expect("Could not create shader program");
         let vertex = unsafe {
             Self::compile_shader(
@@ -882,15 +934,21 @@ impl super::Adapter {
         unsafe { gl.delete_shader(vertex) };
         unsafe { gl.delete_shader(fragment) };
 
-        Some((program, color_uniform_location))
+        Some(ShaderClearProgram {
+            program,
+            color_uniform_location,
+        })
     }
 }
 
-impl crate::Adapter<super::Api> for super::Adapter {
+impl crate::Adapter for super::Adapter {
+    type A = super::Api;
+
     unsafe fn open(
         &self,
         features: wgt::Features,
         _limits: &wgt::Limits,
+        _memory_hints: &wgt::MemoryHints,
     ) -> Result<crate::OpenDevice<super::Api>, crate::DeviceError> {
         let gl = &self.shared.context.lock();
         unsafe { gl.pixel_store_i32(glow::UNPACK_ALIGNMENT, 1) };
@@ -908,9 +966,18 @@ impl crate::Adapter<super::Api> for super::Adapter {
         // Compile the shader program we use for doing manual clears to work around Mesa fastclear
         // bug.
 
-        let (shader_clear_program, shader_clear_program_color_uniform_location) = unsafe {
-            Self::create_shader_clear_program(gl, self.shared.es)
-                .ok_or(crate::DeviceError::ResourceCreationFailed)?
+        let shader_clear_program = if self
+            .shared
+            .workarounds
+            .contains(super::Workarounds::MESA_I915_SRGB_SHADER_CLEAR)
+        {
+            Some(unsafe {
+                Self::create_shader_clear_program(gl, self.shared.es)
+                    .ok_or(crate::DeviceError::ResourceCreationFailed)?
+            })
+        } else {
+            // If we don't need the workaround, don't waste time and resources compiling the clear program
+            None
         };
 
         Ok(crate::OpenDevice {
@@ -919,6 +986,7 @@ impl crate::Adapter<super::Api> for super::Adapter {
                 main_vao,
                 #[cfg(all(native, feature = "renderdoc"))]
                 render_doc: Default::default(),
+                counters: Default::default(),
             },
             queue: super::Queue {
                 shared: Arc::clone(&self.shared),
@@ -928,7 +996,6 @@ impl crate::Adapter<super::Api> for super::Adapter {
                 copy_fbo: unsafe { gl.create_framebuffer() }
                     .map_err(|_| crate::DeviceError::OutOfMemory)?,
                 shader_clear_program,
-                shader_clear_program_color_uniform_location,
                 zero_buffer,
                 temp_query_results: Mutex::new(Vec::new()),
                 draw_buffer_count: AtomicU8::new(1),
@@ -945,12 +1012,7 @@ impl crate::Adapter<super::Api> for super::Adapter {
         use wgt::TextureFormat as Tf;
 
         let sample_count = {
-            let max_samples = unsafe {
-                self.shared
-                    .context
-                    .lock()
-                    .get_parameter_i32(glow::MAX_SAMPLES)
-            };
+            let max_samples = self.shared.max_msaa_samples;
             if max_samples >= 16 {
                 Tfc::MULTISAMPLE_X2
                     | Tfc::MULTISAMPLE_X4
@@ -979,7 +1041,8 @@ impl crate::Adapter<super::Api> for super::Adapter {
         let renderable =
             unfilterable | Tfc::COLOR_ATTACHMENT | sample_count | Tfc::MULTISAMPLE_RESOLVE;
         let filterable_renderable = filterable | renderable | Tfc::COLOR_ATTACHMENT_BLEND;
-        let storage = base | Tfc::STORAGE | Tfc::STORAGE_READ_WRITE;
+        let storage =
+            base | Tfc::STORAGE_READ_WRITE | Tfc::STORAGE_READ_ONLY | Tfc::STORAGE_WRITE_ONLY;
 
         let feature_fn = |f, caps| {
             if self.shared.features.contains(f) {
@@ -1020,6 +1083,9 @@ impl crate::Adapter<super::Api> for super::Adapter {
 
         let texture_float_linear = feature_fn(wgt::Features::FLOAT32_FILTERABLE, filterable);
 
+        let image_atomic = feature_fn(wgt::Features::TEXTURE_ATOMIC, Tfc::STORAGE_ATOMIC);
+        let image_64_atomic = feature_fn(wgt::Features::TEXTURE_INT64_ATOMIC, Tfc::STORAGE_ATOMIC);
+
         match format {
             Tf::R8Unorm => filterable_renderable,
             Tf::R8Snorm => filterable,
@@ -1034,8 +1100,8 @@ impl crate::Adapter<super::Api> for super::Adapter {
             Tf::Rg8Snorm => filterable,
             Tf::Rg8Uint => renderable,
             Tf::Rg8Sint => renderable,
-            Tf::R32Uint => renderable | storage,
-            Tf::R32Sint => renderable | storage,
+            Tf::R32Uint => renderable | storage | image_atomic,
+            Tf::R32Sint => renderable | storage | image_atomic,
             Tf::R32Float => unfilterable | storage | float_renderable | texture_float_linear,
             Tf::Rg16Uint => renderable,
             Tf::Rg16Sint => renderable,
@@ -1050,7 +1116,8 @@ impl crate::Adapter<super::Api> for super::Adapter {
             Tf::Rgba8Sint => renderable | storage,
             Tf::Rgb10a2Uint => renderable,
             Tf::Rgb10a2Unorm => filterable_renderable,
-            Tf::Rg11b10Float => filterable | float_renderable,
+            Tf::Rg11b10Ufloat => filterable | float_renderable,
+            Tf::R64Uint => image_64_atomic,
             Tf::Rg32Uint => renderable,
             Tf::Rg32Sint => renderable,
             Tf::Rg32Float => unfilterable | float_renderable | texture_float_linear,
@@ -1109,6 +1176,11 @@ impl crate::Adapter<super::Api> for super::Adapter {
         &self,
         surface: &super::Surface,
     ) -> Option<crate::SurfaceCapabilities> {
+        #[cfg(webgl)]
+        if self.shared.context.webgl2_context != surface.webgl2_context {
+            return None;
+        }
+
         if surface.presentable {
             let mut formats = vec![
                 wgt::TextureFormat::Rgba8Unorm,

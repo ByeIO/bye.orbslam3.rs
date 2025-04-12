@@ -13,9 +13,9 @@ use crate::{
     Block, Expression, Statement, SwitchCase, UnaryOperator,
 };
 
-impl<'source> ParsingContext<'source> {
+impl ParsingContext<'_> {
     pub fn peek_parameter_qualifier(&mut self, frontend: &mut Frontend) -> bool {
-        self.peek(frontend).map_or(false, |t| match t.value {
+        self.peek(frontend).is_some_and(|t| match t.value {
             TokenValue::In | TokenValue::Out | TokenValue::InOut | TokenValue::Const => true,
             _ => false,
         })
@@ -49,7 +49,7 @@ impl<'source> ParsingContext<'source> {
         }
 
         // Type names can identify either declaration statements or type constructors
-        // depending on wether the token following the type name is a `(` (LeftParen)
+        // depending on whether the token following the type name is a `(` (LeftParen)
         if self.peek_type_name(frontend) {
             // Start by consuming the type name so that we can peek the token after it
             let token = self.bump(frontend)?;
@@ -67,7 +67,7 @@ impl<'source> ParsingContext<'source> {
 
         let new_break = || {
             let mut block = Block::new();
-            block.push(Statement::Break, crate::Span::default());
+            block.push(Statement::Break, Span::default());
             block
         };
 
@@ -192,10 +192,13 @@ impl<'source> ParsingContext<'source> {
                         TokenValue::Case => {
                             self.bump(frontend)?;
 
-                            let (const_expr, meta) =
-                                self.parse_constant_expression(frontend, ctx.module)?;
+                            let (const_expr, meta) = self.parse_constant_expression(
+                                frontend,
+                                ctx.module,
+                                ctx.global_expression_kind_tracker,
+                            )?;
 
-                            match ctx.module.const_expressions[const_expr] {
+                            match ctx.module.global_expressions[const_expr] {
                                 Expression::Literal(Literal::I32(value)) => match uint {
                                     // This unchecked cast isn't good, but since
                                     // we only reach this code when the selector
@@ -352,7 +355,7 @@ impl<'source> ParsingContext<'source> {
                             accept: new_break(),
                             reject: Block::new(),
                         },
-                        crate::Span::default(),
+                        Span::default(),
                     );
 
                     meta.subsume(expr_meta);
@@ -407,7 +410,7 @@ impl<'source> ParsingContext<'source> {
                             accept: new_break(),
                             reject: Block::new(),
                         },
-                        crate::Span::default(),
+                        Span::default(),
                     );
 
                     if let Some(idx) = terminator {
@@ -495,7 +498,7 @@ impl<'source> ParsingContext<'source> {
                                 accept: new_break(),
                                 reject: Block::new(),
                             },
-                            crate::Span::default(),
+                            Span::default(),
                         );
 
                         self.expect(frontend, TokenValue::Semicolon)?;

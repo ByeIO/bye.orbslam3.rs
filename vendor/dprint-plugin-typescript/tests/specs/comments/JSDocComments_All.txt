@@ -1,0 +1,166 @@
+== should handle changing indentation of js doc ==
+      /**
+             * A
+        * B
+             */
+const t;
+
+[expect]
+/**
+ * A
+ * B
+ */
+const t;
+
+== should add spaces when missing ==
+/**A
+*B*/
+const t;
+
+[expect]
+/** A
+ * B */
+const t;
+
+== should support JS doc with text on the first line and last line ==
+/** Test
+      * Testing testing */
+const t;
+
+[expect]
+/** Test
+ * Testing testing */
+const t;
+
+== should trim leading and trailing blank lines ==
+/**
+ *
+ * Testing
+ *
+ */
+const t;
+
+[expect]
+/**
+ * Testing
+ */
+const t;
+
+== should remove consecutive blank lines ==
+/** Testing
+ *
+ *
+ * Test
+ */
+const t;
+
+[expect]
+/** Testing
+ *
+ * Test
+ */
+const t;
+
+== should allow indented text at any indentation ==
+/**
+ * A
+ *  A
+ *   A
+ *    A
+ *     A
+ */
+const t;
+
+[expect]
+/**
+ * A
+ *  A
+ *   A
+ *    A
+ *     A
+ */
+const t;
+
+== empty JS doc comment ==
+/**
+ *
+ *
+ */
+const t;
+
+/**
+ *
+ */
+const u;
+
+/**
+ */
+const v;
+
+/** */
+const w;
+
+[expect]
+/** */
+const t;
+
+/** */
+const u;
+
+/** */
+const v;
+
+/** */
+const w;
+
+== should handle stars at zero indent ==
+/** Testing
+* Test
+*/
+const t;
+
+[expect]
+/** Testing
+ * Test
+ */
+const t;
+
+== should not panic for tab in js doc ==
+/** Testing
+ *	test	test
+ */
+const t;
+
+[expect]
+/** Testing
+ * 	test	test
+ */
+const t;
+
+== should not add spaces jsdoc when sibling char is asterisk ==
+/******
+ *Test
+ *****
+ *Test
+ ****/
+const t;
+
+[expect]
+/******
+ * Test
+ *****
+ * Test
+ ****/
+const t;
+
+== should not remove the space in this scenario with an asterisk ==
+/** **UNSTABLE**: New API, yet to be vetted.
+ * Testing
+ * **UNSTABLE** test*/
+const test = 5;
+
+[expect]
+/** **UNSTABLE**: New API, yet to be vetted.
+ * Testing
+ * **UNSTABLE** test */
+const test = 5;

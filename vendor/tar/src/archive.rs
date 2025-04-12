@@ -9,7 +9,6 @@ use std::path::Path;
 
 use crate::entry::{EntryFields, EntryIo};
 use crate::error::TarError;
-use crate::header::BLOCK_SIZE;
 use crate::other;
 use crate::pax::*;
 use crate::{Entry, GnuExtSparseHeader, GnuSparseHeader, Header};
@@ -259,7 +258,7 @@ impl Archive<dyn Read + '_> {
 impl<'a, R: Read> Entries<'a, R> {
     /// Indicates whether this iterator will return raw entries or not.
     ///
-    /// If the raw list of entries is returned, then no preprocessing happens
+    /// If the raw list of entries are returned, then no preprocessing happens
     /// on account of this library, for example taking into account GNU long name
     /// or long link archive members. Raw iteration is disabled by default.
     pub fn raw(self, raw: bool) -> Entries<'a, R> {
@@ -303,14 +302,14 @@ impl<'a> EntriesFields<'a> {
             // Otherwise, check if we are ignoring zeros and continue, or break as if this is the
             // end of the archive.
             if !header.as_bytes().iter().all(|i| *i == 0) {
-                self.next += BLOCK_SIZE;
+                self.next += 512;
                 break;
             }
 
             if !self.archive.inner.ignore_zeros {
                 return Ok(None);
             }
-            self.next += BLOCK_SIZE;
+            self.next += 512;
             header_pos = self.next;
         }
 
@@ -365,11 +364,11 @@ impl<'a> EntriesFields<'a> {
         // Store where the next entry is, rounding up by 512 bytes (the size of
         // a header);
         let size = size
-            .checked_add(BLOCK_SIZE - 1)
+            .checked_add(511)
             .ok_or_else(|| other("size overflow"))?;
         self.next = self
             .next
-            .checked_add(size & !(BLOCK_SIZE - 1))
+            .checked_add(size & !(512 - 1))
             .ok_or_else(|| other("size overflow"))?;
 
         Ok(Some(ret.into_entry()))
@@ -484,7 +483,7 @@ impl<'a> EntriesFields<'a> {
                 }
                 let off = block.offset()?;
                 let len = block.length()?;
-                if len != 0 && (size - remaining) % BLOCK_SIZE != 0 {
+                if len != 0 && (size - remaining) % 512 != 0 {
                     return Err(other(
                         "previous block in sparse file was not \
                          aligned to 512-byte boundary",
@@ -521,7 +520,7 @@ impl<'a> EntriesFields<'a> {
                         return Err(other("failed to read extension"));
                     }
 
-                    self.next += BLOCK_SIZE;
+                    self.next += 512;
                     for block in ext.sparse.iter() {
                         add_block(block)?;
                     }

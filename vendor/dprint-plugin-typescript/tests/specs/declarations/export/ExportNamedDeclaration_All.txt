@@ -1,0 +1,179 @@
+~~ lineWidth: 40 ~~
+== should format when using no named exports ==
+export {};
+
+[expect]
+export {};
+
+== should format when using named exports ==
+const test = 5;
+export {test};
+
+[expect]
+const test = 5;
+export { test };
+
+== should format when using a namespace export specifier ==
+export  *   as   ns   from   "package"  ;
+
+[expect]
+export * as ns from "package";
+
+== should format a type-only export ==
+export   type    { test };
+
+[expect]
+export type { test };
+
+== should format a type only export specifiers ==
+export   {  type   n1 };
+export type{  type   n1 };
+
+[expect]
+export { type n1 };
+export type { n1 };
+
+== should format when has zero named exports ==
+export {} from "test";
+
+[expect]
+export {} from "test";
+
+== should format when has zero named exports and is type-only export ==
+export type {} from "test";
+
+[expect]
+export type {} from "test";
+
+== should remain single line when has no named exports and exceeding the line width ==
+export {} from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+export {} from "testingtttttttttttttttttttttttttttttt";
+
+== should remain single line when has one named export and exceeding the line width ==
+export { testingThisOut } from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+export { testingThisOut } from "testingtttttttttttttttttttttttttttttt";
+
+== should remain single line when has one named export with alias and exceeding the line width ==
+export { testingThisOut as alias } from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+export { testingThisOut as alias } from "testingtttttttttttttttttttttttttttttt";
+
+== should not be single line when has two named exports and exceeding the line width ==
+export { test, testingThisOut } from "testingtttttttttttttttttttttttttttttt";
+
+[expect]
+export {
+    test,
+    testingThisOut,
+} from "testingtttttttttttttttttttttttttttttt";
+
+== should prefer single line by default ==
+export {
+    a
+} from "test";
+export {
+    b // test
+} from "test";
+
+[expect]
+export { a } from "test";
+export {
+    b, // test
+} from "test";
+
+== should sort the exports in alphabetical order ==
+export { c, B, a, f2, f, f1} from "a";
+export { b as a, a as b } from "test";
+export { a as ab, a as aa } from "test";
+export { a as   ab, a as aa } from "test";
+export { a as   ab, a } from "test";
+export { a, a as   ab } from "test";
+
+[expect]
+export { a, B, c, f, f1, f2 } from "a";
+export { a as b, b as a } from "test";
+export { a as aa, a as ab } from "test";
+export { a as aa, a as ab } from "test";
+export { a, a as ab } from "test";
+export { a, a as ab } from "test";
+
+== should sort the declarations by their module specifiers ==
+export * from "./a";
+export {} from "./a";
+export * from "a";
+
+[expect]
+export * from "a";
+export * from "./a";
+export {} from "./a";
+
+== should sort the declarations by their module specifiers ==
+export * from "./b";
+export * from "./a";
+export * from "b";
+export * from "a";
+export * from "../b";
+export * from "../a";
+export * from "../../b";
+export * from "../../a";
+export {} from "./b";
+export {} from "./a";
+export {} from "b";
+export {} from "a";
+export {} from "../b";
+export {} from "../a";
+export {} from "../../b";
+export {} from "../../a";
+
+[expect]
+export * from "a";
+export {} from "a";
+export * from "b";
+export {} from "b";
+export * from "../../a";
+export {} from "../../a";
+export * from "../../b";
+export {} from "../../b";
+export * from "../a";
+export {} from "../a";
+export * from "../b";
+export {} from "../b";
+export * from "./a";
+export {} from "./a";
+export * from "./b";
+export {} from "./b";
+
+== should format assertions ==
+export { } from "a" assert {a: "a"};
+export { asdf } from "test" assert { type: "json" };
+export { n1, n2, n3, n4 } from "test" assert { type: "json" };
+
+[expect]
+export {} from "a" assert { a: "a" };
+export { asdf } from "test" assert { type: "json" };
+export {
+    n1,
+    n2,
+    n3,
+    n4,
+} from "test" assert { type: "json" };
+
+== should format attributes ==
+export { } from "a" with {a: "a"};
+export { asdf } from "test" with { type: "json" };
+export { n1, n2, n3, n4 } from "test" with { type: "json" };
+
+[expect]
+export {} from "a" with { a: "a" };
+export { asdf } from "test" with { type: "json" };
+export {
+    n1,
+    n2,
+    n3,
+    n4,
+} from "test" with { type: "json" };

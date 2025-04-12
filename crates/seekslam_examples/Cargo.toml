@@ -29,6 +29,7 @@ protokit.workspace = true
 wonnx.workspace = true
 # 线性代数
 nalgebra.workspace = true
+ndarray.workspace = true
 # 因子图优化
 factrs.workspace = true
 # wasm运行时
@@ -44,7 +45,9 @@ tempfile.workspace = true
 embed-file.workspace = true
 # onnxruntime(C绑定)
 ort.workspace = true
-ndarray = "0.16.1"
+# 随机数
+rand.workspace = true
+rand_distr.workspace = true
 
 [[example]]
 name = "deno_hello"

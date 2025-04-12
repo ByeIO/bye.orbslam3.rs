@@ -1,0 +1,143 @@
+== should sort groups of many kinds of statements ==
+// testing
+import { a } from "./a";
+import { a } from "../a";
+import { a } from "../../b";
+import { a } from "b";
+import { a } from "a";
+import { a } from "../../aa";
+import { a } from "../../a";
+import { a } from "../../a/b";
+export * from "c";
+export * from "a";
+test;
+export * from "aa";
+
+import { a } from "c";
+export * from "b";
+import { a } from "a";
+
+[expect]
+// testing
+import { a } from "a";
+import { a } from "b";
+import { a } from "../../a";
+import { a } from "../../a/b";
+import { a } from "../../aa";
+import { a } from "../../b";
+import { a } from "../a";
+import { a } from "./a";
+export * from "a";
+export * from "c";
+test;
+export * from "aa";
+
+import { a } from "c";
+export * from "b";
+import { a } from "a";
+
+== should keep comments on same line as part of the node ==
+// testing
+/* a */ import { a } from "./a"; /* a */ // a
+/* b */ import { a } from "b"; /* b */ // b
+
+[expect]
+// testing
+/* b */ import { a } from "b"; /* b */ // b
+/* a */ import { a } from "./a"; /* a */ // a
+
+== should allow placing a comment to break up the sorting ==
+// group 1
+import { a } from "n";
+import { a } from "m";
+// group 2
+import { a } from "b";
+import { a } from "a";
+
+[expect]
+// group 1
+import { a } from "m";
+import { a } from "n";
+// group 2
+import { a } from "a";
+import { a } from "b";
+
+== should keep leading comment block on separate line ==
+/**
+ * testing
+ */
+import * as test from "b";
+import * as test from "a";
+
+[expect]
+/**
+ * testing
+ */
+import * as test from "a";
+import * as test from "b";
+
+== should handle comments in between on different lines ==
+import { a } from "test";
+
+/* barrel:ignore */
+import { a } from "test";
+
+// other
+
+import { a } from "test";
+
+[expect]
+import { a } from "test";
+
+/* barrel:ignore */
+import { a } from "test";
+
+// other
+
+import { a } from "test";
+
+== should sort straight alphabetical for absolute paths or import map/package names ==
+import * as t from "https://deno.land/x/a.ts";
+import * as u from "https://deno.land/x/sub-dir/a.ts";
+import * as v from "https://deno.land/x/sub-dir/other/a.ts";
+
+import { a } from "package";
+import { a } from "package/other";
+import { a } from "package/abc/xyz";
+
+[expect]
+import * as t from "https://deno.land/x/a.ts";
+import * as u from "https://deno.land/x/sub-dir/a.ts";
+import * as v from "https://deno.land/x/sub-dir/other/a.ts";
+
+import { a } from "package";
+import { a } from "package/abc/xyz";
+import { a } from "package/other";
+
+== should put package names in alphabetical order regardless of directories ==
+import { a } from "package";
+import { a } from "package/asdf/test";
+import { a } from "package/other";
+
+[expect]
+import { a } from "package";
+import { a } from "package/asdf/test";
+import { a } from "package/other";
+
+== should not sort import declarations that are only imported for their side effects ==
+import "./b.css";
+import "./a.css";
+
+[expect]
+import "./b.css";
+import "./a.css";
+
+== should handle import declarations with no named or default imports mixed in ==
+import { a } from "./c.ts";
+import "./a.ts";
+import { a } from "./b.ts";
+
+[expect]
+import { a } from "./c.ts";
+import "./a.ts";
+import { a } from "./b.ts";

@@ -55,5 +55,5 @@ where
     Ok(())
 }
 
-#[cfg(test)]
+#[cfg(tests)]
 mod tests {}

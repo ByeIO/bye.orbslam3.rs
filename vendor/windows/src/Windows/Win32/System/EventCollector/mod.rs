@@ -1,116 +1,90 @@
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcClose(object: isize) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcClose(object : isize) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcClose(object : isize) -> super::super::Foundation:: BOOL);
     EcClose(object)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcDeleteSubscription<P0>(subscriptionname: P0, flags: u32) -> super::super::Foundation::BOOL
 where
-    P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
+    P0: windows_core::Param<windows_core::PCWSTR>,
 {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcDeleteSubscription(subscriptionname : ::windows_core::PCWSTR, flags : u32) -> super::super::Foundation:: BOOL);
-    EcDeleteSubscription(subscriptionname.into_param().abi(), flags)
+    windows_targets::link!("wecapi.dll" "system" fn EcDeleteSubscription(subscriptionname : windows_core::PCWSTR, flags : u32) -> super::super::Foundation:: BOOL);
+    EcDeleteSubscription(subscriptionname.param().abi(), flags)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
-pub unsafe fn EcEnumNextSubscription(subscriptionenum: isize, subscriptionnamebuffer: ::core::option::Option<&mut [u16]>, subscriptionnamebufferused: *mut u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcEnumNextSubscription(subscriptionenum : isize, subscriptionnamebuffersize : u32, subscriptionnamebuffer : ::windows_core::PWSTR, subscriptionnamebufferused : *mut u32) -> super::super::Foundation:: BOOL);
-    EcEnumNextSubscription(subscriptionenum, subscriptionnamebuffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), ::core::mem::transmute(subscriptionnamebuffer.as_deref().map_or(::core::ptr::null(), |slice| slice.as_ptr())), subscriptionnamebufferused)
+pub unsafe fn EcEnumNextSubscription(subscriptionenum: isize, subscriptionnamebuffer: Option<&mut [u16]>, subscriptionnamebufferused: *mut u32) -> super::super::Foundation::BOOL {
+    windows_targets::link!("wecapi.dll" "system" fn EcEnumNextSubscription(subscriptionenum : isize, subscriptionnamebuffersize : u32, subscriptionnamebuffer : windows_core::PWSTR, subscriptionnamebufferused : *mut u32) -> super::super::Foundation:: BOOL);
+    EcEnumNextSubscription(subscriptionenum, subscriptionnamebuffer.as_deref().map_or(0, |slice| slice.len().try_into().unwrap()), core::mem::transmute(subscriptionnamebuffer.as_deref().map_or(core::ptr::null(), |slice| slice.as_ptr())), subscriptionnamebufferused)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcGetObjectArrayProperty(objectarray: isize, propertyid: EC_SUBSCRIPTION_PROPERTY_ID, arrayindex: u32, flags: u32, propertyvaluebuffersize: u32, propertyvaluebuffer: *mut EC_VARIANT, propertyvaluebufferused: *mut u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcGetObjectArrayProperty(objectarray : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, arrayindex : u32, flags : u32, propertyvaluebuffersize : u32, propertyvaluebuffer : *mut EC_VARIANT, propertyvaluebufferused : *mut u32) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcGetObjectArrayProperty(objectarray : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, arrayindex : u32, flags : u32, propertyvaluebuffersize : u32, propertyvaluebuffer : *mut EC_VARIANT, propertyvaluebufferused : *mut u32) -> super::super::Foundation:: BOOL);
     EcGetObjectArrayProperty(objectarray, propertyid, arrayindex, flags, propertyvaluebuffersize, propertyvaluebuffer, propertyvaluebufferused)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcGetObjectArraySize(objectarray: isize, objectarraysize: *mut u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcGetObjectArraySize(objectarray : isize, objectarraysize : *mut u32) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcGetObjectArraySize(objectarray : isize, objectarraysize : *mut u32) -> super::super::Foundation:: BOOL);
     EcGetObjectArraySize(objectarray, objectarraysize)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcGetSubscriptionProperty(subscription: isize, propertyid: EC_SUBSCRIPTION_PROPERTY_ID, flags: u32, propertyvaluebuffersize: u32, propertyvaluebuffer: *mut EC_VARIANT, propertyvaluebufferused: *mut u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcGetSubscriptionProperty(subscription : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, flags : u32, propertyvaluebuffersize : u32, propertyvaluebuffer : *mut EC_VARIANT, propertyvaluebufferused : *mut u32) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcGetSubscriptionProperty(subscription : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, flags : u32, propertyvaluebuffersize : u32, propertyvaluebuffer : *mut EC_VARIANT, propertyvaluebufferused : *mut u32) -> super::super::Foundation:: BOOL);
     EcGetSubscriptionProperty(subscription, propertyid, flags, propertyvaluebuffersize, propertyvaluebuffer, propertyvaluebufferused)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcGetSubscriptionRunTimeStatus<P0, P1>(subscriptionname: P0, statusinfoid: EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID, eventsourcename: P1, flags: u32, statusvaluebuffersize: u32, statusvaluebuffer: *mut EC_VARIANT, statusvaluebufferused: *mut u32) -> super::super::Foundation::BOOL
 where
-    P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
-    P1: ::windows_core::IntoParam<::windows_core::PCWSTR>,
+    P0: windows_core::Param<windows_core::PCWSTR>,
+    P1: windows_core::Param<windows_core::PCWSTR>,
 {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcGetSubscriptionRunTimeStatus(subscriptionname : ::windows_core::PCWSTR, statusinfoid : EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID, eventsourcename : ::windows_core::PCWSTR, flags : u32, statusvaluebuffersize : u32, statusvaluebuffer : *mut EC_VARIANT, statusvaluebufferused : *mut u32) -> super::super::Foundation:: BOOL);
-    EcGetSubscriptionRunTimeStatus(subscriptionname.into_param().abi(), statusinfoid, eventsourcename.into_param().abi(), flags, statusvaluebuffersize, statusvaluebuffer, statusvaluebufferused)
+    windows_targets::link!("wecapi.dll" "system" fn EcGetSubscriptionRunTimeStatus(subscriptionname : windows_core::PCWSTR, statusinfoid : EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID, eventsourcename : windows_core::PCWSTR, flags : u32, statusvaluebuffersize : u32, statusvaluebuffer : *mut EC_VARIANT, statusvaluebufferused : *mut u32) -> super::super::Foundation:: BOOL);
+    EcGetSubscriptionRunTimeStatus(subscriptionname.param().abi(), statusinfoid, eventsourcename.param().abi(), flags, statusvaluebuffersize, statusvaluebuffer, statusvaluebufferused)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcInsertObjectArrayElement(objectarray: isize, arrayindex: u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcInsertObjectArrayElement(objectarray : isize, arrayindex : u32) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcInsertObjectArrayElement(objectarray : isize, arrayindex : u32) -> super::super::Foundation:: BOOL);
     EcInsertObjectArrayElement(objectarray, arrayindex)
 }
 #[inline]
 pub unsafe fn EcOpenSubscription<P0>(subscriptionname: P0, accessmask: u32, flags: u32) -> isize
 where
-    P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
+    P0: windows_core::Param<windows_core::PCWSTR>,
 {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcOpenSubscription(subscriptionname : ::windows_core::PCWSTR, accessmask : u32, flags : u32) -> isize);
-    EcOpenSubscription(subscriptionname.into_param().abi(), accessmask, flags)
+    windows_targets::link!("wecapi.dll" "system" fn EcOpenSubscription(subscriptionname : windows_core::PCWSTR, accessmask : u32, flags : u32) -> isize);
+    EcOpenSubscription(subscriptionname.param().abi(), accessmask, flags)
 }
 #[inline]
 pub unsafe fn EcOpenSubscriptionEnum(flags: u32) -> isize {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcOpenSubscriptionEnum(flags : u32) -> isize);
+    windows_targets::link!("wecapi.dll" "system" fn EcOpenSubscriptionEnum(flags : u32) -> isize);
     EcOpenSubscriptionEnum(flags)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcRemoveObjectArrayElement(objectarray: isize, arrayindex: u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcRemoveObjectArrayElement(objectarray : isize, arrayindex : u32) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcRemoveObjectArrayElement(objectarray : isize, arrayindex : u32) -> super::super::Foundation:: BOOL);
     EcRemoveObjectArrayElement(objectarray, arrayindex)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcRetrySubscription<P0, P1>(subscriptionname: P0, eventsourcename: P1, flags: u32) -> super::super::Foundation::BOOL
 where
-    P0: ::windows_core::IntoParam<::windows_core::PCWSTR>,
-    P1: ::windows_core::IntoParam<::windows_core::PCWSTR>,
+    P0: windows_core::Param<windows_core::PCWSTR>,
+    P1: windows_core::Param<windows_core::PCWSTR>,
 {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcRetrySubscription(subscriptionname : ::windows_core::PCWSTR, eventsourcename : ::windows_core::PCWSTR, flags : u32) -> super::super::Foundation:: BOOL);
-    EcRetrySubscription(subscriptionname.into_param().abi(), eventsourcename.into_param().abi(), flags)
+    windows_targets::link!("wecapi.dll" "system" fn EcRetrySubscription(subscriptionname : windows_core::PCWSTR, eventsourcename : windows_core::PCWSTR, flags : u32) -> super::super::Foundation:: BOOL);
+    EcRetrySubscription(subscriptionname.param().abi(), eventsourcename.param().abi(), flags)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcSaveSubscription(subscription: isize, flags: u32) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcSaveSubscription(subscription : isize, flags : u32) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcSaveSubscription(subscription : isize, flags : u32) -> super::super::Foundation:: BOOL);
     EcSaveSubscription(subscription, flags)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcSetObjectArrayProperty(objectarray: isize, propertyid: EC_SUBSCRIPTION_PROPERTY_ID, arrayindex: u32, flags: u32, propertyvalue: *mut EC_VARIANT) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcSetObjectArrayProperty(objectarray : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, arrayindex : u32, flags : u32, propertyvalue : *mut EC_VARIANT) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcSetObjectArrayProperty(objectarray : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, arrayindex : u32, flags : u32, propertyvalue : *mut EC_VARIANT) -> super::super::Foundation:: BOOL);
     EcSetObjectArrayProperty(objectarray, propertyid, arrayindex, flags, propertyvalue)
 }
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
 #[inline]
 pub unsafe fn EcSetSubscriptionProperty(subscription: isize, propertyid: EC_SUBSCRIPTION_PROPERTY_ID, flags: u32, propertyvalue: *mut EC_VARIANT) -> super::super::Foundation::BOOL {
-    ::windows_targets::link!("wecapi.dll" "system" fn EcSetSubscriptionProperty(subscription : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, flags : u32, propertyvalue : *mut EC_VARIANT) -> super::super::Foundation:: BOOL);
+    windows_targets::link!("wecapi.dll" "system" fn EcSetSubscriptionProperty(subscription : isize, propertyid : EC_SUBSCRIPTION_PROPERTY_ID, flags : u32, propertyvalue : *mut EC_VARIANT) -> super::super::Foundation:: BOOL);
     EcSetSubscriptionProperty(subscription, propertyid, flags, propertyvalue)
 }
 pub const EC_CREATE_NEW: u32 = 1u32;
@@ -187,258 +161,137 @@ pub const EcVarTypeNull: EC_VARIANT_TYPE = EC_VARIANT_TYPE(0i32);
 pub const EcVarTypeString: EC_VARIANT_TYPE = EC_VARIANT_TYPE(4i32);
 pub const EcVarTypeUInt32: EC_VARIANT_TYPE = EC_VARIANT_TYPE(2i32);
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_CONFIGURATION_MODE(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_CONFIGURATION_MODE {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_CONFIGURATION_MODE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_CONFIGURATION_MODE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_CONFIGURATION_MODE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_CONFIGURATION_MODE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_CONFIGURATION_MODE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_CONFIGURATION_MODE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_CONFIGURATION_MODE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_CONTENT_FORMAT(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_CONTENT_FORMAT {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_CONTENT_FORMAT {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_CONTENT_FORMAT {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_CONTENT_FORMAT {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_CONTENT_FORMAT {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_CONTENT_FORMAT {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_CONTENT_FORMAT {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_CONTENT_FORMAT").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_CREDENTIALS_TYPE(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_CREDENTIALS_TYPE {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_CREDENTIALS_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_CREDENTIALS_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_CREDENTIALS_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_CREDENTIALS_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_CREDENTIALS_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_CREDENTIALS_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_CREDENTIALS_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_DELIVERY_MODE(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_DELIVERY_MODE {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_DELIVERY_MODE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_DELIVERY_MODE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_DELIVERY_MODE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_DELIVERY_MODE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_DELIVERY_MODE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_DELIVERY_MODE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_DELIVERY_MODE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_PROPERTY_ID(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_PROPERTY_ID {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_PROPERTY_ID {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_PROPERTY_ID {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_PROPERTY_ID {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_PROPERTY_ID {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_PROPERTY_ID {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_PROPERTY_ID {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_PROPERTY_ID").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_RUNTIME_STATUS_ACTIVE_STATUS").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_RUNTIME_STATUS_INFO_ID").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_SUBSCRIPTION_TYPE(pub i32);
-impl ::core::marker::Copy for EC_SUBSCRIPTION_TYPE {}
-impl ::core::clone::Clone for EC_SUBSCRIPTION_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_SUBSCRIPTION_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_SUBSCRIPTION_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_SUBSCRIPTION_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_SUBSCRIPTION_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_SUBSCRIPTION_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_SUBSCRIPTION_TYPE").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct EC_VARIANT_TYPE(pub i32);
-impl ::core::marker::Copy for EC_VARIANT_TYPE {}
-impl ::core::clone::Clone for EC_VARIANT_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_VARIANT_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for EC_VARIANT_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for EC_VARIANT_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for EC_VARIANT_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for EC_VARIANT_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("EC_VARIANT_TYPE").field(&self.0).finish()
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub struct EC_VARIANT {
     pub Anonymous: EC_VARIANT_0,
     pub Count: u32,
     pub Type: u32,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for EC_VARIANT {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for EC_VARIANT {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_VARIANT {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for EC_VARIANT {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for EC_VARIANT {
+impl Default for EC_VARIANT {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }
 #[repr(C)]
-#[doc = "Required features: `\"Win32_Foundation\"`"]
-#[cfg(feature = "Win32_Foundation")]
+#[derive(Clone, Copy)]
 pub union EC_VARIANT_0 {
     pub BooleanVal: super::super::Foundation::BOOL,
     pub UInt32Val: u32,
     pub DateTimeVal: u64,
-    pub StringVal: ::windows_core::PCWSTR,
+    pub StringVal: windows_core::PCWSTR,
     pub BinaryVal: *mut u8,
     pub BooleanArr: *mut super::super::Foundation::BOOL,
     pub Int32Arr: *mut i32,
-    pub StringArr: *mut ::windows_core::PWSTR,
+    pub StringArr: *mut windows_core::PWSTR,
     pub PropertyHandleVal: isize,
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::marker::Copy for EC_VARIANT_0 {}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::clone::Clone for EC_VARIANT_0 {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for EC_VARIANT_0 {
+    type TypeKind = windows_core::CopyType;
 }
-#[cfg(feature = "Win32_Foundation")]
-impl ::windows_core::TypeKind for EC_VARIANT_0 {
-    type TypeKind = ::windows_core::CopyType;
-}
-#[cfg(feature = "Win32_Foundation")]
-impl ::core::default::Default for EC_VARIANT_0 {
+impl Default for EC_VARIANT_0 {
     fn default() -> Self {
-        unsafe { ::core::mem::zeroed() }
+        unsafe { core::mem::zeroed() }
     }
 }

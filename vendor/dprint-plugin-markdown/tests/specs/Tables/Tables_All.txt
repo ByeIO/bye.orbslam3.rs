@@ -1,0 +1,48 @@
+!! should format when starting inline !!
+Testing|test|Outtt|final
+--|:--:|:--|--:
+Some Data|Otherrrr|asdfffff|testingthis
+a|b|c|d
+
+[expect]
+| Testing   |   test   | Outtt    |       final |
+| --------- | :------: | :------- | ----------: |
+| Some Data | Otherrrr | asdfffff | testingthis |
+| a         |    b     | c        |           d |
+
+!! should format when not inline !!
+| testing       | This          | Out   |
+| ------------- |:-------------:| -----:|
+| testing       | anb kdl l l j | $1234 |
+| asdfffff      | what hap      |   $22 |
+| hereissometex | allo          |  $224 |
+
+[expect]
+| testing       |     This      |   Out |
+| ------------- | :-----------: | ----: |
+| testing       | anb kdl l l j | $1234 |
+| asdfffff      |   what hap    |   $22 |
+| hereissometex |     allo      |  $224 |
+
+!! should correctly centre all the columns in this table !!
+|Tes|
+|:---:|
+|testd|
+|test|
+
+[expect]
+|  Tes  |
+| :---: |
+| testd |
+| test  |
+
+!! Should correctly determine column width for cells containing double-width characters like emoji !!
+
+| Name             | Required |
+| ---------------- | :------: |
+| test             |    ❌    |
+
+[expect]
+| Name | Required |
+| ---- | :------: |
+| test |    ❌    |

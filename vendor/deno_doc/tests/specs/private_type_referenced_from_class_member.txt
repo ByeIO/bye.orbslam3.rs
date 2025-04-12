@@ -1,0 +1,116 @@
+# mod.ts
+/** Comment */
+export class Other {
+  /** Comment */
+  prop: YesDiagnostic
+}
+
+class YesDiagnostic {}
+
+# diagnostics
+error[private-type-ref]: public type 'Other.prototype.prop' references private type 'YesDiagnostic'
+ --> /mod.ts:4:3
+  | 
+4 |   prop: YesDiagnostic
+  |   ^
+  = hint: make the referenced type public or remove the reference
+  | 
+7 | class YesDiagnostic {}
+  | - this is the referenced type
+  | 
+
+  info: to ensure documentation is complete all types that are exposed in the public API must be public
+
+# output.txt
+Defined in file:///mod.ts:2:1
+
+class Other
+  Comment
+
+  prop: YesDiagnostic
+    Comment
+
+Defined in file:///mod.ts:7:1
+
+private class YesDiagnostic
+
+
+
+# output.json
+[
+  {
+    "name": "Other",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 2,
+      "col": 0,
+      "byteIndex": 15
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "Comment"
+    },
+    "kind": "class",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [
+        {
+          "jsDoc": {
+            "doc": "Comment"
+          },
+          "tsType": {
+            "repr": "YesDiagnostic",
+            "kind": "typeRef",
+            "typeRef": {
+              "typeParams": null,
+              "typeName": "YesDiagnostic"
+            }
+          },
+          "readonly": false,
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "prop",
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 4,
+            "col": 2,
+            "byteIndex": 55
+          }
+        }
+      ],
+      "indexSignatures": [],
+      "methods": [],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "name": "YesDiagnostic",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 7,
+      "col": 0,
+      "byteIndex": 78
+    },
+    "declarationKind": "private",
+    "kind": "class",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  }
+]

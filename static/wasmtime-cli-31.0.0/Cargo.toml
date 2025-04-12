@@ -57,6 +57,7 @@ bin-dir = "wasmtime-v{version}-{target-arch}-musl/{bin}{binary-ext}"
 pkg-url = "{repo}/releases/download/v{version}/wasmtime-v{version}-{target-arch}-musl{archive-suffix}"
 
 [features]
+objdump = []
 addr2line = ["wasmtime/addr2line"]
 all-arch = ["wasmtime/all-arch"]
 cache = [

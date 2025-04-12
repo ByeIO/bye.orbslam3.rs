@@ -1,0 +1,235 @@
+!! should format code blocks !!
+Testing:
+```ts
+
+const t = 5;
+
+test;
+
+```
+```
+other
+```
+
+
+
+
+[expect]
+Testing:
+
+```ts
+const t = 5;
+
+test;
+```
+
+```
+other
+```
+
+!! should format indented code blocks as-is !!
+
+    const t = 4;
+
+        const t = 5;
+
+
+    const t = 6;
+
+
+[expect]
+    const t = 4;
+
+        const t = 5;
+
+
+    const t = 6;
+
+!! should format code block inside list !!
+1. Testing
+
+    ```
+    some code
+    ```
+
+[expect]
+1. Testing
+
+   ```
+   some code
+   ```
+
+!! should keep an indented code block as indented !!
+Test:
+
+    test
+
+[expect]
+Test:
+
+    test
+
+!! should keep a code block indented a lot as being indented a lot !!
+10. Test
+
+        ```
+        testing
+        ```
+
+[expect]
+10. Test
+
+        ```
+        testing
+        ```
+
+!! should format certain tags !!
+```format
+testing
+```
+
+Then indented:
+
+1. Testing
+   ```format
+   other
+   ```
+
+[expect]
+```format
+testing_formatted_80
+```
+
+Then indented:
+
+1. Testing
+   ```format
+   other_formatted_77
+   ```
+
+!! should add one extra backtick per set of backticks inside code block !!
+````
+Test
+```
+nested
+```
+````
+
+`````
+t````
+`````
+
+[expect]
+````
+Test
+```
+nested
+```
+````
+
+`````
+t````
+`````
+
+!! should keep first line indentation !!
+```
+
+
+                    │
+                  HTTP            ┌───────────────┐
+┌───────────────────┼─────────────┤   component   ├─┐
+│                   │             └───────────────┘ │
+│                   ▼                               │
+│         ┌───────────────────┐                     │
+│         │                   │                     │
+│         │    Some Text      │                     │
+│         │                   │                     │
+│         └───────────────────┘                     │
+│                   │                               │
+└───────────────────┼───────────────────────────────┘
+                    ▼
+
+
+```
+
+[expect]
+```
+                    │
+                  HTTP            ┌───────────────┐
+┌───────────────────┼─────────────┤   component   ├─┐
+│                   │             └───────────────┘ │
+│                   ▼                               │
+│         ┌───────────────────┐                     │
+│         │                   │                     │
+│         │    Some Text      │                     │
+│         │                   │                     │
+│         └───────────────────┘                     │
+│                   │                               │
+└───────────────────┼───────────────────────────────┘
+                    ▼
+```
+
+!! should format markdown in `md` code blocks !!
+
+```md
+# Testing
+
+
+>this is a blockquote
+
+ Never mind
+
+```
+
+
+[expect]
+```md
+# Testing
+
+> this is a blockquote
+
+Never mind
+```
+
+!! should format markdown in `markdown` code blocks !!
+
+```md
+# Testing
+
+
+>this is a blockquote
+
+ Never mind
+
+[  testing  ](  https://dprint.dev  "Dprint homepage"  )
+```
+
+
+[expect]
+```md
+# Testing
+
+> this is a blockquote
+
+Never mind
+
+[testing](https://dprint.dev "Dprint homepage")
+```
+
+!! should format when codeblock has trailing text on tag !!
+```format,ignore
+other_formatted_77
+```
+
+```format ignore
+other_formatted_77
+```
+
+[expect]
+```format,ignore
+other_formatted_77_formatted_80
+```
+
+```format ignore
+other_formatted_77_formatted_80
+```

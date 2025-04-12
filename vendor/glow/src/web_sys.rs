@@ -4,7 +4,7 @@ use js_sys::{self, Array};
 use slotmap::{new_key_type, SlotMap};
 use std::cell::RefCell;
 use web_sys::{
-    self, HtmlCanvasElement, HtmlImageElement, HtmlVideoElement, ImageBitmap,
+    self, HtmlCanvasElement, HtmlImageElement, HtmlVideoElement, ImageBitmap, ImageData,
     WebGl2RenderingContext, WebGlBuffer, WebGlFramebuffer, WebGlProgram, WebGlQuery,
     WebGlRenderbuffer, WebGlRenderingContext, WebGlSampler, WebGlShader, WebGlSync, WebGlTexture,
     WebGlTransformFeedback, WebGlUniformLocation, WebGlVertexArrayObject,
@@ -27,7 +27,7 @@ struct Extensions {
     pub ext_color_buffer_float: Option<web_sys::ExtColorBufferFloat>,
     pub ext_color_buffer_half_float: Option<web_sys::ExtColorBufferHalfFloat>,
     pub ext_disjoint_timer_query: Option<web_sys::ExtDisjointTimerQuery>,
-    pub ext_disjoint_timer_query_webgl2: Option<()>,
+    pub ext_disjoint_timer_query_webgl2: Option<web_sys::ExtDisjointTimerQuery>,
     pub ext_float_blend: Option<()>,
     pub ext_frag_depth: Option<web_sys::ExtFragDepth>,
     pub ext_shader_texture_lod: Option<web_sys::ExtShaderTextureLod>,
@@ -129,7 +129,7 @@ macro_rules! build_extensions {
                 &$context,
                 "EXT_disjoint_timer_query",
             ),
-            ext_disjoint_timer_query_webgl2: get_extension_no_object(
+            ext_disjoint_timer_query_webgl2: get_extension::<web_sys::ExtDisjointTimerQuery>(
                 &$context,
                 "EXT_disjoint_timer_query_webgl2",
             ),
@@ -308,6 +308,7 @@ impl Context {
     // - html_image
     // - html_video
     // - video_frame
+    // - image_data
 
     pub unsafe fn tex_image_2d_with_image_bitmap(
         &self,
@@ -666,6 +667,77 @@ impl Context {
         }
     }
 
+    pub unsafe fn tex_image_2d_with_image_data(
+        &self,
+        target: u32,
+        level: i32,
+        internal_format: i32,
+        format: u32,
+        ty: u32,
+        pixels: &ImageData,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => {
+                // TODO: Handle return value?
+                gl.tex_image_2d_with_u32_and_u32_and_image_data(
+                    target,
+                    level,
+                    internal_format,
+                    format,
+                    ty,
+                    pixels,
+                )
+                .unwrap();
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                // TODO: Handle return value?
+                gl.tex_image_2d_with_u32_and_u32_and_image_data(
+                    target,
+                    level,
+                    internal_format,
+                    format,
+                    ty,
+                    pixels,
+                )
+                .unwrap();
+            }
+        }
+    }
+
+    /// WebGL2 Only
+    pub unsafe fn tex_image_2d_with_image_data_and_width_and_height(
+        &self,
+        target: u32,
+        level: i32,
+        internal_format: i32,
+        width: i32,
+        height: i32,
+        format: u32,
+        ty: u32,
+        pixels: &ImageData,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(_) => {
+                panic!("Width and height not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                // TODO: Handle return value?
+                gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_image_data(
+                    target,
+                    level,
+                    internal_format,
+                    width,
+                    height,
+                    0, // required to be zero
+                    format,
+                    ty,
+                    pixels,
+                )
+                .unwrap();
+            }
+        }
+    }
+
     pub unsafe fn tex_sub_image_2d_with_image_bitmap(
         &self,
         target: u32,
@@ -950,6 +1022,58 @@ impl Context {
         }
     }
 
+    pub unsafe fn tex_sub_image_2d_with_image_data(
+        &self,
+        target: u32,
+        level: i32,
+        x_offset: i32,
+        y_offset: i32,
+        format: u32,
+        ty: u32,
+        image: &ImageData,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => {
+                gl.tex_sub_image_2d_with_u32_and_u32_and_image_data(
+                    target, level, x_offset, y_offset, format, ty, image,
+                )
+                .unwrap(); // TODO: Handle return value?
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.tex_sub_image_2d_with_u32_and_u32_and_image_data(
+                    target, level, x_offset, y_offset, format, ty, image,
+                )
+                .unwrap(); // TODO: Handle return value?
+            }
+        }
+    }
+
+    /// WebGL2 Only
+    pub unsafe fn tex_sub_image_2d_with_image_data_and_width_and_height(
+        &self,
+        target: u32,
+        level: i32,
+        x_offset: i32,
+        y_offset: i32,
+        width: i32,
+        height: i32,
+        format: u32,
+        ty: u32,
+        image: &ImageData,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(_) => {
+                panic!("Width and height not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.tex_sub_image_2d_with_i32_and_i32_and_u32_and_type_and_image_data(
+                    target, level, x_offset, y_offset, width, height, format, ty, image,
+                )
+                .unwrap(); // TODO: Handle return value?
+            }
+        }
+    }
+
     /// WebGL2 Only
     pub unsafe fn tex_image_3d_with_image_bitmap(
         &self,
@@ -1122,6 +1246,40 @@ impl Context {
     }
 
     /// WebGL2 Only
+    pub unsafe fn tex_image_3d_with_image_data(
+        &self,
+        target: u32,
+        level: i32,
+        internal_format: i32,
+        width: i32,
+        height: i32,
+        depth: i32,
+        border: i32,
+        format: u32,
+        ty: u32,
+        image: &ImageData,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(_) => panic!("3D images not supported"),
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.tex_image_3d_with_image_data(
+                    target,
+                    level,
+                    internal_format,
+                    width,
+                    height,
+                    depth,
+                    border,
+                    format,
+                    ty,
+                    image,
+                )
+                .unwrap(); // TODO: Handle return value?
+            }
+        }
+    }
+
+    /// WebGL2 Only
     pub unsafe fn tex_sub_image_3d_with_image_bitmap(
         &self,
         target: u32,
@@ -1266,6 +1424,33 @@ impl Context {
         }
     }
 
+    /// WebGL2 Only
+    pub unsafe fn tex_sub_image_3d_with_image_data(
+        &self,
+        target: u32,
+        level: i32,
+        x_offset: i32,
+        y_offset: i32,
+        z_offset: i32,
+        width: i32,
+        height: i32,
+        depth: i32,
+        format: u32,
+        ty: u32,
+        image: &ImageData,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(_) => panic!("3D images not supported"),
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.tex_sub_image_3d_with_image_data(
+                    target, level, x_offset, y_offset, z_offset, width, height, depth, format, ty,
+                    image,
+                )
+                .unwrap(); // TODO: Handle return value?
+            }
+        }
+    }
+
     pub unsafe fn framebuffer_texture_multiview_ovr(
         &self,
         target: u32,
@@ -1345,6 +1530,40 @@ impl Context {
             ext.restore_context()
         }
     }
+
+    unsafe fn get_parameter_gl_name<TKey, TResource>(
+        &self,
+        parameter: u32,
+        tracked_resource: &TrackedResource<TKey, TResource>,
+    ) -> Option<TKey>
+    where
+        TKey: slotmap::Key,
+        TResource: From<wasm_bindgen::JsValue> + PartialEq,
+    {
+        let parameter_value = match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_parameter(parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_parameter(parameter),
+        }
+        .ok();
+        match parameter_value {
+            Some(pv) => {
+                let resource: TResource = pv.into();
+                // TODO: Make this search less expensive. If we had a bi-directional map, we could
+                // find the key immediately.
+                match tracked_resource
+                    .borrow()
+                    .iter()
+                    .find(|(_, v)| **v == resource)
+                {
+                    Some((k, _)) => Some(k),
+                    None => panic!(
+                        "A resource was created externally. This is not currently supported."
+                    ),
+                }
+            }
+            None => None,
+        }
+    }
 }
 
 new_key_type! { pub struct WebShaderKey; }
@@ -1358,6 +1577,8 @@ new_key_type! { pub struct WebFramebufferKey; }
 new_key_type! { pub struct WebRenderbufferKey; }
 new_key_type! { pub struct WebQueryKey; }
 new_key_type! { pub struct WebTransformFeedbackKey; }
+
+impl crate::__private::Sealed for Context {}
 
 impl HasContext for Context {
     type Shader = WebShaderKey;
@@ -1398,6 +1619,10 @@ impl HasContext for Context {
             }
             None => Err(String::from("Unable to create framebuffer object")),
         }
+    }
+
+    unsafe fn create_named_framebuffer(&self) -> Result<Self::Framebuffer, String> {
+        panic!("Named framebuffers are not supported");
     }
 
     unsafe fn is_framebuffer(&self, framebuffer: Self::Framebuffer) -> bool {
@@ -1487,8 +1712,8 @@ impl HasContext for Context {
     }
 
     unsafe fn is_shader(&self, shader: Self::Shader) -> bool {
-        let shaders = self.shaders.borrow_mut();
-        if let Some(ref s) = shaders.get(shader) {
+        let shaders = self.shaders.borrow();
+        if let Some(s) = shaders.get(shader) {
             match self.raw {
                 RawRenderingContext::WebGl1(ref gl) => gl.is_shader(Some(s)),
                 RawRenderingContext::WebGl2(ref gl) => gl.is_shader(Some(s)),
@@ -1518,8 +1743,8 @@ impl HasContext for Context {
     }
 
     unsafe fn is_texture(&self, texture: Self::Texture) -> bool {
-        let textures = self.textures.borrow_mut();
-        if let Some(ref t) = textures.get(texture) {
+        let textures = self.textures.borrow();
+        if let Some(t) = textures.get(texture) {
             match self.raw {
                 RawRenderingContext::WebGl1(ref gl) => gl.is_texture(Some(t)),
                 RawRenderingContext::WebGl2(ref gl) => gl.is_texture(Some(t)),
@@ -1600,6 +1825,26 @@ impl HasContext for Context {
         .unwrap_or_else(|| String::from(""))
     }
 
+    unsafe fn get_shader_precision_format(
+        &self,
+        shader_type: u32,
+        precision_mode: u32,
+    ) -> Option<ShaderPrecisionFormat> {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => {
+                gl.get_shader_precision_format(shader_type, precision_mode)
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.get_shader_precision_format(shader_type, precision_mode)
+            }
+        }
+        .map(|spf| ShaderPrecisionFormat {
+            range_min: spf.range_min(),
+            range_max: spf.range_max(),
+            precision: spf.precision(),
+        })
+    }
+
     unsafe fn get_tex_image(
         &self,
         _target: u32,
@@ -1627,8 +1872,8 @@ impl HasContext for Context {
     }
 
     unsafe fn is_program(&self, program: Self::Program) -> bool {
-        let programs = self.programs.borrow_mut();
-        if let Some(ref p) = programs.get(program) {
+        let programs = self.programs.borrow();
+        if let Some(p) = programs.get(program) {
             match self.raw {
                 RawRenderingContext::WebGl1(ref gl) => gl.is_program(Some(p)),
                 RawRenderingContext::WebGl2(ref gl) => gl.is_program(Some(p)),
@@ -1679,6 +1924,15 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn validate_program(&self, program: Self::Program) {
+        let programs = self.programs.borrow();
+        let raw_program = programs.get_unchecked(program);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.validate_program(raw_program),
+            RawRenderingContext::WebGl2(ref gl) => gl.validate_program(raw_program),
+        }
+    }
+
     unsafe fn get_program_completion_status(&self, program: Self::Program) -> bool {
         let programs = self.programs.borrow();
         let raw_program = programs.get_unchecked(program);
@@ -1712,6 +1966,35 @@ impl HasContext for Context {
         .unwrap_or(false)
     }
 
+    unsafe fn get_program_validate_status(&self, program: Self::Program) -> bool {
+        let programs = self.programs.borrow();
+        let raw_program = programs.get_unchecked(program);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => {
+                gl.get_program_parameter(raw_program, VALIDATE_STATUS)
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.get_program_parameter(raw_program, VALIDATE_STATUS)
+            }
+        }
+        .as_bool()
+        .unwrap_or(false)
+    }
+
+    unsafe fn get_program_parameter_i32(&self, program: Self::Program, parameter: u32) -> i32 {
+        let programs = self.programs.borrow();
+        let raw_program = programs.get_unchecked(program);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_program_parameter(raw_program, parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_program_parameter(raw_program, parameter),
+        }
+        .as_f64()
+        .map(|v| v as i32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
+    }
+
     unsafe fn get_program_info_log(&self, program: Self::Program) -> String {
         let programs = self.programs.borrow();
         let raw_program = programs.get_unchecked(program);
@@ -1732,6 +2015,342 @@ impl HasContext for Context {
         panic!("get_program_resource_i32 not supported on webgl");
     }
 
+    unsafe fn program_binary_retrievable_hint(&self, _program: Self::Program, _value: bool) {
+        panic!("Program binaries are not supported");
+    }
+
+    unsafe fn get_program_binary(&self, _program: Self::Program) -> Option<ProgramBinary> {
+        panic!("Program binaries are not supported");
+    }
+
+    unsafe fn program_binary(&self, _program: Self::Program, _binary: &ProgramBinary) {
+        panic!("Program binaries are not supported");
+    }
+
+    unsafe fn program_uniform_1_i32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: i32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_2_i32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: i32,
+        _y: i32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_3_i32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: i32,
+        _y: i32,
+        _z: i32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_4_i32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: i32,
+        _y: i32,
+        _z: i32,
+        _w: i32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_1_i32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[i32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_2_i32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[i32],
+    ) {
+        panic!("DSA _program objects are not supported")
+    }
+
+    unsafe fn program_uniform_3_i32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[i32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_4_i32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[i32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_1_u32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: u32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_2_u32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: u32,
+        _y: u32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_3_u32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: u32,
+        _y: u32,
+        _z: u32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_4_u32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: u32,
+        _y: u32,
+        _z: u32,
+        _w: u32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_1_u32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[u32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_2_u32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[u32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_3_u32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[u32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_4_u32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[u32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_1_f32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: f32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_2_f32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: f32,
+        _y: f32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_3_f32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: f32,
+        _y: f32,
+        _z: f32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_4_f32(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _x: f32,
+        _y: f32,
+        _z: f32,
+        _w: f32,
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_1_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_2_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_3_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_4_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_2_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_2x3_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_2x4_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_3x2_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_3_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_3x4_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_4x2_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_4x3_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
+    unsafe fn program_uniform_matrix_4_f32_slice(
+        &self,
+        _program: Self::Program,
+        _location: Option<&Self::UniformLocation>,
+        _transpose: bool,
+        _v: &[f32],
+    ) {
+        panic!("DSA program objects are not supported")
+    }
+
     unsafe fn get_active_uniforms(&self, program: Self::Program) -> u32 {
         let programs = self.programs.borrow();
         let raw_program = programs.get_unchecked(program);
@@ -1746,6 +2365,15 @@ impl HasContext for Context {
         .as_f64()
         .map(|v| v as u32)
         .unwrap_or(0)
+    }
+
+    unsafe fn get_active_uniforms_parameter(
+        &self,
+        _program: Self::Program,
+        _uniforms: &[u32],
+        _pname: u32,
+    ) -> Vec<i32> {
+        panic!("GetActiveUniformsiv is not supported")
     }
 
     unsafe fn get_active_uniform(
@@ -1804,8 +2432,8 @@ impl HasContext for Context {
     }
 
     unsafe fn is_buffer(&self, buffer: Self::Buffer) -> bool {
-        let buffers = self.buffers.borrow_mut();
-        if let Some(ref b) = buffers.get(buffer) {
+        let buffers = self.buffers.borrow();
+        if let Some(b) = buffers.get(buffer) {
             match self.raw {
                 RawRenderingContext::WebGl1(ref gl) => gl.is_buffer(Some(b)),
                 RawRenderingContext::WebGl2(ref gl) => gl.is_buffer(Some(b)),
@@ -1908,6 +2536,24 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn blit_named_framebuffer(
+        &self,
+        _read_buffer: Option<Self::Framebuffer>,
+        _draw_buffer: Option<Self::Framebuffer>,
+        _src_x0: i32,
+        _src_y0: i32,
+        _src_x1: i32,
+        _src_y1: i32,
+        _dst_x0: i32,
+        _dst_y0: i32,
+        _dst_x1: i32,
+        _dst_y1: i32,
+        _mask: u32,
+        _filter: u32,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
     unsafe fn create_vertex_array(&self) -> Result<Self::VertexArray, String> {
         let raw_vertex_array = match self.raw {
             RawRenderingContext::WebGl1(ref _gl) => {
@@ -1928,6 +2574,9 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn create_named_vertex_array(&self) -> Result<Self::VertexArray, String> {
+        unimplemented!()
+    }
     unsafe fn delete_vertex_array(&self, vertex_array: Self::VertexArray) {
         let mut vertex_arrays = self.vertex_arrays.borrow_mut();
         if let Some(ref va) = vertex_arrays.remove(vertex_array) {
@@ -1964,7 +2613,7 @@ impl HasContext for Context {
         }
     }
 
-    unsafe fn supports_f64_precision() -> bool {
+    unsafe fn supports_f64_precision(&self) -> bool {
         false
     }
 
@@ -1977,6 +2626,10 @@ impl HasContext for Context {
             RawRenderingContext::WebGl1(ref gl) => gl.clear_depth(depth),
             RawRenderingContext::WebGl2(ref gl) => gl.clear_depth(depth),
         }
+    }
+
+    unsafe fn clear_depth(&self, depth: f64) {
+        self.clear_depth_f32(depth as f32);
     }
 
     unsafe fn clear_stencil(&self, stencil: i32) {
@@ -2011,6 +2664,17 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn get_frag_data_location(&self, program: Self::Program, name: &str) -> i32 {
+        let programs = self.programs.borrow();
+        let raw_program = programs.get_unchecked(program);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => {
+                panic!("Get frag data location is not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => gl.get_frag_data_location(raw_program, name),
+        }
+    }
+
     unsafe fn bind_frag_data_location(
         &self,
         _program: Self::Program,
@@ -2025,6 +2689,10 @@ impl HasContext for Context {
             RawRenderingContext::WebGl1(ref gl) => gl.buffer_data_with_i32(target, size, usage),
             RawRenderingContext::WebGl2(ref gl) => gl.buffer_data_with_i32(target, size, usage),
         }
+    }
+
+    unsafe fn named_buffer_data_size(&self, _buffer: Self::Buffer, _size: i32, _usage: u32) {
+        unimplemented!()
     }
 
     unsafe fn buffer_data_u8_slice(&self, target: u32, data: &[u8], usage: u32) {
@@ -2057,6 +2725,15 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn named_buffer_sub_data_u8_slice(
+        &self,
+        _buffer: Self::Buffer,
+        _offset: i32,
+        _src_data: &[u8],
+    ) {
+        unimplemented!()
+    }
+
     unsafe fn get_buffer_sub_data(&self, target: u32, offset: i32, dst_data: &mut [u8]) {
         match self.raw {
             RawRenderingContext::WebGl1(ref _gl) => panic!("get_buffer_sub_data not supported"),
@@ -2076,6 +2753,14 @@ impl HasContext for Context {
             RawRenderingContext::WebGl1(ref gl) => gl.check_framebuffer_status(target),
             RawRenderingContext::WebGl2(ref gl) => gl.check_framebuffer_status(target),
         }
+    }
+
+    unsafe fn check_named_framebuffer_status(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _target: u32,
+    ) -> u32 {
+        panic!("Named framebuffers are not supported");
     }
 
     unsafe fn clear_buffer_i32_slice(&self, target: u32, draw_buffer: u32, values: &[i32]) {
@@ -2128,6 +2813,47 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn clear_named_framebuffer_i32_slice(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _target: u32,
+        _draw_buffer: u32,
+        _values: &[i32],
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
+    unsafe fn clear_named_framebuffer_u32_slice(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _target: u32,
+        _draw_buffer: u32,
+        _values: &[u32],
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
+    unsafe fn clear_named_framebuffer_f32_slice(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _target: u32,
+        _draw_buffer: u32,
+        _values: &[f32],
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
+    unsafe fn clear_named_framebuffer_depth_stencil(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _target: u32,
+        _draw_buffer: u32,
+        _depth: f32,
+        _stencil: i32,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
     unsafe fn client_wait_sync(&self, fence: Self::Fence, flags: u32, timeout: i32) -> u32 {
         let fences = self.fences.borrow();
         let raw_fence = fences.get_unchecked(fence);
@@ -2137,6 +2863,20 @@ impl HasContext for Context {
                 gl.client_wait_sync_with_u32(raw_fence, flags, timeout as u32)
             }
         }
+    }
+
+    unsafe fn get_sync_parameter_i32(&self, fence: Self::Fence, parameter: u32) -> i32 {
+        let fences = self.fences.borrow();
+        let raw_fence = fences.get_unchecked(fence);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => panic!("get sync parameter is not supported"),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_sync_parameter(raw_fence, parameter),
+        }
+        .as_f64()
+        .map(|v| v as i32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
     }
 
     unsafe fn wait_sync(&self, fence: Self::Fence, flags: u32, timeout: u64) {
@@ -2401,6 +3141,14 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn named_framebuffer_draw_buffer(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _draw_buffer: u32,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
     unsafe fn draw_buffers(&self, buffers: &[u32]) {
         match self.raw {
             RawRenderingContext::WebGl1(ref _gl) => {
@@ -2422,6 +3170,14 @@ impl HasContext for Context {
                 gl.draw_buffers(&js_buffers);
             }
         }
+    }
+
+    unsafe fn named_framebuffer_draw_buffers(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _draw_buffers: &[u32],
+    ) {
+        panic!("Named framebuffers are not supported");
     }
 
     unsafe fn draw_elements(&self, mode: u32, count: i32, element_type: u32, offset: i32) {
@@ -2629,6 +3385,37 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn named_framebuffer_renderbuffer(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _attachment: u32,
+        _renderbuffer_target: u32,
+        _renderbuffer: Option<Self::Renderbuffer>,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
+    unsafe fn named_framebuffer_texture(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _attachment: u32,
+        _texture: Option<Self::Texture>,
+        _level: i32,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
+    unsafe fn named_framebuffer_texture_layer(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _attachment: u32,
+        _texture: Option<Self::Texture>,
+        _level: i32,
+        _layer: i32,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
     unsafe fn front_face(&self, value: u32) {
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => gl.front_face(value as u32),
@@ -2655,6 +3442,18 @@ impl HasContext for Context {
         .unwrap_or(0)
     }
 
+    unsafe fn get_tex_parameter_f32(&self, target: u32, parameter: u32) -> f32 {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_tex_parameter(target, parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_tex_parameter(target, parameter),
+        }
+        .as_f64()
+        .map(|v| v as f32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0.)
+    }
+
     unsafe fn get_buffer_parameter_i32(&self, target: u32, parameter: u32) -> i32 {
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => gl.get_buffer_parameter(target, parameter),
@@ -2665,6 +3464,34 @@ impl HasContext for Context {
         // Errors will be caught by the browser or through `get_error`
         // so return a default instead
         .unwrap_or(0)
+    }
+
+    unsafe fn get_parameter_bool(&self, parameter: u32) -> bool {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_parameter(parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_parameter(parameter),
+        }
+        .unwrap()
+        .as_bool()
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(false)
+    }
+
+    unsafe fn get_parameter_bool_array<const N: usize>(&self, parameter: u32) -> [bool; N] {
+        let value = match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_parameter(parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_parameter(parameter),
+        }
+        .unwrap();
+        use wasm_bindgen::JsCast;
+        let mut v = [false; N];
+        if let Some(values) = value.dyn_ref::<js_sys::Array>() {
+            v.iter_mut()
+                .zip(values.values())
+                .for_each(|(v, val)| *v = val.unwrap().as_bool().unwrap_or_default())
+        }
+        v
     }
 
     unsafe fn get_parameter_i32(&self, parameter: u32) -> i32 {
@@ -2692,6 +3519,50 @@ impl HasContext for Context {
         } else if let Some(values) = value.dyn_ref::<js_sys::Int32Array>() {
             values.copy_to(v)
         }
+    }
+
+    unsafe fn get_parameter_i64(&self, parameter: u32) -> i64 {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_parameter(parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_parameter(parameter),
+        }
+        .unwrap()
+        .as_f64()
+        .map(|v| v as i64)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
+    }
+
+    unsafe fn get_parameter_i64_slice(&self, parameter: u32, v: &mut [i64]) {
+        let value = match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_parameter(parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_parameter(parameter),
+        }
+        .unwrap();
+        use wasm_bindgen::JsCast;
+        if let Some(value) = value.as_f64() {
+            v[0] = value as i64;
+        } else if let Some(values) = value.dyn_ref::<js_sys::Array>() {
+            v.iter_mut().zip(values.values()).for_each(|(v, val)| {
+                *v = val.unwrap().as_f64().map(|x| x as i64).unwrap_or_default()
+            })
+        }
+    }
+
+    unsafe fn get_parameter_indexed_i64(&self, parameter: u32, index: u32) -> i64 {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => {
+                panic!("Get parameter indexed is not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => gl.get_indexed_parameter(parameter, index),
+        }
+        .unwrap()
+        .as_f64()
+        .map(|v| v as i64)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
     }
 
     unsafe fn get_parameter_f32(&self, parameter: u32) -> f32 {
@@ -2760,6 +3631,96 @@ impl HasContext for Context {
         // Errors will be caught by the browser or through `get_error`
         // so return a default instead
         .unwrap_or_else(|| String::from(""))
+    }
+
+    unsafe fn get_parameter_buffer(&self, parameter: u32) -> Option<Self::Buffer> {
+        self.get_parameter_gl_name(parameter, &self.buffers)
+    }
+
+    unsafe fn get_parameter_framebuffer(&self, parameter: u32) -> Option<Self::Framebuffer> {
+        self.get_parameter_gl_name(parameter, &self.framebuffers)
+    }
+
+    unsafe fn get_parameter_program(&self, parameter: u32) -> Option<Self::Program> {
+        self.get_parameter_gl_name(parameter, &self.programs)
+    }
+
+    unsafe fn get_parameter_renderbuffer(&self, parameter: u32) -> Option<Self::Renderbuffer> {
+        self.get_parameter_gl_name(parameter, &self.renderbuffers)
+    }
+
+    unsafe fn get_parameter_sampler(&self, parameter: u32) -> Option<Self::Sampler> {
+        self.get_parameter_gl_name(parameter, &self.samplers)
+    }
+
+    unsafe fn get_parameter_texture(&self, parameter: u32) -> Option<Self::Texture> {
+        self.get_parameter_gl_name(parameter, &self.textures)
+    }
+
+    unsafe fn get_parameter_transform_feedback(
+        &self,
+        parameter: u32,
+    ) -> Option<Self::TransformFeedback> {
+        self.get_parameter_gl_name(parameter, &self.transform_feedbacks)
+    }
+
+    unsafe fn get_parameter_vertex_array(&self, parameter: u32) -> Option<Self::VertexArray> {
+        self.get_parameter_gl_name(parameter, &self.vertex_arrays)
+    }
+
+    unsafe fn get_framebuffer_parameter_i32(&self, _target: u32, _parameter: u32) -> i32 {
+        panic!("Get framebuffer parameter is not supported");
+    }
+
+    unsafe fn get_renderbuffer_parameter_i32(&self, target: u32, parameter: u32) -> i32 {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_renderbuffer_parameter(target, parameter),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_renderbuffer_parameter(target, parameter),
+        }
+        .as_f64()
+        .map(|v| v as i32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
+    }
+
+    unsafe fn get_named_framebuffer_parameter_i32(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _parameter: u32,
+    ) -> i32 {
+        panic!("Named framebuffers are not supported");
+    }
+
+    unsafe fn get_framebuffer_attachment_parameter_i32(
+        &self,
+        target: u32,
+        attachment: u32,
+        parameter: u32,
+    ) -> i32 {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => {
+                gl.get_framebuffer_attachment_parameter(target, attachment, parameter)
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.get_framebuffer_attachment_parameter(target, attachment, parameter)
+            }
+        }
+        .unwrap()
+        .as_f64()
+        .map(|v| v as i32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
+    }
+
+    unsafe fn get_named_framebuffer_attachment_parameter_i32(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _attachment: u32,
+        _parameter: u32,
+    ) -> i32 {
+        panic!("Named framebuffers are not supported");
     }
 
     unsafe fn get_uniform_location(
@@ -2943,6 +3904,38 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn get_sampler_parameter_i32(&self, sampler: Self::Sampler, name: u32) -> i32 {
+        let samplers = self.samplers.borrow();
+        let raw_sampler = samplers.get_unchecked(sampler);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => {
+                panic!("Samper parameter for `i32` is not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => gl.get_sampler_parameter(raw_sampler, name),
+        }
+        .as_f64()
+        .map(|v| v as i32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0)
+    }
+
+    unsafe fn get_sampler_parameter_f32(&self, sampler: Self::Sampler, name: u32) -> f32 {
+        let samplers = self.samplers.borrow();
+        let raw_sampler = samplers.get_unchecked(sampler);
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => {
+                panic!("Samper parameter for `i32` is not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => gl.get_sampler_parameter(raw_sampler, name),
+        }
+        .as_f64()
+        .map(|v| v as f32)
+        // Errors will be caught by the browser or through `get_error`
+        // so return a default instead
+        .unwrap_or(0.)
+    }
+
     unsafe fn generate_mipmap(&self, target: u32) {
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => {
@@ -2967,7 +3960,7 @@ impl HasContext for Context {
         _border: i32,
         _format: u32,
         _ty: u32,
-        _pixels: Option<&[u8]>,
+        _pixels: PixelUnpackData,
     ) {
         panic!("Tex image 1D is not supported");
     }
@@ -2995,39 +3988,59 @@ impl HasContext for Context {
         border: i32,
         format: u32,
         ty: u32,
-        pixels: Option<&[u8]>,
+        pixels: PixelUnpackData,
     ) {
-        let pixels = pixels.map(|bytes| texture_data_view(ty, bytes));
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => {
-                // TODO: Handle return value?
-                gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
-                    target,
-                    level,
-                    internal_format,
-                    width,
-                    height,
-                    border,
-                    format,
-                    ty,
-                    pixels.as_ref(),
-                )
-                .unwrap();
+                match pixels {
+                    PixelUnpackData::BufferOffset(_offset) => panic!("Tex image 2D with offset is not supported"),
+                    PixelUnpackData::Slice(data) => {
+                        let data = data.map(|data| texture_data_view(ty, data));
+                        gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
+                            target,
+                            level,
+                            internal_format,
+                            width,
+                            height,
+                            border,
+                            format,
+                            ty,
+                            data.as_ref(),
+                        )
+                    }
+                }
+                .unwrap(); // TODO: Handle return value?
             }
             RawRenderingContext::WebGl2(ref gl) => {
-                // TODO: Handle return value?
-                gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
-                    target,
-                    level,
-                    internal_format,
-                    width,
-                    height,
-                    border,
-                    format,
-                    ty,
-                    pixels.as_ref(),
-                )
-                .unwrap();
+                match pixels {
+                    PixelUnpackData::BufferOffset(offset) => gl
+                        .tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_i32(
+                            target,
+                            level,
+                            internal_format,
+                            width,
+                            height,
+                            border,
+                            format,
+                            ty,
+                            offset as i32,
+                        ),
+                    PixelUnpackData::Slice(data) => {
+                        let data = data.map(|data| texture_data_view(ty, data));
+                        gl.tex_image_2d_with_i32_and_i32_and_i32_and_format_and_type_and_opt_array_buffer_view(
+                            target,
+                            level,
+                            internal_format,
+                            width,
+                            height,
+                            border,
+                            format,
+                            ty,
+                            data.as_ref(),
+                        )
+                    }
+                }
+                .unwrap(); // TODO: Handle return value?
             }
         }
     }
@@ -3091,26 +4104,41 @@ impl HasContext for Context {
         border: i32,
         format: u32,
         ty: u32,
-        pixels: Option<&[u8]>,
+        pixels: PixelUnpackData,
     ) {
         match self.raw {
             RawRenderingContext::WebGl1(ref _gl) => panic!("3d textures are not supported"),
             RawRenderingContext::WebGl2(ref gl) => {
-                let pixels = pixels.map(|bytes| texture_data_view(ty, bytes));
-                // TODO: Handle return value?
-                gl.tex_image_3d_with_opt_array_buffer_view(
-                    target,
-                    level,
-                    internal_format,
-                    width,
-                    height,
-                    depth,
-                    border,
-                    format,
-                    ty,
-                    pixels.as_ref(),
-                )
-                .unwrap();
+                match pixels {
+                    PixelUnpackData::BufferOffset(offset) => gl.tex_image_3d_with_i32(
+                        target,
+                        level,
+                        internal_format,
+                        width,
+                        height,
+                        border,
+                        depth,
+                        format,
+                        ty,
+                        offset as i32,
+                    ),
+                    PixelUnpackData::Slice(data) => {
+                        let data = data.map(|data| texture_data_view(ty, data));
+                        gl.tex_image_3d_with_opt_array_buffer_view(
+                            target,
+                            level,
+                            internal_format,
+                            width,
+                            height,
+                            border,
+                            depth,
+                            format,
+                            ty,
+                            data.as_ref(),
+                        )
+                    }
+                }
+                .unwrap(); // TODO: Handle return value?
             }
         }
     }
@@ -3170,6 +4198,17 @@ impl HasContext for Context {
                 gl.tex_storage_2d(target, levels, internal_format, width, height);
             }
         }
+    }
+
+    unsafe fn texture_storage_2d(
+        &self,
+        _texture: Self::Texture,
+        _levels: i32,
+        _internal_format: u32,
+        _width: i32,
+        _height: i32,
+    ) {
+        unimplemented!()
     }
 
     unsafe fn tex_storage_2d_multisample(
@@ -3542,7 +4581,7 @@ impl HasContext for Context {
         v: &[f32],
     ) {
         match self.raw {
-            RawRenderingContext::WebGl1(ref gl) => {
+            RawRenderingContext::WebGl1(ref _gl) => {
                 panic!("2x3 matrices not supported in uniforms");
             }
             RawRenderingContext::WebGl2(ref gl) => {
@@ -3558,7 +4597,7 @@ impl HasContext for Context {
         v: &[f32],
     ) {
         match self.raw {
-            RawRenderingContext::WebGl1(ref gl) => {
+            RawRenderingContext::WebGl1(ref _gl) => {
                 panic!("2x4 matrices not supported in uniforms");
             }
             RawRenderingContext::WebGl2(ref gl) => {
@@ -3574,7 +4613,7 @@ impl HasContext for Context {
         v: &[f32],
     ) {
         match self.raw {
-            RawRenderingContext::WebGl1(ref gl) => {
+            RawRenderingContext::WebGl1(ref _gl) => {
                 panic!("3x2 matrices not supported in uniforms");
             }
             RawRenderingContext::WebGl2(ref gl) => {
@@ -3606,7 +4645,7 @@ impl HasContext for Context {
         v: &[f32],
     ) {
         match self.raw {
-            RawRenderingContext::WebGl1(ref gl) => {
+            RawRenderingContext::WebGl1(ref _gl) => {
                 panic!("3x4 matrices not supported in uniforms");
             }
             RawRenderingContext::WebGl2(ref gl) => {
@@ -3622,7 +4661,7 @@ impl HasContext for Context {
         v: &[f32],
     ) {
         match self.raw {
-            RawRenderingContext::WebGl1(ref gl) => {
+            RawRenderingContext::WebGl1(ref _gl) => {
                 panic!("4x2 matrices not supported in uniforms");
             }
             RawRenderingContext::WebGl2(ref gl) => {
@@ -3638,7 +4677,7 @@ impl HasContext for Context {
         v: &[f32],
     ) {
         match self.raw {
-            RawRenderingContext::WebGl1(ref gl) => {
+            RawRenderingContext::WebGl1(ref _gl) => {
                 panic!("4x3 matrices not supported in uniforms");
             }
             RawRenderingContext::WebGl2(ref gl) => {
@@ -3746,6 +4785,30 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn invalidate_sub_framebuffer(
+        &self,
+        target: u32,
+        attachments: &[u32],
+        x: i32,
+        y: i32,
+        width: i32,
+        height: i32,
+    ) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => {
+                panic!("Invalidate sub framebuffer is not supported");
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                let js_attachments = Array::new();
+                for &a in attachments {
+                    js_attachments.push(&a.into());
+                }
+                gl.invalidate_sub_framebuffer(target, &js_attachments, x, y, width, height)
+                    .unwrap();
+            }
+        }
+    }
+
     unsafe fn polygon_offset(&self, factor: f32, units: f32) {
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => gl.polygon_offset(factor, units),
@@ -3773,6 +4836,10 @@ impl HasContext for Context {
             RawRenderingContext::WebGl1(ref gl) => gl.bind_texture(target, raw_texture),
             RawRenderingContext::WebGl2(ref gl) => gl.bind_texture(target, raw_texture),
         }
+    }
+
+    unsafe fn bind_texture_unit(&self, _unit: u32, _texture: Option<Self::Texture>) {
+        unimplemented!()
     }
 
     unsafe fn bind_sampler(&self, unit: u32, sampler: Option<Self::Sampler>) {
@@ -3851,9 +4918,9 @@ impl HasContext for Context {
                         panic!("Sub image 2D pixel buffer offset is not supported");
                     }
                     PixelUnpackData::Slice(data) => {
-                        let data = texture_data_view(ty, data);
+                        let data = data.map(|data| texture_data_view(ty, data));
                         gl.tex_sub_image_2d_with_i32_and_i32_and_u32_and_type_and_opt_array_buffer_view(
-                            target, level, x_offset, y_offset, width, height, format, ty, Some(&data),
+                            target, level, x_offset, y_offset, width, height, format, ty, data.as_ref(),
                         )
                     }
                 }
@@ -3874,15 +4941,30 @@ impl HasContext for Context {
                             offset as i32,
                         ),
                     PixelUnpackData::Slice(data) => {
-                        let data = texture_data_view(ty, data);
+                        let data = data.map(|data| texture_data_view(ty, data));
                         gl.tex_sub_image_2d_with_i32_and_i32_and_u32_and_type_and_opt_array_buffer_view(
-                            target, level, x_offset, y_offset, width, height, format, ty, Some(&data),
+                            target, level, x_offset, y_offset, width, height, format, ty, data.as_ref()
                         )
                     }
                 }
                 .unwrap(); // TODO: Handle return value?
             }
         }
+    }
+
+    unsafe fn texture_sub_image_2d(
+        &self,
+        _texture: Self::Texture,
+        _level: i32,
+        _x_offset: i32,
+        _y_offset: i32,
+        _width: i32,
+        _height: i32,
+        _format: u32,
+        _ty: u32,
+        _pixels: PixelUnpackData,
+    ) {
+        unimplemented!()
     }
 
     unsafe fn texture_sub_image_3d(
@@ -3981,8 +5063,8 @@ impl HasContext for Context {
                         ty,
                         offset as i32,
                     ),
-                    PixelUnpackData::Slice(slice) => {
-                        let slice = texture_data_view(ty, slice);
+                    PixelUnpackData::Slice(data) => {
+                        let data = data.map(|data| texture_data_view(ty, data));
                         gl.tex_sub_image_3d_with_opt_array_buffer_view(
                             target,
                             level,
@@ -3994,7 +5076,7 @@ impl HasContext for Context {
                             depth,
                             format,
                             ty,
-                            Some(&slice),
+                            data.as_ref(),
                         )
                     }
                 }
@@ -4064,6 +5146,10 @@ impl HasContext for Context {
         panic!("Depth range with 64-bit float values is not supported");
     }
 
+    unsafe fn depth_range(&self, near: f64, far: f64) {
+        self.depth_range_f32(near as f32, far as f32)
+    }
+
     unsafe fn depth_range_f64_slice(&self, _first: u32, _count: i32, _values: &[[f64; 2]]) {
         panic!("Depth range with 64-bit float slices is not supported");
     }
@@ -4111,6 +5197,17 @@ impl HasContext for Context {
         unimplemented!()
     }
 
+    unsafe fn vertex_array_attrib_format_f64(
+        &self,
+        _vao: Self::VertexArray,
+        _index: u32,
+        _size: i32,
+        _data_type: u32,
+        _relative_offset: u32,
+    ) {
+        unimplemented!()
+    }
+
     unsafe fn vertex_array_element_buffer(
         &self,
         _vao: Self::VertexArray,
@@ -4137,6 +5234,25 @@ impl HasContext for Context {
                 Some(extension) => extension.vertex_attrib_divisor_angle(index, divisor),
             },
             RawRenderingContext::WebGl2(ref gl) => gl.vertex_attrib_divisor(index, divisor),
+        }
+    }
+
+    unsafe fn get_vertex_attrib_parameter_f32_slice(
+        &self,
+        index: u32,
+        pname: u32,
+        result: &mut [f32],
+    ) {
+        let value = match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_vertex_attrib(index, pname),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_vertex_attrib(index, pname),
+        }
+        .unwrap();
+        use wasm_bindgen::JsCast;
+        if let Some(value) = value.as_f64() {
+            result[0] = value as f32;
+        } else if let Some(values) = value.dyn_ref::<js_sys::Float32Array>() {
+            values.copy_to(result)
         }
     }
 
@@ -4207,6 +5323,16 @@ impl HasContext for Context {
         panic!("Vertex attrib format is not supported in WebGL");
     }
 
+    unsafe fn vertex_attrib_format_f64(
+        &self,
+        _index: u32,
+        _size: i32,
+        _data_type: u32,
+        _relative_offset: u32,
+    ) {
+        panic!("Vertex attrib format is not supported in WebGL");
+    }
+
     unsafe fn vertex_attrib_1_f32(&self, index: u32, x: f32) {
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => gl.vertex_attrib1f(index, x),
@@ -4232,6 +5358,20 @@ impl HasContext for Context {
         match self.raw {
             RawRenderingContext::WebGl1(ref gl) => gl.vertex_attrib4f(index, x, y, z, w),
             RawRenderingContext::WebGl2(ref gl) => gl.vertex_attrib4f(index, x, y, z, w),
+        }
+    }
+
+    unsafe fn vertex_attrib_4_i32(&self, index: u32, x: i32, y: i32, z: i32, w: i32) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => panic!("vertex_attrib_4_i32 not supported"),
+            RawRenderingContext::WebGl2(ref gl) => gl.vertex_attrib_i4i(index, x, y, z, w),
+        }
+    }
+
+    unsafe fn vertex_attrib_4_u32(&self, index: u32, x: u32, y: u32, z: u32, w: u32) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => panic!("vertex_attrib_4_u32 not supported"),
+            RawRenderingContext::WebGl2(ref gl) => gl.vertex_attrib_i4ui(index, x, y, z, w),
         }
     }
 
@@ -4442,7 +5582,7 @@ impl HasContext for Context {
         panic!("WebGL does not support the KHR_debug extension.")
     }
 
-    unsafe fn debug_message_callback<F>(&mut self, callback: F)
+    unsafe fn debug_message_callback<F>(&mut self, _callback: F)
     where
         F: FnMut(u32, u32, u32, u32, &str) + 'static,
     {
@@ -4500,6 +5640,37 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn get_uniform_indices(
+        &self,
+        program: Self::Program,
+        names: &[&str],
+    ) -> Vec<Option<u32>> {
+        let programs = self.programs.borrow();
+        let raw_program = programs.get_unchecked(program);
+        let indices = match self.raw {
+            RawRenderingContext::WebGl1(ref _gl) => panic!("Uniform blocks are not supported"),
+            RawRenderingContext::WebGl2(ref gl) => {
+                let js_names = Array::new();
+                for &v in names {
+                    js_names.push(&v.into());
+                }
+                gl.get_uniform_indices(raw_program, &js_names)
+            }
+        }
+        .unwrap();
+        indices
+            .iter()
+            .map(|index| {
+                let index = index.as_f64().unwrap() as u32;
+                if index == INVALID_INDEX {
+                    None
+                } else {
+                    Some(index)
+                }
+            })
+            .collect()
+    }
+
     unsafe fn uniform_block_binding(&self, program: Self::Program, index: u32, binding: u32) {
         match self.raw {
             RawRenderingContext::WebGl1(ref _gl) => {
@@ -4537,6 +5708,14 @@ impl HasContext for Context {
         }
     }
 
+    unsafe fn named_framebuffer_read_buffer(
+        &self,
+        _framebuffer: Option<Self::Framebuffer>,
+        _src: u32,
+    ) {
+        panic!("Named framebuffers are not supported");
+    }
+
     unsafe fn read_pixels(
         &self,
         x: i32,
@@ -4556,8 +5735,8 @@ impl HasContext for Context {
                     .read_pixels_with_i32(x, y, width, height, format, gltype, offset as i32)
                     .unwrap(),
             },
-            PixelPackData::Slice(bytes) => {
-                let data = texture_data_view(gltype, bytes);
+            PixelPackData::Slice(data) => {
+                let data = data.map(|data| texture_data_view(gltype, data));
                 match self.raw {
                     RawRenderingContext::WebGl1(ref gl) => gl
                         .read_pixels_with_opt_array_buffer_view(
@@ -4567,7 +5746,7 @@ impl HasContext for Context {
                             height,
                             format,
                             gltype,
-                            Some(&data),
+                            data.as_ref(),
                         )
                         .unwrap(),
                     RawRenderingContext::WebGl2(ref gl) => gl
@@ -4578,7 +5757,7 @@ impl HasContext for Context {
                             height,
                             format,
                             gltype,
-                            Some(&data),
+                            data.as_ref(),
                         )
                         .unwrap(),
                 }
@@ -4614,6 +5793,26 @@ impl HasContext for Context {
         if let Some(value) = value.as_f64() {
             v[0] = value as i32;
         } else if let Some(values) = value.dyn_ref::<js_sys::Int32Array>() {
+            values.copy_to(v)
+        }
+    }
+
+    unsafe fn get_uniform_u32(
+        &self,
+        program: Self::Program,
+        location: &Self::UniformLocation,
+        v: &mut [u32],
+    ) {
+        let programs = self.programs.borrow();
+        let raw_program = programs.get_unchecked(program);
+        let value = match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.get_uniform(&raw_program, location),
+            RawRenderingContext::WebGl2(ref gl) => gl.get_uniform(&raw_program, location),
+        };
+        use wasm_bindgen::JsCast;
+        if let Some(value) = value.as_f64() {
+            v[0] = value as u32;
+        } else if let Some(values) = value.dyn_ref::<js_sys::Uint32Array>() {
             values.copy_to(v)
         }
     }
@@ -4655,7 +5854,14 @@ impl HasContext for Context {
     }
 
     unsafe fn query_counter(&self, query: Self::Query, target: u32) {
-        panic!("Query counters are not supported");
+        let queries = self.queries.borrow();
+        let raw_query = queries.get_unchecked(query);
+        match self.extensions.ext_disjoint_timer_query_webgl2 {
+            Some(ref ext) => ext.query_counter_ext(raw_query, target),
+            None => {
+                panic!("Query counters are not supported without EXT_disjoint_timer_query_webgl2")
+            }
+        }
     }
 
     unsafe fn get_query_parameter_u32(&self, query: Self::Query, parameter: u32) -> u32 {
@@ -4673,9 +5879,9 @@ impl HasContext for Context {
 
     unsafe fn get_query_parameter_u64_with_offset(
         &self,
-        query: Self::Query,
-        parameter: u32,
-        offset: usize,
+        _query: Self::Query,
+        _parameter: u32,
+        _offset: usize,
     ) {
         panic!("Query buffers are not supported");
     }
@@ -4694,6 +5900,18 @@ impl HasContext for Context {
                 Ok(key)
             }
             None => Err(String::from("Unable to create TransformFeedback object")),
+        }
+    }
+
+    unsafe fn is_transform_feedback(&self, transform_feedback: Self::TransformFeedback) -> bool {
+        let transform_feedbacks = self.transform_feedbacks.borrow_mut();
+        if let Some(f) = transform_feedbacks.get(transform_feedback) {
+            match &self.raw {
+                RawRenderingContext::WebGl1(_gl) => panic!("TransformFeedback is not supported"),
+                RawRenderingContext::WebGl2(gl) => gl.is_transform_feedback(Some(f)),
+            }
+        } else {
+            false
         }
     }
 
@@ -4817,7 +6035,7 @@ impl HasContext for Context {
     unsafe fn bind_image_texture(
         &self,
         _unit: u32,
-        _texture: Self::Texture,
+        _texture: Option<Self::Texture>,
         _level: i32,
         _layered: bool,
         _layer: i32,
@@ -4901,6 +6119,44 @@ impl HasContext for Context {
     unsafe fn max_shader_compiler_threads(&self, _count: u32) {
         // WebGL doesn't use this
     }
+
+    unsafe fn hint(&self, target: u32, mode: u32) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.hint(target, mode),
+            RawRenderingContext::WebGl2(ref gl) => gl.hint(target, mode),
+        }
+    }
+
+    unsafe fn sample_coverage(&self, value: f32, invert: bool) {
+        match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => gl.sample_coverage(value, invert),
+            RawRenderingContext::WebGl2(ref gl) => gl.sample_coverage(value, invert),
+        }
+    }
+
+    unsafe fn get_internal_format_i32_slice(
+        &self,
+        target: u32,
+        internal_format: u32,
+        pname: u32,
+        result: &mut [i32],
+    ) {
+        let value = match self.raw {
+            RawRenderingContext::WebGl1(ref gl) => {
+                panic!("get_internalformat_parameter not supported")
+            }
+            RawRenderingContext::WebGl2(ref gl) => {
+                gl.get_internalformat_parameter(target, internal_format, pname)
+            }
+        }
+        .unwrap();
+        use wasm_bindgen::JsCast;
+        if let Some(value) = value.as_f64() {
+            result[0] = value as i32;
+        } else if let Some(values) = value.dyn_ref::<js_sys::Int32Array>() {
+            values.copy_to(result)
+        }
+    }
 }
 
 /// Sending texture data requires different data views for different data types.
@@ -4926,7 +6182,8 @@ unsafe fn texture_data_view(ty: u32, bytes: &[u8]) -> js_sys::Object {
         | UNSIGNED_SHORT_5_6_5
         | UNSIGNED_SHORT_5_5_5_1
         | UNSIGNED_SHORT_4_4_4_4
-        | HALF_FLOAT => {
+        | HALF_FLOAT
+        | HALF_FLOAT_OES => {
             #[allow(clippy::cast_ptr_alignment)]
             let data = from_raw_parts(bytes.as_ptr() as *const u16, bytes.len() / size_of::<u16>());
             js_sys::Uint16Array::view(data).into()

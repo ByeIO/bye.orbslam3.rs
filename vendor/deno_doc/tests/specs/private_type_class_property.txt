@@ -1,0 +1,304 @@
+# mod.ts
+export type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp;
+
+namespace MyNamespace {
+  export import Export = MyNamespace2.MyClass;
+}
+
+namespace MyNamespace2 {
+  export import MyClass = MyNamespace3.MyClass;
+}
+
+namespace MyNamespace3 {
+  export class MyClass {
+    static someProp: string;
+  }
+}
+
+# diagnostics
+error[private-type-ref]: public type 'PrivatePropThroughNamespaceRef' references private type 'MyNamespace'
+ --> /mod.ts:1:1
+  | 
+1 | export type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp;
+  | ^
+  = hint: make the referenced type public or remove the reference
+  | 
+3 | namespace MyNamespace {
+  | - this is the referenced type
+  | 
+
+  info: to ensure documentation is complete all types that are exposed in the public API must be public
+
+
+error[private-type-ref]: public type 'PrivatePropThroughNamespaceRef' references private type 'MyNamespace2'
+ --> /mod.ts:1:1
+  | 
+1 | export type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp;
+  | ^
+  = hint: make the referenced type public or remove the reference
+  | 
+7 | namespace MyNamespace2 {
+  | - this is the referenced type
+  | 
+
+  info: to ensure documentation is complete all types that are exposed in the public API must be public
+
+
+error[private-type-ref]: public type 'PrivatePropThroughNamespaceRef' references private type 'MyNamespace3'
+  --> /mod.ts:1:1
+   | 
+ 1 | export type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp;
+   | ^
+   = hint: make the referenced type public or remove the reference
+   | 
+11 | namespace MyNamespace3 {
+   | - this is the referenced type
+   | 
+
+  info: to ensure documentation is complete all types that are exposed in the public API must be public
+
+
+error[private-type-ref]: public type 'PrivatePropThroughNamespaceRef' references private type 'MyNamespace3.MyClass'
+  --> /mod.ts:1:1
+   | 
+ 1 | export type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp;
+   | ^
+   = hint: make the referenced type public or remove the reference
+   | 
+12 |   export class MyClass {
+   |   - this is the referenced type
+   | 
+
+  info: to ensure documentation is complete all types that are exposed in the public API must be public
+
+
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:1:1
+  | 
+1 | export type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp;
+  | ^
+
+# output.txt
+Defined in file:///mod.ts:1:1
+
+type PrivatePropThroughNamespaceRef = typeof MyNamespace.Export.someProp
+
+Defined in file:///mod.ts:3:1
+
+private namespace MyNamespace
+
+  class Export
+
+Defined in file:///mod.ts:7:1
+
+private namespace MyNamespace2
+
+  class MyClass
+
+Defined in file:///mod.ts:11:1
+
+private namespace MyNamespace3
+
+  class MyClass
+
+
+# output.json
+[
+  {
+    "name": "PrivatePropThroughNamespaceRef",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 1,
+      "col": 0,
+      "byteIndex": 0
+    },
+    "declarationKind": "export",
+    "kind": "typeAlias",
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "MyNamespace.Export.someProp",
+        "kind": "typeQuery",
+        "typeQuery": "MyNamespace.Export.someProp"
+      },
+      "typeParams": []
+    }
+  },
+  {
+    "name": "MyNamespace",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 3,
+      "col": 0,
+      "byteIndex": 82
+    },
+    "declarationKind": "private",
+    "kind": "namespace",
+    "namespaceDef": {
+      "elements": [
+        {
+          "name": "Export",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 12,
+            "col": 2,
+            "byteIndex": 259
+          },
+          "declarationKind": "export",
+          "kind": "class",
+          "classDef": {
+            "isAbstract": false,
+            "constructors": [],
+            "properties": [
+              {
+                "tsType": {
+                  "repr": "string",
+                  "kind": "keyword",
+                  "keyword": "string"
+                },
+                "readonly": false,
+                "accessibility": null,
+                "optional": false,
+                "isAbstract": false,
+                "isStatic": true,
+                "name": "someProp",
+                "location": {
+                  "filename": "file:///mod.ts",
+                  "line": 13,
+                  "col": 4,
+                  "byteIndex": 286
+                }
+              }
+            ],
+            "indexSignatures": [],
+            "methods": [],
+            "extends": null,
+            "implements": [],
+            "typeParams": [],
+            "superTypeParams": []
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "MyNamespace2",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 7,
+      "col": 0,
+      "byteIndex": 156
+    },
+    "declarationKind": "private",
+    "kind": "namespace",
+    "namespaceDef": {
+      "elements": [
+        {
+          "name": "MyClass",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 12,
+            "col": 2,
+            "byteIndex": 259
+          },
+          "declarationKind": "export",
+          "kind": "class",
+          "classDef": {
+            "isAbstract": false,
+            "constructors": [],
+            "properties": [
+              {
+                "tsType": {
+                  "repr": "string",
+                  "kind": "keyword",
+                  "keyword": "string"
+                },
+                "readonly": false,
+                "accessibility": null,
+                "optional": false,
+                "isAbstract": false,
+                "isStatic": true,
+                "name": "someProp",
+                "location": {
+                  "filename": "file:///mod.ts",
+                  "line": 13,
+                  "col": 4,
+                  "byteIndex": 286
+                }
+              }
+            ],
+            "indexSignatures": [],
+            "methods": [],
+            "extends": null,
+            "implements": [],
+            "typeParams": [],
+            "superTypeParams": []
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "MyNamespace3",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 11,
+      "col": 0,
+      "byteIndex": 232
+    },
+    "declarationKind": "private",
+    "kind": "namespace",
+    "namespaceDef": {
+      "elements": [
+        {
+          "name": "MyClass",
+          "isDefault": false,
+          "location": {
+            "filename": "file:///mod.ts",
+            "line": 12,
+            "col": 2,
+            "byteIndex": 259
+          },
+          "declarationKind": "export",
+          "kind": "class",
+          "classDef": {
+            "isAbstract": false,
+            "constructors": [],
+            "properties": [
+              {
+                "tsType": {
+                  "repr": "string",
+                  "kind": "keyword",
+                  "keyword": "string"
+                },
+                "readonly": false,
+                "accessibility": null,
+                "optional": false,
+                "isAbstract": false,
+                "isStatic": true,
+                "name": "someProp",
+                "location": {
+                  "filename": "file:///mod.ts",
+                  "line": 13,
+                  "col": 4,
+                  "byteIndex": 286
+                }
+              }
+            ],
+            "indexSignatures": [],
+            "methods": [],
+            "extends": null,
+            "implements": [],
+            "typeParams": [],
+            "superTypeParams": []
+          }
+        }
+      ]
+    }
+  }
+]

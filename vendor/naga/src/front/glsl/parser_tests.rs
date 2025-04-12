@@ -1,7 +1,7 @@
 use super::{
     ast::Profile,
     error::ExpectedToken,
-    error::{Error, ErrorKind},
+    error::{Error, ErrorKind, ParseErrors},
     token::TokenValue,
     Frontend, Options, Span,
 };
@@ -21,10 +21,12 @@ fn version() {
             )
             .err()
             .unwrap(),
-        vec![Error {
-            kind: ErrorKind::InvalidVersion(99000),
-            meta: Span::new(9, 14)
-        }],
+        ParseErrors {
+            errors: vec![Error {
+                kind: ErrorKind::InvalidVersion(99000),
+                meta: Span::new(9, 14)
+            }],
+        },
     );
 
     assert_eq!(
@@ -35,10 +37,12 @@ fn version() {
             )
             .err()
             .unwrap(),
-        vec![Error {
-            kind: ErrorKind::InvalidVersion(449),
-            meta: Span::new(9, 12)
-        }]
+        ParseErrors {
+            errors: vec![Error {
+                kind: ErrorKind::InvalidVersion(449),
+                meta: Span::new(9, 12)
+            }]
+        },
     );
 
     assert_eq!(
@@ -49,10 +53,12 @@ fn version() {
             )
             .err()
             .unwrap(),
-        vec![Error {
-            kind: ErrorKind::InvalidProfile("smart".into()),
-            meta: Span::new(13, 18),
-        }]
+        ParseErrors {
+            errors: vec![Error {
+                kind: ErrorKind::InvalidProfile("smart".into()),
+                meta: Span::new(13, 18),
+            }]
+        },
     );
 
     assert_eq!(
@@ -63,19 +69,21 @@ fn version() {
             )
             .err()
             .unwrap(),
-        vec![
-            Error {
-                kind: ErrorKind::PreprocessorError(PreprocessorError::UnexpectedHash,),
-                meta: Span::new(27, 28),
-            },
-            Error {
-                kind: ErrorKind::InvalidToken(
-                    TokenValue::Identifier("version".into()),
-                    vec![ExpectedToken::Eof]
-                ),
-                meta: Span::new(28, 35)
-            }
-        ]
+        ParseErrors {
+            errors: vec![
+                Error {
+                    kind: ErrorKind::PreprocessorError(PreprocessorError::UnexpectedHash,),
+                    meta: Span::new(27, 28),
+                },
+                Error {
+                    kind: ErrorKind::InvalidToken(
+                        TokenValue::Identifier("version".into()),
+                        vec![ExpectedToken::Eof]
+                    ),
+                    meta: Span::new(28, 35)
+                }
+            ]
+        },
     );
 
     // valid versions
@@ -447,10 +455,12 @@ fn functions() {
             )
             .err()
             .unwrap(),
-        vec![Error {
-            kind: ErrorKind::SemanticError("Function already defined".into()),
-            meta: Span::new(134, 152),
-        }]
+        ParseErrors {
+            errors: vec![Error {
+                kind: ErrorKind::SemanticError("Function already defined".into()),
+                meta: Span::new(134, 152),
+            }]
+        },
     );
 
     println!();
@@ -529,7 +539,7 @@ fn constants() {
 
     let mut types = module.types.iter();
     let mut constants = module.constants.iter();
-    let mut const_expressions = module.const_expressions.iter();
+    let mut global_expressions = module.global_expressions.iter();
 
     let (ty_handle, ty) = types.next().unwrap();
     assert_eq!(
@@ -540,14 +550,13 @@ fn constants() {
         }
     );
 
-    let (init_handle, init) = const_expressions.next().unwrap();
+    let (init_handle, init) = global_expressions.next().unwrap();
     assert_eq!(init, &Expression::Literal(crate::Literal::F32(1.0)));
 
     assert_eq!(
         constants.next().unwrap().1,
         &Constant {
             name: Some("a".to_owned()),
-            r#override: crate::Override::None,
             ty: ty_handle,
             init: init_handle
         }
@@ -557,7 +566,6 @@ fn constants() {
         constants.next().unwrap().1,
         &Constant {
             name: Some("b".to_owned()),
-            r#override: crate::Override::None,
             ty: ty_handle,
             init: init_handle
         }
@@ -626,10 +634,12 @@ fn implicit_conversions() {
             )
             .err()
             .unwrap(),
-        vec![Error {
-            kind: ErrorKind::SemanticError("Unknown function \'test\'".into()),
-            meta: Span::new(156, 165),
-        }]
+        ParseErrors {
+            errors: vec![Error {
+                kind: ErrorKind::SemanticError("Unknown function \'test\'".into()),
+                meta: Span::new(156, 165),
+            }]
+        },
     );
 
     assert_eq!(
@@ -648,10 +658,12 @@ fn implicit_conversions() {
             )
             .err()
             .unwrap(),
-        vec![Error {
-            kind: ErrorKind::SemanticError("Ambiguous best function for \'test\'".into()),
-            meta: Span::new(158, 165),
-        }]
+        ParseErrors {
+            errors: vec![Error {
+                kind: ErrorKind::SemanticError("Ambiguous best function for \'test\'".into()),
+                meta: Span::new(158, 165),
+            }]
+        }
     );
 }
 

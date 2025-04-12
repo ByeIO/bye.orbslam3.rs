@@ -13,14 +13,8 @@
 edition = "2021"
 rust-version = "1.56"
 name = "serde_repr"
-version = "0.1.20"
+version = "0.1.19"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
-build = false
-autolib = false
-autobins = false
-autoexamples = false
-autotests = false
-autobenches = false
 description = "Derive Serialize and Deserialize that delegates to the underlying repr of a C-like enum."
 documentation = "https://docs.rs/serde_repr"
 readme = "README.md"
@@ -38,27 +32,11 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/serde-repr"
 
 [package.metadata.docs.rs]
-rustdoc-args = [
-    "--generate-link-to-definition",
-    "--extern-html-root-url=core=https://doc.rust-lang.org",
-    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
-    "--extern-html-root-url=std=https://doc.rust-lang.org",
-    "--extern-html-root-url=proc_macro=https://doc.rust-lang.org",
-]
+rustdoc-args = ["--generate-link-to-definition"]
 targets = ["x86_64-unknown-linux-gnu"]
 
 [lib]
-name = "serde_repr"
-path = "src/lib.rs"
 proc-macro = true
-
-[[test]]
-name = "compiletest"
-path = "tests/compiletest.rs"
-
-[[test]]
-name = "test"
-path = "tests/test.rs"
 
 [dependencies.proc-macro2]
 version = "1.0.74"

@@ -1,0 +1,39 @@
+# mod.ts
+export type A = number
+
+# diagnostics
+error[missing-jsdoc]: exported symbol is missing JSDoc documentation
+ --> /mod.ts:1:1
+  | 
+1 | export type A = number
+  | ^
+
+# output.txt
+Defined in file:///mod.ts:1:1
+
+type A = number
+
+
+# output.json
+[
+  {
+    "name": "A",
+    "isDefault": false,
+    "location": {
+      "filename": "file:///mod.ts",
+      "line": 1,
+      "col": 0,
+      "byteIndex": 0
+    },
+    "declarationKind": "export",
+    "kind": "typeAlias",
+    "typeAliasDef": {
+      "tsType": {
+        "repr": "number",
+        "kind": "keyword",
+        "keyword": "number"
+      },
+      "typeParams": []
+    }
+  }
+]

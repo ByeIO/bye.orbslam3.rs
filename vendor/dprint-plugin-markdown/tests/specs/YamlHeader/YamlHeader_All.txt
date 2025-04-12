@@ -1,0 +1,47 @@
+!! should format as-is !!
+---
+title: Some Title
+description: Some description
+---
+
+Test
+
+[expect]
+---
+title: Some Title
+description: Some description
+---
+
+Test
+
+!! should format when only meta data !!
+---
+title: Some Title
+description: Some description
+---
+
+[expect]
+---
+title: Some Title
+description: Some description
+---
+
+!! no panic multi-byte chars !!
+---
+title: 💣
+publishDate: 💣
+slug: 💣
+summary: >-
+  💣
+  💣
+---
+
+[expect]
+---
+title: 💣
+publishDate: 💣
+slug: 💣
+summary: >-
+  💣
+  💣
+---

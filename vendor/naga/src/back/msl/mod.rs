@@ -1,6 +1,9 @@
 /*!
 Backend for [MSL][msl] (Metal Shading Language).
 
+This backend does not support the [`SHADER_INT64_ATOMIC_ALL_OPS`][all-atom]
+capability.
+
 ## Binding model
 
 Metal's bindings are flat per resource. Since there isn't an obvious mapping
@@ -24,6 +27,8 @@ For the result type, if it's a structure, we re-compose it with a temporary valu
 holding the result.
 
 [msl]: https://developer.apple.com/metal/Metal-Shading-Language-Specification.pdf
+[all-atom]: crate::valid::Capabilities::SHADER_INT64_ATOMIC_ALL_OPS
+
 */
 
 use crate::{arena::Handle, proc::index, valid::ModuleInfo};
@@ -54,8 +59,6 @@ pub struct BindTarget {
     pub buffer: Option<Slot>,
     pub texture: Option<Slot>,
     pub sampler: Option<BindSamplerTarget>,
-    /// If the binding is an unsized binding array, this overrides the size.
-    pub binding_array_size: Option<u32>,
     pub mutable: bool,
 }
 
@@ -121,8 +124,8 @@ pub enum Error {
     UnsupportedCall(String),
     #[error("feature '{0}' is not implemented yet")]
     FeatureNotImplemented(String),
-    #[error("module is not valid")]
-    Validation,
+    #[error("internal naga error: module should not have validated: {0}")]
+    GenericValidation(String),
     #[error("BuiltIn {0:?} is not supported")]
     UnsupportedBuiltIn(crate::BuiltIn),
     #[error("capability {0:?} is not supported")]
@@ -143,6 +146,8 @@ pub enum Error {
     UnsupportedArrayOfType(Handle<crate::Type>),
     #[error("ray tracing is not supported prior to MSL 2.3")]
     UnsupportedRayTracing,
+    #[error("overrides should not be present at this stage")]
+    Override,
 }
 
 #[derive(Clone, Debug, PartialEq, thiserror::Error)]
@@ -188,6 +193,7 @@ enum LocationMode {
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize))]
 #[cfg_attr(feature = "deserialize", derive(serde::Deserialize))]
+#[cfg_attr(feature = "deserialize", serde(default))]
 pub struct Options {
     /// (Major, Minor) target version of the Metal Shading Language.
     pub lang_version: (u8, u8),
@@ -200,10 +206,12 @@ pub struct Options {
     /// Don't panic on missing bindings, instead generate invalid MSL.
     pub fake_missing_bindings: bool,
     /// Bounds checking policies.
-    #[cfg_attr(feature = "deserialize", serde(default))]
     pub bounds_check_policies: index::BoundsCheckPolicies,
     /// Should workgroup variables be zero initialized (by polyfilling)?
     pub zero_initialize_workgroup_memory: bool,
+    /// If set, loops will have code injected into them, forcing the compiler
+    /// to think the number of iterations is bounded.
+    pub force_loop_bounding: bool,
 }
 
 impl Default for Options {
@@ -216,14 +224,150 @@ impl Default for Options {
             fake_missing_bindings: true,
             bounds_check_policies: index::BoundsCheckPolicies::default(),
             zero_initialize_workgroup_memory: true,
+            force_loop_bounding: true,
         }
     }
 }
 
-/// A subset of options that are meant to be changed per pipeline.
+/// Corresponds to [WebGPU `GPUVertexFormat`](
+/// https://gpuweb.github.io/gpuweb/#enumdef-gpuvertexformat).
+#[repr(u32)]
+#[derive(Copy, Clone, Debug, Hash, Eq, PartialEq)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize))]
+#[cfg_attr(feature = "deserialize", derive(serde::Deserialize))]
+pub enum VertexFormat {
+    /// One unsigned byte (u8). `u32` in shaders.
+    Uint8 = 0,
+    /// Two unsigned bytes (u8). `vec2<u32>` in shaders.
+    Uint8x2 = 1,
+    /// Four unsigned bytes (u8). `vec4<u32>` in shaders.
+    Uint8x4 = 2,
+    /// One signed byte (i8). `i32` in shaders.
+    Sint8 = 3,
+    /// Two signed bytes (i8). `vec2<i32>` in shaders.
+    Sint8x2 = 4,
+    /// Four signed bytes (i8). `vec4<i32>` in shaders.
+    Sint8x4 = 5,
+    /// One unsigned byte (u8). [0, 255] converted to float [0, 1] `f32` in shaders.
+    Unorm8 = 6,
+    /// Two unsigned bytes (u8). [0, 255] converted to float [0, 1] `vec2<f32>` in shaders.
+    Unorm8x2 = 7,
+    /// Four unsigned bytes (u8). [0, 255] converted to float [0, 1] `vec4<f32>` in shaders.
+    Unorm8x4 = 8,
+    /// One signed byte (i8). [-127, 127] converted to float [-1, 1] `f32` in shaders.
+    Snorm8 = 9,
+    /// Two signed bytes (i8). [-127, 127] converted to float [-1, 1] `vec2<f32>` in shaders.
+    Snorm8x2 = 10,
+    /// Four signed bytes (i8). [-127, 127] converted to float [-1, 1] `vec4<f32>` in shaders.
+    Snorm8x4 = 11,
+    /// One unsigned short (u16). `u32` in shaders.
+    Uint16 = 12,
+    /// Two unsigned shorts (u16). `vec2<u32>` in shaders.
+    Uint16x2 = 13,
+    /// Four unsigned shorts (u16). `vec4<u32>` in shaders.
+    Uint16x4 = 14,
+    /// One signed short (u16). `i32` in shaders.
+    Sint16 = 15,
+    /// Two signed shorts (i16). `vec2<i32>` in shaders.
+    Sint16x2 = 16,
+    /// Four signed shorts (i16). `vec4<i32>` in shaders.
+    Sint16x4 = 17,
+    /// One unsigned short (u16). [0, 65535] converted to float [0, 1] `f32` in shaders.
+    Unorm16 = 18,
+    /// Two unsigned shorts (u16). [0, 65535] converted to float [0, 1] `vec2<f32>` in shaders.
+    Unorm16x2 = 19,
+    /// Four unsigned shorts (u16). [0, 65535] converted to float [0, 1] `vec4<f32>` in shaders.
+    Unorm16x4 = 20,
+    /// One signed short (i16). [-32767, 32767] converted to float [-1, 1] `f32` in shaders.
+    Snorm16 = 21,
+    /// Two signed shorts (i16). [-32767, 32767] converted to float [-1, 1] `vec2<f32>` in shaders.
+    Snorm16x2 = 22,
+    /// Four signed shorts (i16). [-32767, 32767] converted to float [-1, 1] `vec4<f32>` in shaders.
+    Snorm16x4 = 23,
+    /// One half-precision float (no Rust equiv). `f32` in shaders.
+    Float16 = 24,
+    /// Two half-precision floats (no Rust equiv). `vec2<f32>` in shaders.
+    Float16x2 = 25,
+    /// Four half-precision floats (no Rust equiv). `vec4<f32>` in shaders.
+    Float16x4 = 26,
+    /// One single-precision float (f32). `f32` in shaders.
+    Float32 = 27,
+    /// Two single-precision floats (f32). `vec2<f32>` in shaders.
+    Float32x2 = 28,
+    /// Three single-precision floats (f32). `vec3<f32>` in shaders.
+    Float32x3 = 29,
+    /// Four single-precision floats (f32). `vec4<f32>` in shaders.
+    Float32x4 = 30,
+    /// One unsigned int (u32). `u32` in shaders.
+    Uint32 = 31,
+    /// Two unsigned ints (u32). `vec2<u32>` in shaders.
+    Uint32x2 = 32,
+    /// Three unsigned ints (u32). `vec3<u32>` in shaders.
+    Uint32x3 = 33,
+    /// Four unsigned ints (u32). `vec4<u32>` in shaders.
+    Uint32x4 = 34,
+    /// One signed int (i32). `i32` in shaders.
+    Sint32 = 35,
+    /// Two signed ints (i32). `vec2<i32>` in shaders.
+    Sint32x2 = 36,
+    /// Three signed ints (i32). `vec3<i32>` in shaders.
+    Sint32x3 = 37,
+    /// Four signed ints (i32). `vec4<i32>` in shaders.
+    Sint32x4 = 38,
+    /// Three unsigned 10-bit integers and one 2-bit integer, packed into a 32-bit integer (u32). [0, 1024] converted to float [0, 1] `vec4<f32>` in shaders.
+    #[cfg_attr(
+        any(feature = "serialize", feature = "deserialize"),
+        serde(rename = "unorm10-10-10-2")
+    )]
+    Unorm10_10_10_2 = 43,
+    /// Four unsigned 8-bit integers, packed into a 32-bit integer (u32). [0, 255] converted to float [0, 1] `vec4<f32>` in shaders.
+    #[cfg_attr(
+        any(feature = "serialize", feature = "deserialize"),
+        serde(rename = "unorm8x4-bgra")
+    )]
+    Unorm8x4Bgra = 44,
+}
+
+/// A mapping of vertex buffers and their attributes to shader
+/// locations.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize))]
+#[cfg_attr(feature = "deserialize", derive(serde::Deserialize))]
+pub struct AttributeMapping {
+    /// Shader location associated with this attribute
+    pub shader_location: u32,
+    /// Offset in bytes from start of vertex buffer structure
+    pub offset: u32,
+    /// Format code to help us unpack the attribute into the type
+    /// used by the shader. Codes correspond to a 0-based index of
+    /// <https://gpuweb.github.io/gpuweb/#enumdef-gpuvertexformat>.
+    /// The conversion process is described by
+    /// <https://gpuweb.github.io/gpuweb/#vertex-processing>.
+    pub format: VertexFormat,
+}
+
+/// A description of a vertex buffer with all the information we
+/// need to address the attributes within it.
 #[derive(Debug, Default, Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature = "serialize", derive(serde::Serialize))]
 #[cfg_attr(feature = "deserialize", derive(serde::Deserialize))]
+pub struct VertexBufferMapping {
+    /// Shader location associated with this buffer
+    pub id: u32,
+    /// Size of the structure in bytes
+    pub stride: u32,
+    /// True if the buffer is indexed by vertex, false if indexed
+    /// by instance.
+    pub indexed_by_vertex: bool,
+    /// Vec of the attributes within the structure
+    pub attributes: Vec<AttributeMapping>,
+}
+
+/// A subset of options that are meant to be changed per pipeline.
+#[derive(Debug, Default, Clone)]
+#[cfg_attr(feature = "serialize", derive(serde::Serialize))]
+#[cfg_attr(feature = "deserialize", derive(serde::Deserialize))]
+#[cfg_attr(feature = "deserialize", serde(default))]
 pub struct PipelineOptions {
     /// Allow `BuiltIn::PointSize` and inject it if doesn't exist.
     ///
@@ -232,6 +376,19 @@ pub struct PipelineOptions {
     ///
     /// Enable this for vertex shaders with point primitive topologies.
     pub allow_and_force_point_size: bool,
+
+    /// If set, when generating the Metal vertex shader, transform it
+    /// to receive the vertex buffers, lengths, and vertex id as args,
+    /// and bounds-check the vertex id and use the index into the
+    /// vertex buffers to access attributes, rather than using Metal's
+    /// [[stage-in]] assembled attribute data. This is true by default,
+    /// but remains configurable for use by tests via deserialization
+    /// of this struct. There is no user-facing way to set this value.
+    pub vertex_pulling_transform: bool,
+
+    /// vertex_buffer_mappings are used during shader translation to
+    /// support vertex pulling.
+    pub vertex_buffer_mappings: Vec<VertexBufferMapping>,
 }
 
 impl Options {
@@ -306,13 +463,9 @@ impl Options {
                         },
                     })
                 }
-                LocationMode::Uniform => {
-                    log::error!(
-                        "Unexpected Binding::Location({}) for the Uniform mode",
-                        location
-                    );
-                    Err(Error::Validation)
-                }
+                LocationMode::Uniform => Err(Error::GenericValidation(format!(
+                    "Unexpected Binding::Location({location}) for the Uniform mode"
+                ))),
             },
         }
     }
@@ -437,7 +590,12 @@ impl ResolvedBinding {
                     Bi::WorkGroupId => "threadgroup_position_in_grid",
                     Bi::WorkGroupSize => "dispatch_threads_per_threadgroup",
                     Bi::NumWorkGroups => "threadgroups_per_grid",
-                    Bi::CullDistance | Bi::ViewIndex => {
+                    // subgroup
+                    Bi::NumSubgroups => "simdgroups_per_threadgroup",
+                    Bi::SubgroupId => "simdgroup_index_in_threadgroup",
+                    Bi::SubgroupSize => "threads_per_simdgroup",
+                    Bi::SubgroupInvocationId => "thread_index_in_simdgroup",
+                    Bi::CullDistance | Bi::ViewIndex | Bi::DrawID => {
                         return Err(Error::UnsupportedBuiltIn(built_in))
                     }
                 };
@@ -495,6 +653,7 @@ impl ResolvedInterpolation {
             (I::Linear, S::Centroid) => Self::CentroidNoPerspective,
             (I::Linear, S::Sample) => Self::SampleNoPerspective,
             (I::Flat, _) => Self::Flat,
+            _ => unreachable!(),
         }
     }
 
@@ -529,7 +688,7 @@ pub fn write_string(
     options: &Options,
     pipeline_options: &PipelineOptions,
 ) -> Result<(String, TranslationInfo), Error> {
-    let mut w = writer::Writer::new(String::new());
+    let mut w = Writer::new(String::new());
     let info = w.write(module, info, options, pipeline_options)?;
     Ok((w.finish(), info))
 }

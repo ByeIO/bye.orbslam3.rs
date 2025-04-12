@@ -1,0 +1,388 @@
+-- file.tsx --
+~~ lineWidth: 40 ~~
+== should not remove spaces between ==
+const t = <div>{t} {u} {v}</div>;
+
+[expect]
+const t = <div>{t} {u} {v}</div>;
+
+== should remove spaces surrounding ==
+const t = <div> test </div>;
+
+[expect]
+const t = <div>test</div>;
+
+== should handle a space when exceeding the line width with only the parent when the parent and children are on the same line ==
+const t = <div>{test} {testsdffffffffffff}</div>;
+
+[expect]
+const t = (
+    <div>
+        {test} {testsdffffffffffff}
+    </div>
+);
+
+== should handle a space when exceeding the line width within the children ==
+const t = (
+    <div>
+        {testtestingting} {testsdffffffffffff}
+    </div>
+);
+
+[expect]
+const t = (
+    <div>
+        {testtestingting}{" "}
+        {testsdffffffffffff}
+    </div>
+);
+
+== should add a jsx space expression when going to two lines with a space in between ==
+function test() {
+    return <div>{testasdfasdfas} {othertestsettest}</div>
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            {testasdfasdfas}{" "}
+            {othertestsettest}
+        </div>
+    );
+}
+
+== should add jsx space expr between expr and text when going to two lines ==
+function test() {
+    return <div>
+        {testingthisout} Testingthisouttt
+    </div>;
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            {testingthisout}{" "}
+            Testingthisouttt
+        </div>
+    );
+}
+
+== should add jsx space expr between text and expr when going to two lines ==
+function test() {
+    return <div>
+        Testingthisouttt {testingthisout}
+    </div>;
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            Testingthisouttt{" "}
+            {testingthisout}
+        </div>
+    );
+}
+
+== should move jsx space expr to same line ==
+function test() {
+    return <div>
+        {testasdfasdfas}
+        {" "}
+        {othertestsettest}
+    </div>;
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            {testasdfasdfas}{" "}
+            {othertestsettest}
+        </div>
+    );
+}
+
+== should collapse a blank line when there's a space expr ==
+function test() {
+    return <div>
+        {testasdfasdfas}
+        {" "}
+
+        {othertestsettest}
+
+        {" "}
+        {test}
+    </div>;
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            {testasdfasdfas}{" "}
+            {othertestsettest} {test}
+        </div>
+    );
+}
+
+== should collapse and remove the jsx space expr when it's not necessary ==
+function test() {
+    return <div>
+        {test}
+        {" "}
+        {test}
+    </div>;
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            {test} {test}
+        </div>
+    );
+}
+
+== should combine multiple jsx space exprs together ==
+function test() {
+    return <div>
+        {test}
+        {" "}
+        {" "} {" "}
+        {" "}
+        {test}
+    </div>;
+}
+
+[expect]
+function test() {
+    return (
+        <div>
+            {test}{"     "}{test}
+        </div>
+    );
+}
+
+== should move a space from before a jsx space expr into the expression ==
+function test() {
+    const t1 = <a>{t} {" "} {u}</a>;
+    const t2 = <a>{t} {" "}     {" "} {u}</a>;
+}
+
+[expect]
+function test() {
+    const t1 = <a>{t}{"   "}{u}</a>;
+    const t2 = <a>{t}{"     "}{u}</a>;
+}
+
+== should combine spaces when surrounded by text ==
+function test() {
+    const t1 = <div>A {" "} B</div>;
+    const t2 = <div>A{" "} B</div>;
+    const t3 = <div>A{" "}B</div>;
+}
+
+[expect]
+function test() {
+    const t1 = <div>A{"   "}B</div>;
+    const t2 = <div>A{"  "}B</div>;
+    const t3 = <div>A B</div>;
+}
+
+== should handle the added space exceeding the line width ==
+const t1 = (
+    <div>
+        <TestingThisOutttttttt />{" "}
+        <Test />
+    </div>
+);
+const t2 = (
+    <div>
+        <TestingThisOuttttttttttt />{" "}
+        <Test />
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        <TestingThisOutttttttt />{" "}
+        <Test />
+    </div>
+);
+const t2 = (
+    <div>
+        <TestingThisOuttttttttttt />
+        {" "}
+        <Test />
+    </div>
+);
+
+== should keep a space expr that's alone ==
+const t1 = (
+    <div>
+        {" "}
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        {" "}
+    </div>
+);
+
+== should keep a space expr that's at the start ==
+const t1 = (
+    <div>
+        {" "}
+        {other}
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        {" "}
+        {other}
+    </div>
+);
+
+== should keep a space expr that's at the end ==
+const t1 = <div>
+    {other}
+    {" "}
+</div>;
+
+[expect]
+const t1 = (
+    <div>
+        {other}
+        {" "}
+    </div>
+);
+
+== should always use a space with newline after a multi-line jsx element ==
+const t1 = (
+    <div>
+        <input
+            type="checkbox"
+            data-test-id="some-identifier-text"
+            checked={someCondition}
+            onChange={someHandler}
+        /> This is a test.
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        <input
+            type="checkbox"
+            data-test-id="some-identifier-text"
+            checked={someCondition}
+            onChange={someHandler}
+        />{" "}
+        This is a test.
+    </div>
+);
+
+== should always use a space with newline after a multi-line jsx fragment ==
+const t1 = (
+    <div>
+        <>
+            <Test />
+        </> This is a test.
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        <>
+            <Test />
+        </>{" "}
+        This is a test.
+    </div>
+);
+
+== should always use a space with a newline before a multi-line jsx element ==
+const t1 = (
+    <div>
+        Testing <input
+            type="checkbox"
+            data-test-id="some-identifier-text"
+            checked={someCondition}
+            onChange={someHandler}
+        /> this out.
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        Testing{" "}
+        <input
+            type="checkbox"
+            data-test-id="some-identifier-text"
+            checked={someCondition}
+            onChange={someHandler}
+        />{" "}
+        this out.
+    </div>
+);
+
+== should always use a space with a newline before a multi-line jsx fragment ==
+const t1 = <div>Testing <><Test /></> this out.</div>;
+
+[expect]
+const t1 = (
+    <div>
+        Testing{" "}
+        <>
+            <Test />
+        </>{" "}
+        this out.
+    </div>
+);
+
+== should handle scenario where jsx element is single line and inline between text ==
+const t1 = (
+    <div>
+        Testing <TestingThisOutTesting /> Test
+    </div>
+);
+const t2 = (
+    <div>
+        Test <TestingThisOuting /> Testing
+    </div>
+);
+const t3 = (
+    <div>
+        Test <TestingThisOutTesting /> Testing
+    </div>
+);
+
+[expect]
+const t1 = (
+    <div>
+        Testing{" "}
+        <TestingThisOutTesting /> Test
+    </div>
+);
+const t2 = (
+    <div>
+        Test <TestingThisOuting />{" "}
+        Testing
+    </div>
+);
+const t3 = (
+    <div>
+        Test <TestingThisOutTesting />
+        {" "}
+        Testing
+    </div>
+);

@@ -1,0 +1,184 @@
+!! should handle ignore comments !!
+<!-- dprint-ignore -->
+testing     this     out
+
+testing    this    out
+
+[expect]
+<!-- dprint-ignore -->
+testing     this     out
+
+testing this out
+
+!! should respect indentation in ignore comments !!
+<!-- dprint-ignore -->
+    testing   this  out
+
+<!-- dprint-ignore -->
+				testing   this  out
+
+[expect]
+<!-- dprint-ignore -->
+    testing   this  out
+
+<!-- dprint-ignore -->
+				testing   this  out
+
+!! should handle start and finish ignore comments !!
+testing   this  out
+<!-- dprint-ignore-start -->
+testing   this  out
+
+
+
+testing    more   and    more
+<!-- dprint-ignore-end -->
+testing   this   out
+
+[expect]
+testing this out
+
+<!-- dprint-ignore-start -->
+testing   this  out
+
+
+
+testing    more   and    more
+<!-- dprint-ignore-end -->
+
+testing this out
+
+!! should respect indentation in start and finish ignore comments !!
+<!-- dprint-ignore-start -->
+    testing   this  out
+<!-- dprint-ignore-end -->
+
+<!-- dprint-ignore-start -->
+				testing   this  out
+<!-- dprint-ignore-end -->
+
+[expect]
+<!-- dprint-ignore-start -->
+    testing   this  out
+<!-- dprint-ignore-end -->
+
+<!-- dprint-ignore-start -->
+				testing   this  out
+<!-- dprint-ignore-end -->
+
+!! should handle no end ignore comment !!
+testing  this out
+
+<!-- dprint-ignore-start -->
+
+testing   this  out
+
+
+
+testing    more   and    more
+
+[expect]
+testing this out
+
+<!-- dprint-ignore-start -->
+
+testing   this  out
+
+
+
+testing    more   and    more
+
+!! should handle an ignore start at the end of the file !!
+testing  this out
+
+<!-- dprint-ignore-start -->
+
+[expect]
+testing this out
+
+<!-- dprint-ignore-start -->
+
+!! should keep a blank line between ignore comment and code block !!
+test
+
+<!-- dprint-ignore -->
+
+```ts
+testing
+```
+
+[expect]
+test
+
+<!-- dprint-ignore -->
+
+```ts
+testing
+```
+
+!! should handle ignore file comments !!
+<!-- dprint-ignore-file -->
+testing     this     out
+
+testing    this    out
+
+[expect]
+<!-- dprint-ignore-file -->
+testing     this     out
+
+testing    this    out
+
+!! should not ignore when the comment is not at the start of a file !!
+testing     this     out
+
+<!-- dprint-ignore-file -->
+testing    this    out
+
+[expect]
+testing this out
+
+<!-- dprint-ignore-file -->
+
+testing this out
+
+!! should handle ignore file comments in a file with a yaml header !!
+---
+title: Some Title
+description: Some description
+---
+
+<!-- dprint-ignore-file -->
+testing     this     out
+
+testing    this    out
+
+[expect]
+---
+title: Some Title
+description: Some description
+---
+
+<!-- dprint-ignore-file -->
+testing     this     out
+
+testing    this    out
+
+!! should handle ignore comments when nested !!
+1. Testing
+   <!-- dprint-ignore-start -->
+   Testing
+             asdf
+   This out Testing
+   <!-- dprint-ignore-end -->
+
+2. Next
+
+[expect]
+1. Testing
+   <!-- dprint-ignore-start -->
+   Testing
+             asdf
+   This out Testing
+   <!-- dprint-ignore-end -->
+
+2. Next

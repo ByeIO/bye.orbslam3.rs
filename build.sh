@@ -100,3 +100,12 @@ python3 src/convert_mnist_onnx_opset.py
 RUST_BACKTRACE=1 cargo-zigbuild run --example ort_mnist > result/ort_mnist.log
 # 深度预测
 RUST_BACKTRACE=1 cargo-zigbuild run --example ort_depth > result/ort_depth.log
+# 图像分割
+python3 segment_onnx.py > ../result/segment_onnx.log
+docker run -it --rm -v /home/qsbye/Documents/ByeIO/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs:/home seekslam_mnist_build bash
+cd /home/crates/seekslam_examples
+docker commit 90e204338917 seekslam_build:v1
+docker commit 90e204338917 seekslam_build:v2
+RUST_BACKTRACE=1 cargo-zigbuild build --example ort_segment >> ./result/ort_segment.log
+RUST_BACKTRACE=1 cargo-zigbuild run --example ort_segment >> ./result/ort_segment.log
+RUST_BACKTRACE=1 cargo-zigbuild run --example ort_segment

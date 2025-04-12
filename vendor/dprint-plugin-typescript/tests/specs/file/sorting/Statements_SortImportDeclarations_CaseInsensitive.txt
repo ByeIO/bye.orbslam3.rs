@@ -1,0 +1,8 @@
+~~ module.sortImportDeclarations: caseInsensitive ~~
+== should sort the import declarations ==
+import {a} from "a1.ts";
+import { a} from "A2.ts";
+
+[expect]
+import { a } from "a1.ts";
+import { a } from "A2.ts";

@@ -18,46 +18,24 @@ pub const CT_LEAF_CONDITION: CONDITION_TYPE = CONDITION_TYPE(3i32);
 pub const CT_NOT_CONDITION: CONDITION_TYPE = CONDITION_TYPE(2i32);
 pub const CT_OR_CONDITION: CONDITION_TYPE = CONDITION_TYPE(1i32);
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct CONDITION_OPERATION(pub i32);
-impl ::core::marker::Copy for CONDITION_OPERATION {}
-impl ::core::clone::Clone for CONDITION_OPERATION {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for CONDITION_OPERATION {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for CONDITION_OPERATION {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for CONDITION_OPERATION {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for CONDITION_OPERATION {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for CONDITION_OPERATION {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("CONDITION_OPERATION").field(&self.0).finish()
     }
 }
 #[repr(transparent)]
-#[derive(::core::cmp::PartialEq, ::core::cmp::Eq)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct CONDITION_TYPE(pub i32);
-impl ::core::marker::Copy for CONDITION_TYPE {}
-impl ::core::clone::Clone for CONDITION_TYPE {
-    fn clone(&self) -> Self {
-        *self
-    }
+impl windows_core::TypeKind for CONDITION_TYPE {
+    type TypeKind = windows_core::CopyType;
 }
-impl ::core::default::Default for CONDITION_TYPE {
-    fn default() -> Self {
-        Self(0)
-    }
-}
-impl ::windows_core::TypeKind for CONDITION_TYPE {
-    type TypeKind = ::windows_core::CopyType;
-}
-impl ::core::fmt::Debug for CONDITION_TYPE {
-    fn fmt(&self, f: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+impl core::fmt::Debug for CONDITION_TYPE {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("CONDITION_TYPE").field(&self.0).finish()
     }
 }

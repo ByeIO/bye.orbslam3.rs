@@ -62,9 +62,8 @@
 //! 1. [Positionals](#positionals)
 //! 2. [Options](#options)
 //! 3. [Flags](#flags)
-//! 4. [Required](#required)
+//! 4. [Subcommands](#subcommands)
 //! 5. [Defaults](#defaults)
-//! 6. [Subcommands](#subcommands)
 //!
 //!
 //! ### Positionals
@@ -86,8 +85,9 @@
 //! ### Options
 //!
 //! You can name your arguments with a flag:
-//! - Intent of the value is clearer
 //! - Order doesn't matter
+//! - They can be optional
+//! - Intent is clearer
 //!
 //! ```rust
 #![doc = include_str!("../examples/tutorial_builder/03_02_option.rs")]
@@ -117,14 +117,16 @@
 //! ```
 #![doc = include_str!("../examples/tutorial_builder/03_01_flag_count.md")]
 //!
-//! ### Required
+//! ### Subcommands
 //!
-//! By default, an [`Arg`] is optional which can be changed with
-//! [`required`][crate::Arg::required].
+//! Subcommands are defined as [`Command`][crate::Command]s that get added via
+//! [`Command::subcommand`][crate::Command::subcommand]. Each instance of a Subcommand can have its
+//! own version, author(s), Args, and even its own subcommands.
+//!
 //! ```rust
-#![doc = include_str!("../examples/tutorial_builder/03_06_required.rs")]
+#![doc = include_str!("../examples/tutorial_builder/03_04_subcommands.rs")]
 //! ```
-#![doc = include_str!("../examples/tutorial_builder/03_06_required.md")]
+#![doc = include_str!("../examples/tutorial_builder/03_04_subcommands.md")]
 //!
 //! ### Defaults
 //!
@@ -136,17 +138,6 @@
 #![doc = include_str!("../examples/tutorial_builder/03_05_default_values.rs")]
 //! ```
 #![doc = include_str!("../examples/tutorial_builder/03_05_default_values.md")]
-//!
-//! ### Subcommands
-//!
-//! Subcommands are defined as [`Command`][crate::Command]s that get added via
-//! [`Command::subcommand`][crate::Command::subcommand]. Each instance of a Subcommand can have its
-//! own version, author(s), Args, and even its own subcommands.
-//!
-//! ```rust
-#![doc = include_str!("../examples/tutorial_builder/03_04_subcommands.rs")]
-//! ```
-#![doc = include_str!("../examples/tutorial_builder/03_04_subcommands.md")]
 //!
 //! ## Validation
 //!

@@ -1,0 +1,32 @@
+~~ textWrap: always ~~
+!! should format !!
+> [!NOTE]
+> Some sort of note
+
+[expect]
+> [!NOTE]
+> Some sort of note
+
+!! should format when just a callout !!
+> [!NOTE]
+
+[expect]
+> [!NOTE]
+
+!! should format when has blank line !!
+> [!NOTE]
+>
+> Some sort of note
+
+[expect]
+> [!NOTE]
+>
+> Some sort of note
+
+!! should format when followed by italic text !!
+> [!NOTE]
+> _Some_ sort of note
+
+[expect]
+> [!NOTE]
+> _Some_ sort of note

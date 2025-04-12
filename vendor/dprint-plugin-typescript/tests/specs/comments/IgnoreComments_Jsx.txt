@@ -1,0 +1,50 @@
+-- file.tsx --
+== should ignore element after ignore comment in an element ==
+const t = (
+    <Element>
+        {/* dprint-ignore */}
+        <Test      />
+    </Element>
+);
+
+[expect]
+const t = (
+    <Element>
+        {/* dprint-ignore */}
+        <Test      />
+    </Element>
+);
+
+== should ignore element after ignore comment in a fragment ==
+const t = (
+    <>
+        {/* dprint-ignore */}
+        <Test      />
+    </>
+);
+
+[expect]
+const t = (
+    <>
+        {/* dprint-ignore */}
+        <Test      />
+    </>
+);
+
+== should ignore element after ignore comment in a previous empty element ==
+const t = (
+    <Element>
+        {/* dprint-ignore */}
+        {/* deno-lint-ignore */}
+        <Test      />
+    </Element>
+);
+
+[expect]
+const t = (
+    <Element>
+        {/* dprint-ignore */}
+        {/* deno-lint-ignore */}
+        <Test      />
+    </Element>
+);

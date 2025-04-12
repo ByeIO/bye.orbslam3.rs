@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.74"
 name = "clap"
-version = "4.5.35"
+version = "4.5.30"
 build = false
 include = [
     "build.rs",
@@ -310,18 +310,6 @@ doc-scrape-examples = true
 required-features = ["derive"]
 
 [[example]]
-name = "03_06_optional_derive"
-path = "examples/tutorial_derive/03_06_optional.rs"
-doc-scrape-examples = true
-required-features = ["derive"]
-
-[[example]]
-name = "03_06_required"
-path = "examples/tutorial_builder/03_06_required.rs"
-doc-scrape-examples = true
-required-features = ["cargo"]
-
-[[example]]
 name = "04_01_enum"
 path = "examples/tutorial_builder/04_01_enum.rs"
 doc-scrape-examples = true
@@ -510,11 +498,11 @@ doc-scrape-examples = true
 required-features = ["derive"]
 
 [dependencies.clap_builder]
-version = "=4.5.35"
+version = "=4.5.30"
 default-features = false
 
 [dependencies.clap_derive]
-version = "=4.5.32"
+version = "=4.5.28"
 optional = true
 
 [dev-dependencies.automod]
@@ -524,8 +512,8 @@ version = "1.0.14"
 version = "0.15.0"
 default-features = false
 
-[dev-dependencies.jiff]
-version = "0.2.3"
+[dev-dependencies.humantime]
+version = "2.1.0"
 
 [dev-dependencies.rustversion]
 version = "1.0.15"

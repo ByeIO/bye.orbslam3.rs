@@ -1,65 +1,77 @@
-#[doc = "Required features: `\"Win32_Graphics_Direct2D_Common\"`, `\"Win32_Graphics_Dxgi_Common\"`"]
 #[cfg(all(feature = "Win32_Graphics_Direct2D_Common", feature = "Win32_Graphics_Dxgi_Common"))]
 pub trait IWICImageEncoder_Impl: Sized {
-    fn WriteFrame(&self, pimage: ::core::option::Option<&super::super::Direct2D::ID2D1Image>, pframeencode: ::core::option::Option<&super::IWICBitmapFrameEncode>, pimageparameters: *const super::WICImageParameters) -> ::windows_core::Result<()>;
-    fn WriteFrameThumbnail(&self, pimage: ::core::option::Option<&super::super::Direct2D::ID2D1Image>, pframeencode: ::core::option::Option<&super::IWICBitmapFrameEncode>, pimageparameters: *const super::WICImageParameters) -> ::windows_core::Result<()>;
-    fn WriteThumbnail(&self, pimage: ::core::option::Option<&super::super::Direct2D::ID2D1Image>, pencoder: ::core::option::Option<&super::IWICBitmapEncoder>, pimageparameters: *const super::WICImageParameters) -> ::windows_core::Result<()>;
+    fn WriteFrame(&self, pimage: Option<&super::super::Direct2D::ID2D1Image>, pframeencode: Option<&super::IWICBitmapFrameEncode>, pimageparameters: *const super::WICImageParameters) -> windows_core::Result<()>;
+    fn WriteFrameThumbnail(&self, pimage: Option<&super::super::Direct2D::ID2D1Image>, pframeencode: Option<&super::IWICBitmapFrameEncode>, pimageparameters: *const super::WICImageParameters) -> windows_core::Result<()>;
+    fn WriteThumbnail(&self, pimage: Option<&super::super::Direct2D::ID2D1Image>, pencoder: Option<&super::IWICBitmapEncoder>, pimageparameters: *const super::WICImageParameters) -> windows_core::Result<()>;
 }
 #[cfg(all(feature = "Win32_Graphics_Direct2D_Common", feature = "Win32_Graphics_Dxgi_Common"))]
-impl ::windows_core::RuntimeName for IWICImageEncoder {}
+impl windows_core::RuntimeName for IWICImageEncoder {}
 #[cfg(all(feature = "Win32_Graphics_Direct2D_Common", feature = "Win32_Graphics_Dxgi_Common"))]
 impl IWICImageEncoder_Vtbl {
-    pub const fn new<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IWICImageEncoder_Impl, const OFFSET: isize>() -> IWICImageEncoder_Vtbl {
-        unsafe extern "system" fn WriteFrame<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IWICImageEncoder_Impl, const OFFSET: isize>(this: *mut ::core::ffi::c_void, pimage: *mut ::core::ffi::c_void, pframeencode: *mut ::core::ffi::c_void, pimageparameters: *const super::WICImageParameters) -> ::windows_core::HRESULT {
-            let this = (this as *const *const ()).offset(OFFSET) as *const Identity;
-            let this = (*this).get_impl();
-            this.WriteFrame(::windows_core::from_raw_borrowed(&pimage), ::windows_core::from_raw_borrowed(&pframeencode), ::core::mem::transmute_copy(&pimageparameters)).into()
+    pub const fn new<Identity: windows_core::IUnknownImpl, const OFFSET: isize>() -> IWICImageEncoder_Vtbl
+    where
+        Identity: IWICImageEncoder_Impl,
+    {
+        unsafe extern "system" fn WriteFrame<Identity: windows_core::IUnknownImpl, const OFFSET: isize>(this: *mut core::ffi::c_void, pimage: *mut core::ffi::c_void, pframeencode: *mut core::ffi::c_void, pimageparameters: *const super::WICImageParameters) -> windows_core::HRESULT
+        where
+            Identity: IWICImageEncoder_Impl,
+        {
+            let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
+            IWICImageEncoder_Impl::WriteFrame(this, windows_core::from_raw_borrowed(&pimage), windows_core::from_raw_borrowed(&pframeencode), core::mem::transmute_copy(&pimageparameters)).into()
         }
-        unsafe extern "system" fn WriteFrameThumbnail<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IWICImageEncoder_Impl, const OFFSET: isize>(this: *mut ::core::ffi::c_void, pimage: *mut ::core::ffi::c_void, pframeencode: *mut ::core::ffi::c_void, pimageparameters: *const super::WICImageParameters) -> ::windows_core::HRESULT {
-            let this = (this as *const *const ()).offset(OFFSET) as *const Identity;
-            let this = (*this).get_impl();
-            this.WriteFrameThumbnail(::windows_core::from_raw_borrowed(&pimage), ::windows_core::from_raw_borrowed(&pframeencode), ::core::mem::transmute_copy(&pimageparameters)).into()
+        unsafe extern "system" fn WriteFrameThumbnail<Identity: windows_core::IUnknownImpl, const OFFSET: isize>(this: *mut core::ffi::c_void, pimage: *mut core::ffi::c_void, pframeencode: *mut core::ffi::c_void, pimageparameters: *const super::WICImageParameters) -> windows_core::HRESULT
+        where
+            Identity: IWICImageEncoder_Impl,
+        {
+            let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
+            IWICImageEncoder_Impl::WriteFrameThumbnail(this, windows_core::from_raw_borrowed(&pimage), windows_core::from_raw_borrowed(&pframeencode), core::mem::transmute_copy(&pimageparameters)).into()
         }
-        unsafe extern "system" fn WriteThumbnail<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IWICImageEncoder_Impl, const OFFSET: isize>(this: *mut ::core::ffi::c_void, pimage: *mut ::core::ffi::c_void, pencoder: *mut ::core::ffi::c_void, pimageparameters: *const super::WICImageParameters) -> ::windows_core::HRESULT {
-            let this = (this as *const *const ()).offset(OFFSET) as *const Identity;
-            let this = (*this).get_impl();
-            this.WriteThumbnail(::windows_core::from_raw_borrowed(&pimage), ::windows_core::from_raw_borrowed(&pencoder), ::core::mem::transmute_copy(&pimageparameters)).into()
+        unsafe extern "system" fn WriteThumbnail<Identity: windows_core::IUnknownImpl, const OFFSET: isize>(this: *mut core::ffi::c_void, pimage: *mut core::ffi::c_void, pencoder: *mut core::ffi::c_void, pimageparameters: *const super::WICImageParameters) -> windows_core::HRESULT
+        where
+            Identity: IWICImageEncoder_Impl,
+        {
+            let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
+            IWICImageEncoder_Impl::WriteThumbnail(this, windows_core::from_raw_borrowed(&pimage), windows_core::from_raw_borrowed(&pencoder), core::mem::transmute_copy(&pimageparameters)).into()
         }
         Self {
-            base__: ::windows_core::IUnknown_Vtbl::new::<Identity, OFFSET>(),
-            WriteFrame: WriteFrame::<Identity, Impl, OFFSET>,
-            WriteFrameThumbnail: WriteFrameThumbnail::<Identity, Impl, OFFSET>,
-            WriteThumbnail: WriteThumbnail::<Identity, Impl, OFFSET>,
+            base__: windows_core::IUnknown_Vtbl::new::<Identity, OFFSET>(),
+            WriteFrame: WriteFrame::<Identity, OFFSET>,
+            WriteFrameThumbnail: WriteFrameThumbnail::<Identity, OFFSET>,
+            WriteThumbnail: WriteThumbnail::<Identity, OFFSET>,
         }
     }
-    pub unsafe fn matches(iid: *const ::windows_core::GUID) -> bool {
-        *iid == <IWICImageEncoder as ::windows_core::ComInterface>::IID
+    pub fn matches(iid: &windows_core::GUID) -> bool {
+        iid == &<IWICImageEncoder as windows_core::Interface>::IID
     }
 }
-#[doc = "Required features: `\"Win32_Foundation\"`, `\"Win32_Graphics_Direct2D\"`, `\"Win32_Graphics_Gdi\"`, `\"Win32_System_Com\"`, `\"Win32_UI_WindowsAndMessaging\"`"]
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_Graphics_Direct2D", feature = "Win32_Graphics_Gdi", feature = "Win32_System_Com", feature = "Win32_UI_WindowsAndMessaging"))]
+#[cfg(all(feature = "Win32_Graphics_Direct2D", feature = "Win32_Graphics_Gdi", feature = "Win32_System_Com", feature = "Win32_UI_WindowsAndMessaging"))]
 pub trait IWICImagingFactory2_Impl: Sized + super::IWICImagingFactory_Impl {
-    fn CreateImageEncoder(&self, pd2ddevice: ::core::option::Option<&super::super::Direct2D::ID2D1Device>) -> ::windows_core::Result<IWICImageEncoder>;
+    fn CreateImageEncoder(&self, pd2ddevice: Option<&super::super::Direct2D::ID2D1Device>) -> windows_core::Result<IWICImageEncoder>;
 }
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_Graphics_Direct2D", feature = "Win32_Graphics_Gdi", feature = "Win32_System_Com", feature = "Win32_UI_WindowsAndMessaging"))]
-impl ::windows_core::RuntimeName for IWICImagingFactory2 {}
-#[cfg(all(feature = "Win32_Foundation", feature = "Win32_Graphics_Direct2D", feature = "Win32_Graphics_Gdi", feature = "Win32_System_Com", feature = "Win32_UI_WindowsAndMessaging"))]
+#[cfg(all(feature = "Win32_Graphics_Direct2D", feature = "Win32_Graphics_Gdi", feature = "Win32_System_Com", feature = "Win32_UI_WindowsAndMessaging"))]
+impl windows_core::RuntimeName for IWICImagingFactory2 {}
+#[cfg(all(feature = "Win32_Graphics_Direct2D", feature = "Win32_Graphics_Gdi", feature = "Win32_System_Com", feature = "Win32_UI_WindowsAndMessaging"))]
 impl IWICImagingFactory2_Vtbl {
-    pub const fn new<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IWICImagingFactory2_Impl, const OFFSET: isize>() -> IWICImagingFactory2_Vtbl {
-        unsafe extern "system" fn CreateImageEncoder<Identity: ::windows_core::IUnknownImpl<Impl = Impl>, Impl: IWICImagingFactory2_Impl, const OFFSET: isize>(this: *mut ::core::ffi::c_void, pd2ddevice: *mut ::core::ffi::c_void, ppwicimageencoder: *mut *mut ::core::ffi::c_void) -> ::windows_core::HRESULT {
-            let this = (this as *const *const ()).offset(OFFSET) as *const Identity;
-            let this = (*this).get_impl();
-            match this.CreateImageEncoder(::windows_core::from_raw_borrowed(&pd2ddevice)) {
-                ::core::result::Result::Ok(ok__) => {
-                    ::core::ptr::write(ppwicimageencoder, ::core::mem::transmute(ok__));
-                    ::windows_core::HRESULT(0)
+    pub const fn new<Identity: windows_core::IUnknownImpl, const OFFSET: isize>() -> IWICImagingFactory2_Vtbl
+    where
+        Identity: IWICImagingFactory2_Impl,
+    {
+        unsafe extern "system" fn CreateImageEncoder<Identity: windows_core::IUnknownImpl, const OFFSET: isize>(this: *mut core::ffi::c_void, pd2ddevice: *mut core::ffi::c_void, ppwicimageencoder: *mut *mut core::ffi::c_void) -> windows_core::HRESULT
+        where
+            Identity: IWICImagingFactory2_Impl,
+        {
+            let this: &Identity = &*((this as *const *const ()).offset(OFFSET) as *const Identity);
+            match IWICImagingFactory2_Impl::CreateImageEncoder(this, windows_core::from_raw_borrowed(&pd2ddevice)) {
+                Ok(ok__) => {
+                    ppwicimageencoder.write(core::mem::transmute(ok__));
+                    windows_core::HRESULT(0)
                 }
-                ::core::result::Result::Err(err) => err.into(),
+                Err(err) => err.into(),
             }
         }
-        Self { base__: super::IWICImagingFactory_Vtbl::new::<Identity, Impl, OFFSET>(), CreateImageEncoder: CreateImageEncoder::<Identity, Impl, OFFSET> }
+        Self { base__: super::IWICImagingFactory_Vtbl::new::<Identity, OFFSET>(), CreateImageEncoder: CreateImageEncoder::<Identity, OFFSET> }
     }
-    pub unsafe fn matches(iid: *const ::windows_core::GUID) -> bool {
-        *iid == <IWICImagingFactory2 as ::windows_core::ComInterface>::IID || *iid == <super::IWICImagingFactory as ::windows_core::ComInterface>::IID
+    pub fn matches(iid: &windows_core::GUID) -> bool {
+        iid == &<IWICImagingFactory2 as windows_core::Interface>::IID || iid == &<super::IWICImagingFactory as windows_core::Interface>::IID
     }
 }

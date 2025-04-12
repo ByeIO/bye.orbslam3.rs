@@ -1,0 +1,1 @@
+This is a fork of https://crates.io/crates/tower-lsp, used in Deno. At the moment only floating patches.

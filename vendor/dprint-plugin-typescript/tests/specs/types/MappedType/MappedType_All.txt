@@ -1,0 +1,88 @@
+~~ lineWidth: 48 ~~
+== should format ==
+type Partial<T> = { [P   in  keyof   T]  ? :   T[P];    };
+type OptionalPlus<T> = { [P in keyof T]+?: T[P]; };
+type OptionalMinus<T> = { [P in keyof T]-?: T[P]; };
+type Flags<T> = { [P in keyof T]: boolean; };
+type ReadOnly<T> = { readonly [P in keyof T]: T[P]; };
+type ReadOnlyPlus<T> = { +readonly [P in keyof T]: T[P]; };
+type ReadOnlyMinus<T> = { -readonly [P in keyof T]: T[P]; };
+
+[expect]
+type Partial<T> = { [P in keyof T]?: T[P] };
+type OptionalPlus<T> = {
+    [P in keyof T]+?: T[P];
+};
+type OptionalMinus<T> = {
+    [P in keyof T]-?: T[P];
+};
+type Flags<T> = { [P in keyof T]: boolean };
+type ReadOnly<T> = {
+    readonly [P in keyof T]: T[P];
+};
+type ReadOnlyPlus<T> = {
+    +readonly [P in keyof T]: T[P];
+};
+type ReadOnlyMinus<T> = {
+    -readonly [P in keyof T]: T[P];
+};
+
+== should format with newlines when the brace is on a different line ==
+type Partial<T> = {
+    [P in keyof T]?: T[P]; };
+
+[expect]
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+};
+
+== should format with newlines when the length goes over the line width ==
+type Partial<T> = { [TESTINGTHIS in keyof T]?: T[TESTINGTHIS]; };
+
+[expect]
+type Partial<T> = {
+    [TESTINGTHIS in keyof T]?: T[TESTINGTHIS];
+};
+
+== should format a mapped type with a long type annotation hanging ==
+type Partial<T> = { readonly [TESTINGTHISOUT in keyof T]?: T[TESTINGTHISOUT]; };
+
+[expect]
+type Partial<T> = {
+    readonly [TESTINGTHISOUT in keyof T]?:
+        T[TESTINGTHISOUT];
+};
+
+== should format mapped type with name type ==
+type Test = {
+    [K in T as U]: undefined
+};
+
+[expect]
+type Test = {
+    [K in T as U]: undefined;
+};
+
+== should support comments at different points ==
+type Test = { // 1
+    // 2
+    [K in T as U]: undefined; // 3
+    // 4
+};
+
+[expect]
+type Test = { // 1
+    // 2
+    [K in T as U]: undefined; // 3
+    // 4
+};
+
+== should put a comment after the semi-colon when adding one ==
+type Test = {
+    [K in T as U]: undefined // test
+}
+
+[expect]
+type Test = {
+    [K in T as U]: undefined; // test
+};

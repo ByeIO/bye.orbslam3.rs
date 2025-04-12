@@ -1,21 +1,22 @@
-use crate::enums::{CipherSuite, ProtocolVersion};
-use crate::error::InvalidMessage;
-use crate::msgs::base::{PayloadU16, PayloadU8};
-use crate::msgs::codec::{Codec, Reader};
-use crate::msgs::handshake::CertificateChain;
-#[cfg(feature = "tls12")]
-use crate::msgs::handshake::SessionId;
-#[cfg(feature = "tls12")]
-use crate::tls12::Tls12CipherSuite;
-use crate::tls13::Tls13CipherSuite;
+use alloc::vec::Vec;
+use core::cmp;
 
 use pki_types::{DnsName, UnixTime};
 use zeroize::Zeroizing;
 
-use alloc::vec::Vec;
-use core::cmp;
+use crate::client::ResolvesClientCert;
+use crate::enums::{CipherSuite, ProtocolVersion};
+use crate::error::InvalidMessage;
+use crate::msgs::base::{PayloadU8, PayloadU16};
+use crate::msgs::codec::{Codec, Reader};
+use crate::msgs::handshake::CertificateChain;
 #[cfg(feature = "tls12")]
-use core::mem;
+use crate::msgs::handshake::SessionId;
+use crate::sync::{Arc, Weak};
+#[cfg(feature = "tls12")]
+use crate::tls12::Tls12CipherSuite;
+use crate::tls13::Tls13CipherSuite;
+use crate::verify::ServerCertVerifier;
 
 pub(crate) struct Retrieved<T> {
     pub(crate) value: T,
@@ -80,9 +81,11 @@ pub struct Tls13ClientSessionValue {
 impl Tls13ClientSessionValue {
     pub(crate) fn new(
         suite: &'static Tls13CipherSuite,
-        ticket: Vec<u8>,
+        ticket: Arc<PayloadU16>,
         secret: &[u8],
-        server_cert_chain: CertificateChain,
+        server_cert_chain: CertificateChain<'static>,
+        server_cert_verifier: &Arc<dyn ServerCertVerifier>,
+        client_creds: &Arc<dyn ResolvesClientCert>,
         time_now: UnixTime,
         lifetime_secs: u32,
         age_add: u32,
@@ -98,6 +101,8 @@ impl Tls13ClientSessionValue {
                 time_now,
                 lifetime_secs,
                 server_cert_chain,
+                server_cert_verifier,
+                client_creds,
             ),
             quic_params: PayloadU16(Vec::new()),
         }
@@ -115,6 +120,12 @@ impl Tls13ClientSessionValue {
     /// Test only: rewind epoch by `delta` seconds.
     pub fn rewind_epoch(&mut self, delta: u32) {
         self.common.epoch -= delta as u64;
+    }
+
+    #[doc(hidden)]
+    /// Test only: replace `max_early_data_size` with `new`
+    pub fn _private_set_max_early_data_size(&mut self, new: u32) {
+        self.max_early_data_size = new;
     }
 
     pub fn set_quic_params(&mut self, quic_params: &[u8]) {
@@ -152,9 +163,11 @@ impl Tls12ClientSessionValue {
     pub(crate) fn new(
         suite: &'static Tls12CipherSuite,
         session_id: SessionId,
-        ticket: Vec<u8>,
+        ticket: Arc<PayloadU16>,
         master_secret: &[u8],
-        server_cert_chain: CertificateChain,
+        server_cert_chain: CertificateChain<'static>,
+        server_cert_verifier: &Arc<dyn ServerCertVerifier>,
+        client_creds: &Arc<dyn ResolvesClientCert>,
         time_now: UnixTime,
         lifetime_secs: u32,
         extended_ms: bool,
@@ -169,12 +182,14 @@ impl Tls12ClientSessionValue {
                 time_now,
                 lifetime_secs,
                 server_cert_chain,
+                server_cert_verifier,
+                client_creds,
             ),
         }
     }
 
-    pub(crate) fn take_ticket(&mut self) -> Vec<u8> {
-        mem::take(&mut self.common.ticket.0)
+    pub(crate) fn ticket(&mut self) -> Arc<PayloadU16> {
+        Arc::clone(&self.common.ticket)
     }
 
     pub(crate) fn extended_ms(&self) -> bool {
@@ -203,31 +218,63 @@ impl core::ops::Deref for Tls12ClientSessionValue {
 
 #[derive(Debug, Clone)]
 pub struct ClientSessionCommon {
-    ticket: PayloadU16,
+    ticket: Arc<PayloadU16>,
     secret: Zeroizing<PayloadU8>,
     epoch: u64,
     lifetime_secs: u32,
-    server_cert_chain: CertificateChain,
+    server_cert_chain: Arc<CertificateChain<'static>>,
+    server_cert_verifier: Weak<dyn ServerCertVerifier>,
+    client_creds: Weak<dyn ResolvesClientCert>,
 }
 
 impl ClientSessionCommon {
     fn new(
-        ticket: Vec<u8>,
+        ticket: Arc<PayloadU16>,
         secret: &[u8],
         time_now: UnixTime,
         lifetime_secs: u32,
-        server_cert_chain: CertificateChain,
+        server_cert_chain: CertificateChain<'static>,
+        server_cert_verifier: &Arc<dyn ServerCertVerifier>,
+        client_creds: &Arc<dyn ResolvesClientCert>,
     ) -> Self {
         Self {
-            ticket: PayloadU16(ticket),
+            ticket,
             secret: Zeroizing::new(PayloadU8(secret.to_vec())),
             epoch: time_now.as_secs(),
             lifetime_secs: cmp::min(lifetime_secs, MAX_TICKET_LIFETIME),
-            server_cert_chain,
+            server_cert_chain: Arc::new(server_cert_chain),
+            server_cert_verifier: Arc::downgrade(server_cert_verifier),
+            client_creds: Arc::downgrade(client_creds),
         }
     }
 
-    pub(crate) fn server_cert_chain(&self) -> &CertificateChain {
+    pub(crate) fn compatible_config(
+        &self,
+        server_cert_verifier: &Arc<dyn ServerCertVerifier>,
+        client_creds: &Arc<dyn ResolvesClientCert>,
+    ) -> bool {
+        let same_verifier = Weak::ptr_eq(
+            &Arc::downgrade(server_cert_verifier),
+            &self.server_cert_verifier,
+        );
+        let same_creds = Weak::ptr_eq(&Arc::downgrade(client_creds), &self.client_creds);
+
+        match (same_verifier, same_creds) {
+            (true, true) => true,
+            (false, _) => {
+                crate::log::trace!("resumption not allowed between different ServerCertVerifiers");
+                false
+            }
+            (_, _) => {
+                crate::log::trace!(
+                    "resumption not allowed between different ResolvesClientCert values"
+                );
+                false
+            }
+        }
+    }
+
+    pub(crate) fn server_cert_chain(&self) -> &CertificateChain<'static> {
         &self.server_cert_chain
     }
 
@@ -256,7 +303,7 @@ pub struct ServerSessionValue {
     pub(crate) cipher_suite: CipherSuite,
     pub(crate) master_secret: Zeroizing<PayloadU8>,
     pub(crate) extended_ms: bool,
-    pub(crate) client_cert_chain: Option<CertificateChain>,
+    pub(crate) client_cert_chain: Option<CertificateChain<'static>>,
     pub(crate) alpn: Option<PayloadU8>,
     pub(crate) application_data: PayloadU16,
     pub creation_time_sec: u64,
@@ -264,9 +311,9 @@ pub struct ServerSessionValue {
     freshness: Option<bool>,
 }
 
-impl Codec for ServerSessionValue {
+impl Codec<'_> for ServerSessionValue {
     fn encode(&self, bytes: &mut Vec<u8>) {
-        if let Some(ref sni) = self.sni {
+        if let Some(sni) = &self.sni {
             1u8.encode(bytes);
             let sni_bytes: &str = sni.as_ref();
             PayloadU8::new(Vec::from(sni_bytes)).encode(bytes);
@@ -277,13 +324,13 @@ impl Codec for ServerSessionValue {
         self.cipher_suite.encode(bytes);
         self.master_secret.encode(bytes);
         (u8::from(self.extended_ms)).encode(bytes);
-        if let Some(ref chain) = self.client_cert_chain {
+        if let Some(chain) = &self.client_cert_chain {
             1u8.encode(bytes);
             chain.encode(bytes);
         } else {
             0u8.encode(bytes);
         }
-        if let Some(ref alpn) = self.alpn {
+        if let Some(alpn) = &self.alpn {
             1u8.encode(bytes);
             alpn.encode(bytes);
         } else {
@@ -295,7 +342,7 @@ impl Codec for ServerSessionValue {
             .encode(bytes);
     }
 
-    fn read(r: &mut Reader) -> Result<Self, InvalidMessage> {
+    fn read(r: &mut Reader<'_>) -> Result<Self, InvalidMessage> {
         let has_sni = u8::read(r)?;
         let sni = if has_sni == 1 {
             let dns_name = PayloadU8::read(r)?;
@@ -315,7 +362,7 @@ impl Codec for ServerSessionValue {
         let ems = u8::read(r)?;
         let has_ccert = u8::read(r)? == 1;
         let ccert = if has_ccert {
-            Some(CertificateChain::read(r)?)
+            Some(CertificateChain::read(r)?.into_owned())
         } else {
             None
         };
@@ -351,7 +398,7 @@ impl ServerSessionValue {
         v: ProtocolVersion,
         cs: CipherSuite,
         ms: &[u8],
-        client_cert_chain: Option<CertificateChain>,
+        client_cert_chain: Option<CertificateChain<'static>>,
         alpn: Option<Vec<u8>>,
         application_data: Vec<u8>,
         creation_time: UnixTime,
@@ -406,8 +453,8 @@ impl ServerSessionValue {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::enums::*;
 
+    #[cfg(feature = "std")] // for UnixTime::now
     #[test]
     fn serversessionvalue_is_debug() {
         use std::{println, vec};

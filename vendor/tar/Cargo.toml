@@ -12,11 +12,10 @@
 [package]
 edition = "2021"
 name = "tar"
-version = "0.4.44"
+version = "0.4.43"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 build = false
 exclude = ["tests/archives/*"]
-autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -37,9 +36,6 @@ keywords = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/alexcrichton/tar-rs"
-
-[features]
-default = ["xattr"]
 
 [lib]
 name = "tar"
@@ -74,6 +70,9 @@ version = "0.2.8"
 
 [dev-dependencies.tempfile]
 version = "3"
+
+[features]
+default = ["xattr"]
 
 [target."cfg(unix)".dependencies.libc]
 version = "0.2"

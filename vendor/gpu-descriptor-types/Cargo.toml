@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "gpu-descriptor-types"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["Zakarum <zakarumych@ya.ru>"]
 description = "Core types of gpu-descriptor crate"
 homepage = "https://github.com/zakarumych/gpu-descriptor"

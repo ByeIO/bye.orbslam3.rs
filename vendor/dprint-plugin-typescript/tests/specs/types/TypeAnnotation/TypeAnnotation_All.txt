@@ -1,0 +1,47 @@
+== should parse a type annotation ==
+class Test {
+    prop:     number;
+}
+
+[expect]
+class Test {
+    prop: number;
+}
+
+== should handle comment on line before ==
+const t: // test
+    string;
+
+[expect]
+const t: // test
+    string;
+
+== should handle comment on line after ==
+const t:
+    // test
+    string;
+
+[expect]
+const t:
+    // test
+    string;
+
+== should remove needless paren type ==
+const t: (string | number);
+function f(): (string | number) {}
+interface T {
+    a: (string | number);
+}
+class c {
+    a: (string | number);
+}
+
+[expect]
+const t: string | number;
+function f(): string | number {}
+interface T {
+    a: string | number;
+}
+class c {
+    a: string | number;
+}
