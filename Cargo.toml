@@ -64,6 +64,10 @@ embed-file = "0.2.0"
 ort = { version = "2.0.0-rc.9", path = "./static/ort" }
 # YOLOv11
 yolo-rs = "0.1.2"
+# 可克隆的迭代器
+itertools = "0.14.0"
+# 克隆工具
+clone_dyn_types = "0.29.0"
 
 [patch.crates-io]
 # 替换依赖文件

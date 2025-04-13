@@ -48,6 +48,10 @@ ort.workspace = true
 # 随机数
 rand.workspace = true
 rand_distr.workspace = true
+# 克隆迭代器
+itertools.workspace = true
+# 克隆帮助函数
+clone_dyn_types.workspace = true
 
 [[example]]
 name = "deno_hello"

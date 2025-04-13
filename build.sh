@@ -138,6 +138,8 @@ python3 pth2onnx.py --model ./raft-chairs.pth --output_path ./raft-chairs.onnx >
 python3 pth2onnx.py --model ./raft-kitti.pth --output_path ./raft-kitti.onnx >> pth2onnx.log
 python3 pth2onnx.py --model ./raft-sintel.pth --output_path ./raft-sintel.onnx >> pth2onnx.log
 python3 pth2onnx.py --model ./raft-small.pth --output_path ./raft-small.onnx >> pth2onnx.log
+# 万能克隆
+cargo run --example clone_trait
 # 光流推理
 python3 optics_onnx.py >> ../result/optics_onnx.log
-cargo run --example ort_optics >> ./result/ort_optics.log
+RUST_BACKTRACE=1 cargo run --example ort_optics >> ./result/ort_optics.log
