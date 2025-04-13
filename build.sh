@@ -109,3 +109,35 @@ docker commit 90e204338917 seekslam_build:v2
 RUST_BACKTRACE=1 cargo-zigbuild build --example ort_segment >> ./result/ort_segment.log
 RUST_BACKTRACE=1 cargo-zigbuild run --example ort_segment >> ./result/ort_segment.log
 RUST_BACKTRACE=1 cargo-zigbuild run --example ort_segment
+# 转换模型
+TEMP="../../../assets/perceiver-io-optical-flow" python3 torch2onnx.py $TEMP/pytorch_model.bin $TEMP/model.onnx
+python3 torch2onnx.py ../../../assets/perceiver-io-optical-flow/pytorch_model.bin ../../../assets/perceiver-io-optical-flow/model.onnx
+pip install -U tf2onnx
+pip install -U keras2onnx
+pip install -U torch-onnx
+uv init
+uv add tensorflow
+uv add keras2onnx
+python3 -m tf2onnx.convert --saved-model ../../../assets/perceiver-io-optical-flow --output ../../../assets/perceiver-io-optical-flow/model.onnx
+python3 torch2onnx.py ../../../assets/perceiver-io-optical-flow ../../../assets/perceiver-io-optical-flow/model.onnx
+conda create -n perceiver
+conda activate perceiver
+conda config --set show_channel_urls yes
+# 换回默认源
+conda config --remove-key channels
+conda config --show channels
+conda install python=3.10
+conda install pip
+pip install -U perceiver-io
+# 安装导出器
+pip install onnx
+pip install onnxscript
+# 导出
+python3 pth2onnx.py --model ./raft-things.pth --output_path ./raft-things.onnx >> pth2onnx.log
+python3 pth2onnx.py --model ./raft-chairs.pth --output_path ./raft-chairs.onnx >> pth2onnx.log
+python3 pth2onnx.py --model ./raft-kitti.pth --output_path ./raft-kitti.onnx >> pth2onnx.log
+python3 pth2onnx.py --model ./raft-sintel.pth --output_path ./raft-sintel.onnx >> pth2onnx.log
+python3 pth2onnx.py --model ./raft-small.pth --output_path ./raft-small.onnx >> pth2onnx.log
+# 光流推理
+python3 optics_onnx.py >> ../result/optics_onnx.log
+cargo run --example ort_optics >> ./result/ort_optics.log

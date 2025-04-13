@@ -1,16 +1,22 @@
 # 忽略大文件
-target/*
-assets/DeepSeek-R1-Distill-Qwen-1.5B-Q2_K.llamafile
-files/ailia-models-master
-files/ailia-models-master.zip
 docs/axinc-ai_ailia-models.pdf
-files/onnxjs-demo-master.zip
+docs/windows-ai.pdf
 assets/onnxruntime_web
 assets/microsoft_onnxruntime_wasi.wasm
 assets/onnxruntime_server_wasi.wasm
 assets/nodejs_wasi.wasm
 assets/openvino_onnxruntime_wasi.wasm
 assets/openvino_onnxruntime_docker.tar
+assets/uzh-fpv
 
-# 超多模型
+# 所有用到的onnx模型
 assets/ailia-models
+
+# 未分类文件
+files/
+
+# 编译产物
+target/*
+
+# 大文件
+crates/seekslam_examples/.venv

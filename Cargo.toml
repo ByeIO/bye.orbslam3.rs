@@ -1,6 +1,11 @@
 [workspace]
 resolver = "3"
-members = [ "crates/seekslam", "crates/seekslam_backend", "crates/seekslam_depth", "crates/seekslam_detect", "crates/seekslam_examples", "crates/seekslam_frontend", "crates/seekslam_keypoints", "crates/seekslam_mnist", "crates/seekslam_onnx", "crates/seekslam_optics", "crates/seekslam_reasoning", "crates/seekslam_rotation","crates/seekslam_segment", "crates/seekslam_vlm", "files/c2w-net-proxy-rs"]
+members = [ 
+    "crates/seekslam", "crates/seekslam_backend", "crates/seekslam_depth", 
+    "crates/seekslam_detect", "crates/seekslam_examples", "crates/seekslam_frontend", 
+    "crates/seekslam_keypoints", "crates/seekslam_mnist", "crates/seekslam_onnx", 
+    "crates/seekslam_optics", "crates/seekslam_reasoning", "crates/seekslam_rotation",
+    "crates/seekslam_segment", "crates/seekslam_vlm", "files/c2w-net-proxy-rs"]
 # 排除子工作区
 exclude = ["static/ort"]
 
