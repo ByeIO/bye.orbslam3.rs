@@ -1,0 +1,15 @@
+*************** EP Error ***************
+EP Error /onnxruntime_src/onnxruntime/python/onnxruntime_pybind_state.cc:505 void onnxruntime::python::RegisterTensorRTPluginsAsCustomOps(PySessionOptions&, const onnxruntime::ProviderOptions&) Please install TensorRT libraries as mentioned in the GPU requirements page, make sure they're in the PATH or LD_LIBRARY_PATH, and that your GPU is supported.
+ when using ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
+Falling back to ['CUDAExecutionProvider', 'CPUExecutionProvider'] and retrying.
+****************************************
+推理时间: 385.34 ms
+光流预测结果已保存到 ../result/optics_onnx.png
+模型文件存在!
+*************** EP Error ***************
+EP Error /onnxruntime_src/onnxruntime/python/onnxruntime_pybind_state.cc:505 void onnxruntime::python::RegisterTensorRTPluginsAsCustomOps(PySessionOptions&, const onnxruntime::ProviderOptions&) Please install TensorRT libraries as mentioned in the GPU requirements page, make sure they're in the PATH or LD_LIBRARY_PATH, and that your GPU is supported.
+ when using ['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
+Falling back to ['CUDAExecutionProvider', 'CPUExecutionProvider'] and retrying.
+****************************************
+推理时间: 448.22 ms
+光流预测结果已保存到 ../result/optics_onnx.png
