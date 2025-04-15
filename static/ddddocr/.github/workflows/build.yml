@@ -1,0 +1,249 @@
+name: build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows-x86:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for Windows x86
+        run: cargo build --release --target i686-pc-windows-msvc
+
+      - name: Copy model folder for Windows x86
+        run: |
+          cp -r ./model ./target/i686-pc-windows-msvc/release/
+
+      - name: Archive artifacts for Windows x86
+        uses: actions/upload-artifact@v2
+        with:
+          name: i686-pc-windows-msvc
+          path: |
+            ./target/i686-pc-windows-msvc/release/ddddocr.exe
+            ./target/i686-pc-windows-msvc/release/model
+
+  build-windows-x64:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for Windows x64
+        run: cargo build --release
+
+      - name: Copy model folder for Windows x64
+        run: |
+          cp -r ./model ./target/release/
+
+      - name: Archive artifacts for Windows x64
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-pc-windows-msvc
+          path: |
+            ./target/release/ddddocr.exe
+            ./target/release/model
+
+  build-windows-x86-inline:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for Windows x86 with inline-model feature
+        run: cargo build --release --target i686-pc-windows-msvc --features "inline-model"
+
+      - name: Archive artifacts for Windows x86 with inline-model
+        uses: actions/upload-artifact@v2
+        with:
+          name: i686-pc-windows-msvc-inline
+          path: ./target/i686-pc-windows-msvc/release/ddddocr.exe
+
+  build-windows-x64-inline:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for Windows x64 with inline-model feature
+        run: cargo build --release --features "inline-model"
+
+      - name: Archive artifacts for Windows x64 with inline-model
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-pc-windows-msvc-inline
+          path: ./target/release/ddddocr.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for Linux
+        run: cargo build --release
+
+      - name: Copy model folder for Linux
+        run: |
+          cp -r ./model ./target/release/
+
+      - name: Archive artifacts for Linux
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-unknown-linux-gnu
+          path: |
+            ./target/release/ddddocr
+            ./target/release/model
+
+  build-linux-inline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for Linux with inline-model feature
+        run: cargo build --release --features "inline-model"
+
+      - name: Archive artifacts for Linux with inline-model
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-unknown-linux-gnu-inline
+          path: ./target/release/ddddocr
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for macOS
+        run: cargo build --release
+
+      - name: Copy model folder for macOS
+        run: |
+          cp -r ./model ./target/release/
+
+      - name: Archive artifacts for macOS
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-apple-darwin
+          path: |
+            ./target/release/ddddocr
+            ./target/release/model
+
+  build-macos-inline:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for macOS with inline-model feature
+        run: cargo build --release --features "inline-model"
+
+      - name: Archive artifacts for macOS with inline-model
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-apple-darwin-inline
+          path: ./target/release/ddddocr
+
+  build-aarch64-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Add AArch64 target for Linux
+        run: rustup target add aarch64-unknown-linux-gnu
+
+      - name: Install AArch64 Linux toolchain and dependencies
+        run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu build-essential libc6-dev-arm64-cross
+
+      - name: Build project for AArch64 Linux
+        run: |
+          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+          export RUSTFLAGS="-L /usr/aarch64-linux-gnu/lib"
+          cargo build --release --target aarch64-unknown-linux-gnu
+
+      - name: Copy model folder for AArch64 Linux
+        run: |
+          cp -r ./model ./target/aarch64-unknown-linux-gnu/release/
+
+      - name: Archive artifacts for AArch64 Linux
+        uses: actions/upload-artifact@v2
+        with:
+          name: aarch64-unknown-linux-gnu
+          path: |
+            ./target/aarch64-unknown-linux-gnu/release/ddddocr
+            ./target/aarch64-unknown-linux-gnu/release/model
+
+  build-aarch64-linux-inline:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install stable Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          
+      - name: Add AArch64 target for Linux
+        run: rustup target add aarch64-unknown-linux-gnu
+
+      - name: Install AArch64 Linux toolchain and dependencies
+        run: sudo apt-get update && sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu build-essential libc6-dev-arm64-cross
+
+      - name: Build project for AArch64 Linux
+        run: |
+          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc
+          export RUSTFLAGS="-L /usr/aarch64-linux-gnu/lib"
+          cargo build --release --target aarch64-unknown-linux-gnu --features "inline-model"
+
+      - name: Archive artifacts for AArch64 Linux with inline-model
+        uses: actions/upload-artifact@v2
+        with:
+          name: aarch64-unknown-linux-gnu-inline
+          path: ./target/aarch64-unknown-linux-gnu/release/ddddocr
+
+  build-aarch64-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for AArch64 macOS
+        run: cargo build --release --target aarch64-apple-darwin
+
+      - name: Copy model folder for AArch64 macOS
+        run: |
+          cp -r ./model ./target/aarch64-apple-darwin/release/
+
+      - name: Archive artifacts for AArch64 macOS
+        uses: actions/upload-artifact@v2
+        with:
+          name: aarch64-apple-darwin
+          path: |
+            ./target/aarch64-apple-darwin/release/ddddocr
+            ./target/aarch64-apple-darwin/release/model
+
+  build-aarch64-macos-inline:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build project for AArch64 macOS with inline-model feature
+        run: cargo build --release --target aarch64-apple-darwin --features "inline-model"
+
+      - name: Archive artifacts for AArch64 macOS with inline-model
+        uses: actions/upload-artifact@v2
+        with:
+          name: aarch64-apple-darwin-inline
+          path: ./target/aarch64-apple-darwin/release/ddddocr

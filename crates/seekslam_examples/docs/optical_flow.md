@@ -1,7 +1,67 @@
 # NeoFlowV2光流相对位移估计数学原理
 
-## 数学原理
+## 简介
+实时高精度光流估计对于各种实际应用场景至关重要。尽管最近基于学习的光流方法已经实现了高精度，但它们通常伴随着巨大的计算成本。在本文中，我们提出了一种高效的光流方法，能够在降低计算需求的同时保持高精度。在此基础上，我们引入了新的组件，包括一个更轻量级的主干网络和一个快速细化模块。这两个模块在保持计算需求较低的同时，提供了接近最先进的精度。与其他最先进的方法相比，我们的模型在保持合成数据和真实数据的可比性能的同时，实现了10倍到70倍的速度提升。它能够在Jetson Orin Nano上以超过20 FPS的速度运行512x384分辨率的图像。完整的训练和评估代码可在[https://github.com/neufieldrobotics/NeuFlow_v2](https://github.com/neufieldrobotics/NeuFlow_v2)上找到。
 
+Real-time high-accuracy optical flow estimation is crucial for various real-world applications. While recent learning-based optical flow methods have achieved high accu- racy, they often come with significant computational costs. In this paper, we propose a highly efficient optical flow method that balances high accuracy with reduced computational demands. Building upon NeuFlow v1, we introduce new components including a much more light-weight backbone and a fast refinement module. Both these modules help in keeping the computational demands light while providing close to state of the art accuracy. Compares to other state of the art methods, our model achieves a 10x-70x speedup while maintaining comparable performance on both synthetic and real-world data. It is capable of running at over 20 FPS on 512x384 resolution images on a Jetson Orin Nano. The full training and evaluation code is available at [https://github.com/neufieldrobotics/NeuFlow_v2].
+
+## 数学原理
+以下是对论文中NeuFlow v2数学原理的总结：
+
+### 一、简单主干网络（Simple Backbone）
+NeuFlow v2使用一个简单的CNN主干网络来提取多尺度图像的低级特征。主干网络从1/2、1/4和1/8尺度的图像中提取特征，使用由卷积层、归一化层和ReLU激活层组成的CNN块来提取特征，并将这些特征合并和调整大小到所需的输出尺度，即1/16尺度的特征和上下文，以及1/8尺度的特征和上下文。具体来说，对于输入图像\(I\)，主干网络的输出可以表示为：
+$$
+\begin{aligned}
+F_{1/8}, F_{1/16}, C_{1/8}, C_{1/16} &= \text{Backbone}(I)
+\end{aligned}
+$$
+其中，\(F_{1/8}\)和\(F_{1/16}\)是用于相关性计算的特征，\(C_{1/8}\)和\(C_{1/16}\)是用于光流细化的上下文。
+
+### 二、交叉注意力和全局匹配（Cross-Attention and Global Matching）
+交叉注意力用于在全局范围内交换图像之间的信息，增强匹配特征的区分度，减少未匹配特征的相似度。全局匹配则用于在全局范围内寻找对应特征，使模型能够处理大像素位移，例如在快速移动的相机情况下。交叉注意力和全局匹配的操作可以表示为：
+$$
+\begin{aligned}
+F'_{1/16} &= \text{CrossAttention}(F_{1/16}, F_{1/16}) \\
+F''_{1/16} &= \text{GlobalMatching}(F'_{1/16})
+\end{aligned}
+$$
+其中，\(F'_{1/16}\)是经过交叉注意力增强后的特征，\(F''_{1/16}\)是经过全局匹配后的特征。
+
+### 三、简单RNN细化模块（Simple RNN Refinement）
+首先计算附近9×9邻域内的相关性，并使用估计的光流对相关性进行扭曲。然后将扭曲的相关性、上下文特征、估计的光流和前一隐藏状态连接起来，通过八层简单的3×3卷积层后接ReLU激活函数来输出细化后的光流和更新后的隐藏状态。简单RNN细化模块的操作可以表示为：
+$$
+\begin{aligned}
+C &= \text{ComputeCorrelation}(F''_{1/16}, F''_{1/16}) \\
+C_w &= \text{Warp}(C, F_{\text{flow}}) \\
+h_{t+1}, F_{\text{flow}}^{t+1} &= \text{SimpleRNN}(C_w, C_{1/16}, F_{\text{flow}}^t, h_t)
+\end{aligned}
+$$
+其中，\(C\)是计算的相关性，\(C_w\)是扭曲后的相关性，\(h_t\)是前一隐藏状态，\(F_{\text{flow}}^t\)是当前估计的光流，\(h_{t+1}\)和\(F_{\text{flow}}^{t+1}\)分别是更新后的隐藏状态和细化后的光流。
+
+### 四、多尺度特征/上下文合并（Multi-Scale Feature/Context Merge）
+为了将全局特征/上下文与局部特征/上下文合并，确保1/8尺度的特征/上下文包含全局和局部信息，使用简单的CNN块来合并1/16尺度的全局特征/上下文与1/8尺度的局部特征/上下文。合并操作可以表示为：
+$$
+\begin{aligned}
+F_{1/8}^{\text{merged}}, C_{1/8}^{\text{merged}} &= \text{Merge}(F_{1/8}, F_{1/16}^{\text{interpolated}}, C_{1/8}, C_{1/16}^{\text{interpolated}})
+\end{aligned}
+$$
+其中，\(F_{1/8}^{\text{merged}}\)和\(C_{1/8}^{\text{merged}}\)是合并后的1/8尺度的特征和上下文。
+
+### 五、整体流程
+NeuFlow v2的整体流程可以总结为：
+$$
+\begin{aligned}
+F_{1/8}, F_{1/16}, C_{1/8}, C_{1/16} &= \text{Backbone}(I) \\
+F'_{1/16} &= \text{CrossAttention}(F_{1/16}, F_{1/16}) \\
+F''_{1/16} &= \text{GlobalMatching}(F'_{1/16}) \\
+C &= \text{ComputeCorrelation}(F''_{1/16}, F''_{1/16}) \\
+C_w &= \text{Warp}(C, F_{\text{flow}}^0) \\
+h_1, F_{\text{flow}}^1 &= \text{SimpleRNN}(C_w, C_{1/16}, F_{\text{flow}}^0, h_0) \\
+F_{1/8}^{\text{merged}}, C_{1/8}^{\text{merged}} &= \text{Merge}(F_{1/8}, F_{1/16}^{\text{interpolated}}, C_{1/8}, C_{1/16}^{\text{interpolated}}) \\
+\text{Repeat SimpleRNN refinement for 8 iterations on } F_{1/8}^{\text{merged}} \text{ and } C_{1/8}^{\text{merged}}
+\end{aligned}
+$$
+最终，通过凸上采样模块将细化后的1/8尺度光流上采样到全分辨率，得到最终的光流估计结果。
 
 ## 对应代码
 ```py

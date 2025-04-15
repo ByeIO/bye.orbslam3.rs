@@ -52,6 +52,13 @@ rand_distr.workspace = true
 itertools.workspace = true
 # 克隆帮助函数
 clone_dyn_types.workspace = true
+# 文字识别
+ocrs.workspace = true
+ddddocr.workspace = true
+# rten运行时(onnx)
+rten.workspace = true
+rten-tensor.workspace = true
+rten-imageproc.workspace = true
 
 [[example]]
 name = "deno_hello"

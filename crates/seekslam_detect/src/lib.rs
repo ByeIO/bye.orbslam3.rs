@@ -1,14 +1,9 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+#![allow(unused)]
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+//! 文字识别
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+// 1. paddleocr_v4
+pub mod onnxocr;
+
+// 2. 读光OCR_v2
+pub mod dgocr;

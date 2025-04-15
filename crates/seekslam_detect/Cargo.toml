@@ -9,3 +9,16 @@ keywords.workspace = true
 [dependencies]
 # YOLOv11
 yolo-rs.workspace = true
+# 错误处理
+anyhow.workspace = true
+# 线性代数
+nalgebra.workspace = true
+ndarray.workspace = true
+ndarray-linalg.workspace = true
+# onnx运行时
+ort.workspace = true
+# 图像处理
+image.workspace = true
+imageproc.workspace = true
+# OCR识别
+ddddocr.workspace = true
