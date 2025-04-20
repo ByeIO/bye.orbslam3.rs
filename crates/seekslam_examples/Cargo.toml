@@ -59,6 +59,10 @@ ddddocr.workspace = true
 rten.workspace = true
 rten-tensor.workspace = true
 rten-imageproc.workspace = true
+# openai风格API接口
+mini-openai.workspace = true
+# unix系统调用
+nix.workspace = true
 
 [[example]]
 name = "deno_hello"

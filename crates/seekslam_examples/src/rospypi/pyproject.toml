@@ -1,0 +1,18 @@
+[project]
+name = "rospypi"
+version = "0.0.1"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "rospy-all",
+    "pyyaml",
+]
+
+[[tool.uv.index]]
+url = "https://pypi.org/simple"
+default = true
+
+[[tool.uv.index]]
+url = "http://127.0.0.1/"
+default = false

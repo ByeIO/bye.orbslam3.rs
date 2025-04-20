@@ -1,0 +1,9 @@
+[package]
+name = "seekslam_ar"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "AR增强现实模拟激光/攻击"
+keywords.workspace = true
+
+[dependencies]

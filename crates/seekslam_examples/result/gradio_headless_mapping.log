@@ -1,0 +1,134 @@
+访问gradio网页成功
+Traceback (most recent call last):
+  File "/Users/workspace/Desktop/projects/毕业设计/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs/crates/seekslam_examples/src/gradio_headless_mapping.py", line 111, in <module>
+    main()
+  File "/Users/workspace/Desktop/projects/毕业设计/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs/crates/seekslam_examples/src/gradio_headless_mapping.py", line 106, in main
+    upload_and_reconstruct(driver, gradio_url)
+  File "/Users/workspace/Desktop/projects/毕业设计/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs/crates/seekslam_examples/src/gradio_headless_mapping.py", line 51, in upload_and_reconstruct
+    clear_btn = WebDriverWait(driver, 10).until(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/workspace/Desktop/projects/毕业设计/工程文件/exp209-bye_deepseek_mcp_discovery_slam_rs/crates/seekslam_examples/.venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py", line 146, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+0   chromedriver                        0x00000001028d6e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001028cf0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001024168d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x000000010245d6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x000000010249e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102451a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010289bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010289ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010287ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010289f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x000000010286cb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001028bf9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x00000001028bfb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x00000001028cecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x00000001834bdf94 _pthread_start + 136
+15  libsystem_pthread.dylib             0x00000001834b8d34 thread_start + 8
+
+处理过程中出现错误: Message: 
+Stacktrace:
+0   chromedriver                        0x00000001028d6e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001028cf0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001024168d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x000000010245d6a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x000000010249e7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102451a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010289bc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010289ef64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010287ba20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010289f7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x000000010286cb14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001028bf9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x00000001028bfb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x00000001028cecf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x00000001834bdf94 _pthread_start + 136
+15  libsystem_pthread.dylib             0x00000001834b8d34 thread_start + 8
+
+访问gradio网页成功
+处理过程中出现错误: Message: 
+Stacktrace:
+0   chromedriver                        0x0000000104732e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010472b0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001042728d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001042b96a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001042fa7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x00000001042ada80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x00000001046f7c98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001046faf64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x00000001046d7a20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001046fb7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x00000001046c8b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010471b9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010471bb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010472acf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x00000001834bdf94 _pthread_start + 136
+15  libsystem_pthread.dylib             0x00000001834b8d34 thread_start + 8
+
+访问gradio网页成功
+处理过程中出现错误: Message: 
+Stacktrace:
+0   chromedriver                        0x0000000102ccae10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x0000000102cc30ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x000000010280a8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001028516a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x00000001028927b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102845a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x0000000102c8fc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x0000000102c92f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x0000000102c6fa20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x0000000102c937e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000102c60b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x0000000102cb39c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x0000000102cb3b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x0000000102cc2cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x00000001834bdf94 _pthread_start + 136
+15  libsystem_pthread.dylib             0x00000001834b8d34 thread_start + 8
+
+检测链接有效
+加载gradio网页成功
+处理过程中出现错误: Message: 
+Stacktrace:
+0   chromedriver                        0x00000001030dae10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x00000001030d30ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x0000000102c1a8d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x0000000102c616a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x0000000102ca27b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x0000000102c55a80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x000000010309fc98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x00000001030a2f64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x000000010307fa20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x00000001030a37e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000103070b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x00000001030c39c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x00000001030c3b50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x00000001030d2cf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x00000001834bdf94 _pthread_start + 136
+15  libsystem_pthread.dylib             0x00000001834b8d34 thread_start + 8
+
+检测链接有效
+加载gradio网页成功
+处理过程中出现错误: name 'io' is not defined
+检测链接有效
+加载gradio网页成功
+处理过程中出现错误: Message: 
+Stacktrace:
+0   chromedriver                        0x0000000100592e10 cxxbridge1$str$ptr + 2817040
+1   chromedriver                        0x000000010058b0ac cxxbridge1$str$ptr + 2784940
+2   chromedriver                        0x00000001000d28d8 cxxbridge1$string$len + 93028
+3   chromedriver                        0x00000001001196a0 cxxbridge1$string$len + 383276
+4   chromedriver                        0x000000010015a7b8 cxxbridge1$string$len + 649796
+5   chromedriver                        0x000000010010da80 cxxbridge1$string$len + 335116
+6   chromedriver                        0x0000000100557c98 cxxbridge1$str$ptr + 2575000
+7   chromedriver                        0x000000010055af64 cxxbridge1$str$ptr + 2588004
+8   chromedriver                        0x0000000100537a20 cxxbridge1$str$ptr + 2443296
+9   chromedriver                        0x000000010055b7e0 cxxbridge1$str$ptr + 2590176
+10  chromedriver                        0x0000000100528b14 cxxbridge1$str$ptr + 2382100
+11  chromedriver                        0x000000010057b9c4 cxxbridge1$str$ptr + 2721732
+12  chromedriver                        0x000000010057bb50 cxxbridge1$str$ptr + 2722128
+13  chromedriver                        0x000000010058acf8 cxxbridge1$str$ptr + 2783992
+14  libsystem_pthread.dylib             0x00000001834bdf94 _pthread_start + 136
+15  libsystem_pthread.dylib             0x00000001834b8d34 thread_start + 8
+

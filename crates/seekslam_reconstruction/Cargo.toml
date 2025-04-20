@@ -1,0 +1,9 @@
+[package]
+name = "seekslam_reconstruction"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "基于图像的室内三维重建"
+keywords.workspace = true
+
+[dependencies]
