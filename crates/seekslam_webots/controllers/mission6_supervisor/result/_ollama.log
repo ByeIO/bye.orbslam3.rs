@@ -1,0 +1,13 @@
+[系统] 开始预加载AI模型...
+[系统] 模型预加载完成
+
+=== 阶段1测试 ===
+
+[系统] 开始视觉深度分析处理...
+['/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/tmp9tu2_gex/temp_image_0.jpg']
+['/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/tmp9tu2_gex/temp_image_0.jpg', '/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/tmp9tu2_gex/temp_image_1.jpg']
+[系统] 已提交视觉深度分析请求，等待响应...
+[错误] 视觉深度分析失败: Failed to create new sequence: failed to process inputs: unable to make llava embedding from image
+ (status code: -1)
+[错误] 决策处理失败: Failed to create new sequence: failed to process inputs: unable to make llava embedding from image
+ (status code: -1)

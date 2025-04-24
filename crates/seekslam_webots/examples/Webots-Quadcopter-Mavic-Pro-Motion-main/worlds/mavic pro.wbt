@@ -1,0 +1,20 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation -0.22021692541910146 -0.9510455685330779 -0.2168336512918427 1.6332187316138056
+  position -12.961672323731296 5.647557718864658 0.5351752276233803
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 8 8
+}
+Mavic2Pro {
+  translation 0 0.0657087 0
+  rotation 0.9357764768696641 0.2795585930289095 0.21487060850915723 -1.6556757161662725
+  controller "mavic_planar_motion"
+}
