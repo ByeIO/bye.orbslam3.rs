@@ -1,0 +1,4 @@
+Please provide an audio file path as an argument
+File: ../../assets/english.wav
+Vocals: https://jacoblincool-vocal-separation.hf.space/file=/tmp/gradio/1278beb21b83b517b5715030bd3c30718e5cb687/english_Vocals_model_bs_roformer_ep_317_sdr_12.mp3
+Background: https://jacoblincool-vocal-separation.hf.space/file=/tmp/gradio/aed26678bd14b7cfbd618c6d1da10400bfd84e3e/english_Instrumental_model_bs_roformer_ep_317_sdr_12.mp3

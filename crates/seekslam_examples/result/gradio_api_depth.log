@@ -1,0 +1,8 @@
+Loaded as API: http://192.168.100.229:7863/ ✔
+文件已保存到：../result/gradio_api_depth_0.png
+文件已保存到：../result/gradio_api_depth_1.png
+文件已保存到：../result/gradio_api_depth_2.png
+文件已保存到：../result/gradio_api_depth_3.png
+
+原始API返回路径：
+(['/private/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/gradio/4ffb4ae98a28eea95c0958460803e06d12a2bef13d8c8d796632966672fde380/image.webp', '/private/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/gradio/044f6b75d85007ba236995d3bbbbbf55d04b0623f85f94626b72f7badf2da4f6/image.webp'], '/private/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/gradio/103656d361be2db78edd9a24f9012d8d65a63c9af267949a908bf73b34af5dc1/tmpugrvu7o_.png', '/private/var/folders/yh/1_1fh4_94gj8_v1p5lkv61r40000gn/T/gradio/abcddf214ca2c9164300bff5f26e4d75fa2cbf48cf8c354995ae8efee7e6fbcc/tmpfc5r6_iw.png')

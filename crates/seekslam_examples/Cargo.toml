@@ -63,6 +63,28 @@ rten-imageproc.workspace = true
 mini-openai.workspace = true
 # unix系统调用
 nix.workspace = true
+# gradio客户端
+gradio.workspace = true
+# webots接口
+webots = { workspace = true, optional = true }
+# base64编码解码
+base64.workspace = true
+# 字体渲染
+rusttype.workspace = true
+ab_glyph.workspace = true
+# json解析
+serde_json.workspace = true
+# 网络请求库
+hyper.workspace = true
+hyper-tls.workspace = true
+hyper-util.workspace = true
+http_req.workspace = true
+# 字节流处理
+bytes.workspace = true 
+# http请求体工具
+http-body-util.workspace = true
+# 虚拟局域网
+easytier.workspace = true
 
 [[example]]
 name = "deno_hello"
