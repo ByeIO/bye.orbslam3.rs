@@ -2,11 +2,17 @@
 基于MCP(Model Context Protocol)和VLM(Vision Language Models)的室内探索式建图框架
 
 ## 使用说明
+### 概述
 通过网络接口提供服务.
+
+### 推荐使用组合
+ROSette + SeekSLAM
+
+* ROSette解决机器人节点之间的数据通信问题[https://github.com/ByeIO/bye.rosette.rs]
 
 ## 模型说明
 ### 模型选用
-**如下但单独列出各个文件的下载地址, 如果嫌麻烦可下载整合包.模型文件都很大, 因而整合包在百度网盘[]或魔搭社区[].**
+**如下但单独列出各个文件的下载地址, 如果嫌麻烦可下载整合包.模型文件都很大, 因而整合包在百度网盘(TODO)或魔搭社区(TODO).**
 ```markdown
 1. 图像分割模型
     * 原始→SAM2.1[@ref](https://github.com/facebookresearch/sam2)
