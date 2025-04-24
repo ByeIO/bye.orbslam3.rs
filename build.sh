@@ -143,3 +143,75 @@ cargo run --example clone_trait
 # 光流推理
 python3 optics_onnx.py >> ../result/optics_onnx.log
 RUST_BACKTRACE=1 cargo run --example ort_optics >> ./result/ort_optics.log
+# 文字检测&识别
+RUST_BACKTRACE=1 cargo run --example ocrs_detect >> ./result/ocrs_detect.log
+python3 ocr_onnx.py >> ../result/ocr_onnx.log
+RUST_BACKTRACE=1 cargo run --example ddddocr_detect >> ./result/ddddocr_detect.log
+cargo run --example ddddocr_detect
+# 运行llamafile并推理
+chmod +x assets/DeepSeek-R1-Distill-Qwen-1.5B-Q4_K_M.llamafile
+cat ./crates/seekslam_examples/docs/prompt.txt | ./assets/DeepSeek-R1-Distill-Qwen-1.5B-Q4_K_M.llamafile >> result/llamafile_test.log
+chmod +x assets/Qwen2.5-0.5B-Instruct-Q4_K_M.llamafile
+cat ./crates/seekslam_examples/docs/prompt.txt | assets/Qwen2.5-0.5B-Instruct-Q4_K_M.llamafile >> result/llamafile_test.log
+RUST_BACKTRACE=1 cargo run --example llamafile_role >> ./result/llamafile_role.log
+assets/Qwen2.5-0.5B-Instruct-Q4_K_M.llamafile
+RUST_BACKTRACE=1 cargo run --example llamafile_role
+# 测试minicpm视觉模型
+uv add ollama
+uv run ollama_vision.py
+uv run ollama_fn_calling.py > ../result/ollama_fn_calling.log
+uv run ollama_decision.py >> ../result/ollama_decision.log
+# 测试rospypi软件源
+uv init 
+cd ./crates/seekslam_examples/src/rospypi/wheels
+python3 -m http.server 80
+uv pip install -i http://127.0.0.1:80 rospy-all
+uv add --index-url https://pypi.org/simple --default-index http://127.0.0.1:80 rospy-all --frozen
+uv sync --index-strategy unsafe-best-match
+# 测试ros通信
+uv run rospy_echo.py
+# 测试起降(键盘控制??)
+python3 rospy_xtdrone_demo.py iris 1
+# ①输入t可以让飞机解锁起飞。
+# ②输入r可以让飞机回到起飞点。
+# ③输入b进入姿态控制。
+# ⑤输入l飞机自主降落。
+# ⑦输入q退出程序。
+# 部署ocr识别服务
+scp qsbye@192.168.100.187:/lvm-group1/qsbye/docker_podman/biu_paddleocr-v2-amd64.tar /home/qsbye
+podman load -i /home/qsbye/biu_paddleocr-v2-amd64.tar
+podman run -p 7861:7860 -d localhost/biu_paddleocr:v2-amd64 python app_box.py
+# 部署建图服务
+scp qsbye@192.168.100.187:/lvm-group1/qsbye/docker_podman/biu_facebook_vggt-v2-amd64.tar /home/qsbye
+podman load -i /home/qsbye/biu_facebook_vggt-v2-amd64.tar
+podman run -p 7862:7860 -d biu_facebook_vggt:v2-amd64 python app_cpu.py
+# 部署ollama服务
+ollama pull minicpm-v:latest
+ollama pull MFDoom/deepseek-r1-tool-calling:1.5b
+sudo systemctl edit ollama.service
+sudo systemctl daemon-reload
+sudo systemctl restart ollama
+sudo systemctl status ollama
+OLLAMA_HOST=0.0.0.0
+OLLAMA_ORIGINS=*
+# 测试ocr服务
+uv add gradio_client
+uv run gradio_api_ocr.py >> ../result/gradio_api_ocr.log
+# 测试建图服务
+uv add selenium
+uv run gradio_headless_mapping.py >> ../result/gradio_headless_mapping.log
+podman exec c575ac745a80 /bin/bash -c "cat /home/user/app/app_cpu.py"
+podman run -it -v .:/tmp/api -p 7862:7860 localhost/biu_facebook_vggt:v2-amd64 /bin/bash
+uv run gradio_api_mapping.py >> ../result/gradio_api_mapping.log
+# 测试gradio库
+cargo run --example gradio_sd3 >> ./result/gradio_sd3.log
+wget https://stabilityai-stable-diffusion-3-medium.hf.space/file=/tmp/gradio/06fcdf0e3455d2c8c709f52c7da593833f863a06/image.webp -O ./result/gradio_sd3.webp
+cargo run --example gradio_bs >> ./result/gradio_bs.log
+RUST_BACKTRACE=1 cargo run --example gradio_ocr >> ./result/gradio_ocr.log
+# 同步文件
+rsync -avz --partial --progress ./webots-rs qsbye@192.168.31.20:/home/qsbye
+uv run jupyter notebook password
+# qsbye
+uv run jupyter notebook --ip="0.0.0.0"
+uv run pytest dlqe.py -v
+uv run pytest pid.py -v 

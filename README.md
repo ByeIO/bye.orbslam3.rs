@@ -1,7 +1,8 @@
-# (WIP)基于MCP(Model Context Protocol)和VLM(Vision Language Models)的室内探索式建图框架
+# (WIP)SeekSLAM
+基于MCP(Model Context Protocol)和VLM(Vision Language Models)的室内探索式建图框架
 
 ## 使用说明
-
+通过网络接口提供服务.
 
 ## 模型说明
 ### 模型选用
@@ -94,23 +95,23 @@
         [M-LSD_512_large.opt.onnx.prototxt](https://storage.googleapis.com/ailia-models/mlsd/M-LSD_512_large.opt.onnx.prototxt)
 
 11. 图像关键点检测模型
-    * 原始→
-    * 转换→
+    * 原始→DaD
+    * 转换→(无)
     * 用途→匹配图像关键点, 用于建图时回环检测及估计相对位移.
-    * 下载地址→
+    * 下载地址→[https://github.com/parskatt/dad]
 
 12. 思考大语言模型
-    * 原始→deepseek-r1
-    * 转换→
+    * 原始→deepseek-r1-tool
+    * 转换→(无)
     * 特性→函数调用(Function Calling)
-    * 用途→
-    * 下载地址→
+    * 用途→思考后进行函数调用从而实现自动化.
+    * 下载地址→[https://ollama.com/MFDoom/deepseek-r1-tool-calling]
 
 13. 视觉大语言模型
-    * 原始→LLaVA-CoT
-    * 转换→
-    * 用途→
-    * 下载地址→
+    * 原始→minicpm-v
+    * 转换→(无)
+    * 用途→对图片生成文字描述.
+    * 下载地址→[https://modelscope.cn/models/OpenBMB/MiniCPM-V-2_6-gguf]
 
 ```
 - 推荐下载命令:
@@ -179,14 +180,30 @@ wget -c "https://storage.googleapis.com/ailia-models/segment-anything-2.1/image_
         - **服务**：允许进行请求-响应交互，如果节点A需要从节点B进行一次性计算或数据检索，它可以发送一个服务请求，节点B会进行回复。从DDS的改进中受益。
         - **操作**：引入用于基于目标的交互，允许发送、取消目标并获取反馈/结果，适用于长时间运行的任务，如导航。
 
-### 源码说明
+### 源码目录(crates)
 ```sh
-
+- seekslam : cli程序
+- seekslam_ar : AR增强现实
+- seekslam_backend : SLAM后端
+- seekslam_depth : 深度估计
+- seekslam_detect : 目标检测/识别
+- seekslam_examples : 例程
+- seekslam_frontend : SLAM前端
+- seekslam_keypoints : 关键点检测
+- seekslam_mnist : mnist手写字母识别
+- seekslam_onnx : onnx推理运行时模块
+- seekslam_optics : 光流估计
+- seekslam_reasoning : 思考模块
+- seekslam_reconstruction : 三维重建
+- seekslam_rotation : 旋转模块
+- seekslam_segment : 图像分割
+- seekslam_vlm : 视觉大模型
+- seekslam_webots : webots仿真
 ```
 
 ### 编译说明
 ```sh
-
+cargo build
 ```
 
 ## 主要参考文献

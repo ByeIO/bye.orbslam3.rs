@@ -1,13 +1,13 @@
 [workspace]
 resolver = "3"
 members = [ 
-    "crates/seekslam", "crates/seekslam_backend", "crates/seekslam_depth", 
+    "crates/seekslam", "crates/seekslam_ar", "crates/seekslam_backend", "crates/seekslam_depth", 
     "crates/seekslam_detect", "crates/seekslam_examples", "crates/seekslam_frontend", 
     "crates/seekslam_keypoints", "crates/seekslam_mnist", "crates/seekslam_onnx", 
-    "crates/seekslam_optics", "crates/seekslam_reasoning", "crates/seekslam_rotation",
+    "crates/seekslam_optics", "crates/seekslam_reasoning", "crates/seekslam_reconstruction", "crates/seekslam_rotation",
     "crates/seekslam_segment", "crates/seekslam_vlm", "files/c2w-net-proxy-rs"]
 # 排除子工作区
-exclude = ["static/ort"]
+exclude = ["static/ort", "static/ddddocr/static/ort-2.0.0-rc.4", "static/easytier"]
 
 [workspace.package]
 version = "0.0.1"
@@ -42,6 +42,7 @@ wonnx = { version = "0.5.1", path = "./static/wonnx/wonnx" }
 # 线性代数
 nalgebra = { version = "0.33.2", features = ["rand"] }
 ndarray = { version = "0.16.1", path = "./static/ndarray" }
+ndarray-linalg = "0.16.0-rc.0"
 # 随机数
 rand = "0.9.0"
 rand_distr = "0.5.1"
@@ -68,6 +69,39 @@ yolo-rs = "0.1.2"
 itertools = "0.14.0"
 # 克隆工具
 clone_dyn_types = "0.29.0"
+# ocr识别字母
+ocrs = { version = "0.10.0", path = "./static/ocrs" }
+ddddocr = { path = "./static/ddddocr" }
+# rten运行时(onnx)
+rten = "0.16.0"
+rten-tensor = "0.16.0"
+rten-imageproc = "0.16.0"
+# openai风格API接口
+mini-openai = { version = "0.1.2", features = ["ureq"] }
+# unix系统调用
+nix = { version = "0.29.0", features=["net", "process"] }
+# gradio客户端
+gradio = "0.3.2"
+# webots接口
+webots = { version = "0.8.0" }
+# base64编码处理
+base64 = "0.22.1"
+# 字体渲染
+rusttype = "0.9.3"
+ab_glyph = "0.2.29"
+# json解析
+serde_json = "1.0.140"
+# 网络请求库
+hyper = { version = "1.6.0", features = ["full"] }
+hyper-tls = "0.6.0"
+hyper-util = { version = "0.1.11", features = ["full"] }
+http_req = { version = "0.13.3", default-features = false, features = ["rust-tls"] }
+# 字节流处理
+bytes = "1.10.1"
+# http请求体工具
+http-body-util = "0.1.3"
+# 虚拟局域网
+easytier = { path = "./static/easytier/easytier" }
 
 [patch.crates-io]
 # 替换依赖文件
