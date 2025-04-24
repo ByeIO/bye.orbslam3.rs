@@ -11,17 +11,16 @@
 //!
 
 #![allow(clippy::match_wild_err_arm)]
-use alloc::vec;
-#[cfg(not(feature = "std"))]
-use alloc::vec::Vec;
 #[cfg(feature = "std")]
 use num_traits::Float;
 use num_traits::{One, Zero};
 use std::mem;
 use std::mem::MaybeUninit;
+use alloc::vec;
+use alloc::vec::Vec;
 
+use crate::dimension;
 use crate::dimension::offset_from_low_addr_ptr_to_logical_ptr;
-use crate::dimension::{self, CanIndexCheckMode};
 use crate::error::{self, ShapeError};
 use crate::extension::nonnull::nonnull_from_vec_data;
 use crate::imp_prelude::*;
@@ -34,8 +33,8 @@ use crate::iterators::TrustedIterator;
 use crate::StrideShape;
 #[cfg(feature = "std")]
 use crate::{geomspace, linspace, logspace};
-#[allow(unused_imports)]
 use rawpointer::PointerExt;
+
 
 /// # Constructor Methods for Owned Arrays
 ///
@@ -44,7 +43,8 @@ use rawpointer::PointerExt;
 ///
 /// ## Constructor methods for one-dimensional arrays.
 impl<S, A> ArrayBase<S, Ix1>
-where S: DataOwned<Elem = A>
+where
+    S: DataOwned<Elem = A>,
 {
     /// Create a one-dimensional array from a vector (no copying needed).
     ///
@@ -55,8 +55,7 @@ where S: DataOwned<Elem = A>
     ///
     /// let array = Array::from_vec(vec![1., 2., 3., 4.]);
     /// ```
-    pub fn from_vec(v: Vec<A>) -> Self
-    {
+    pub fn from_vec(v: Vec<A>) -> Self {
         if mem::size_of::<A>() == 0 {
             assert!(
                 v.len() <= isize::MAX as usize,
@@ -76,8 +75,7 @@ where S: DataOwned<Elem = A>
     /// let array = Array::from_iter(0..10);
     /// ```
     #[allow(clippy::should_implement_trait)]
-    pub fn from_iter<I: IntoIterator<Item = A>>(iterable: I) -> Self
-    {
+    pub fn from_iter<I: IntoIterator<Item = A>>(iterable: I) -> Self {
         Self::from_vec(iterable.into_iter().collect())
     }
 
@@ -100,7 +98,8 @@ where S: DataOwned<Elem = A>
     /// ```
     #[cfg(feature = "std")]
     pub fn linspace(start: A, end: A, n: usize) -> Self
-    where A: Float
+    where
+        A: Float,
     {
         Self::from(to_vec(linspace::linspace(start, end, n)))
     }
@@ -118,7 +117,8 @@ where S: DataOwned<Elem = A>
     /// ```
     #[cfg(feature = "std")]
     pub fn range(start: A, end: A, step: A) -> Self
-    where A: Float
+    where
+        A: Float,
     {
         Self::from(to_vec(linspace::range(start, end, step)))
     }
@@ -146,7 +146,8 @@ where S: DataOwned<Elem = A>
     /// ```
     #[cfg(feature = "std")]
     pub fn logspace(base: A, start: A, end: A, n: usize) -> Self
-    where A: Float
+    where
+        A: Float,
     {
         Self::from(to_vec(logspace::logspace(base, start, end, n)))
     }
@@ -180,7 +181,8 @@ where S: DataOwned<Elem = A>
     /// ```
     #[cfg(feature = "std")]
     pub fn geomspace(start: A, end: A, n: usize) -> Option<Self>
-    where A: Float
+    where
+        A: Float,
     {
         Some(Self::from(to_vec(geomspace::geomspace(start, end, n)?)))
     }
@@ -188,7 +190,8 @@ where S: DataOwned<Elem = A>
 
 /// ## Constructor methods for two-dimensional arrays.
 impl<S, A> ArrayBase<S, Ix2>
-where S: DataOwned<Elem = A>
+where
+    S: DataOwned<Elem = A>,
 {
     /// Create an identity matrix of size `n` (square 2D array).
     ///
@@ -325,7 +328,7 @@ where
         A: Clone,
         Sh: ShapeBuilder<Dim = D>,
     {
-        let shape = shape.into_shape_with_order();
+        let shape = shape.into_shape();
         let size = size_of_shape_checked_unwrap!(&shape.dim);
         let v = vec![elem; size];
         unsafe { Self::from_shape_vec_unchecked(shape, v) }
@@ -379,7 +382,7 @@ where
         Sh: ShapeBuilder<Dim = D>,
         F: FnMut() -> A,
     {
-        let shape = shape.into_shape_with_order();
+        let shape = shape.into_shape();
         let len = size_of_shape_checked_unwrap!(&shape.dim);
         let v = to_vec_mapped(0..len, move |_| f());
         unsafe { Self::from_shape_vec_unchecked(shape, v) }
@@ -410,7 +413,7 @@ where
         Sh: ShapeBuilder<Dim = D>,
         F: FnMut(D::Pattern) -> A,
     {
-        let shape = shape.into_shape_with_order();
+        let shape = shape.into_shape();
         let _ = size_of_shape_checked_unwrap!(&shape.dim);
         if shape.is_c() {
             let v = to_vec_mapped(indices(shape.dim.clone()).into_iter(), f);
@@ -456,17 +459,17 @@ where
     /// );
     /// ```
     pub fn from_shape_vec<Sh>(shape: Sh, v: Vec<A>) -> Result<Self, ShapeError>
-    where Sh: Into<StrideShape<D>>
+    where
+        Sh: Into<StrideShape<D>>,
     {
         // eliminate the type parameter Sh as soon as possible
         Self::from_shape_vec_impl(shape.into(), v)
     }
 
-    fn from_shape_vec_impl(shape: StrideShape<D>, v: Vec<A>) -> Result<Self, ShapeError>
-    {
+    fn from_shape_vec_impl(shape: StrideShape<D>, v: Vec<A>) -> Result<Self, ShapeError> {
         let dim = shape.dim;
         let is_custom = shape.strides.is_custom();
-        dimension::can_index_slice_with_strides(&v, &dim, &shape.strides, dimension::CanIndexCheckMode::OwnedMutable)?;
+        dimension::can_index_slice_with_strides(&v, &dim, &shape.strides)?;
         if !is_custom && dim.size() != v.len() {
             return Err(error::incompatible_shapes(&Ix1(v.len()), &dim));
         }
@@ -499,7 +502,8 @@ where
     /// 5. The strides must not allow any element to be referenced by two different
     ///    indices.
     pub unsafe fn from_shape_vec_unchecked<Sh>(shape: Sh, v: Vec<A>) -> Self
-    where Sh: Into<StrideShape<D>>
+    where
+        Sh: Into<StrideShape<D>>,
     {
         let shape = shape.into();
         let dim = shape.dim;
@@ -507,10 +511,9 @@ where
         Self::from_vec_dim_stride_unchecked(dim, strides, v)
     }
 
-    unsafe fn from_vec_dim_stride_unchecked(dim: D, strides: D, mut v: Vec<A>) -> Self
-    {
+    unsafe fn from_vec_dim_stride_unchecked(dim: D, strides: D, mut v: Vec<A>) -> Self {
         // debug check for issues that indicates wrong use of this constructor
-        debug_assert!(dimension::can_index_slice(&v, &dim, &strides, CanIndexCheckMode::OwnedMutable).is_ok());
+        debug_assert!(dimension::can_index_slice(&v, &dim, &strides).is_ok());
 
         let ptr = nonnull_from_vec_data(&mut v).add(offset_from_low_addr_ptr_to_logical_ptr(&dim, &strides));
         ArrayBase::from_data_ptr(DataOwned::new(v), ptr).with_strides_dim(strides, dim)
@@ -522,7 +525,8 @@ where
     /// # Safety
     ///
     /// See from_shape_vec_unchecked
-    pub(crate) unsafe fn from_shape_trusted_iter_unchecked<Sh, I, F>(shape: Sh, iter: I, map: F) -> Self
+    pub(crate) unsafe fn from_shape_trusted_iter_unchecked<Sh, I, F>(shape: Sh, iter: I, map: F)
+        -> Self
     where
         Sh: Into<StrideShape<D>>,
         I: TrustedIterator + ExactSizeIterator,
@@ -534,6 +538,7 @@ where
         let v = to_vec_mapped(iter, map);
         Self::from_vec_dim_stride_unchecked(dim, strides, v)
     }
+
 
     /// Create an array with uninitialized elements, shape `shape`.
     ///
@@ -577,14 +582,15 @@ where
     ///         b.assume_init()
     ///     }
     /// }
-    ///
+    /// 
     /// # let _ = shift_by_two;
     /// ```
     pub fn uninit<Sh>(shape: Sh) -> ArrayBase<S::MaybeUninit, D>
-    where Sh: ShapeBuilder<Dim = D>
+    where
+        Sh: ShapeBuilder<Dim = D>,
     {
         unsafe {
-            let shape = shape.into_shape_with_order();
+            let shape = shape.into_shape();
             let size = size_of_shape_checked_unwrap!(&shape.dim);
             let mut v = Vec::with_capacity(size);
             v.set_len(size);
@@ -624,5 +630,67 @@ where
             builder(array.raw_view_mut_unchecked().deref_into_view_mut());
         }
         array
+    }
+
+    #[deprecated(note = "This method is hard to use correctly. Use `uninit` instead.",
+                 since = "0.15.0")]
+    #[allow(clippy::uninit_vec)]  // this is explicitly intended to create uninitialized memory
+    /// Create an array with uninitialized elements, shape `shape`.
+    ///
+    /// Prefer to use [`uninit()`](ArrayBase::uninit) if possible, because it is
+    /// easier to use correctly.
+    ///
+    /// **Panics** if the number of elements in `shape` would overflow isize.
+    ///
+    /// ### Safety
+    ///
+    /// Accessing uninitialized values is undefined behaviour. You must overwrite *all* the elements
+    /// in the array after it is created; for example using
+    /// [`raw_view_mut`](ArrayBase::raw_view_mut) or other low-level element access.
+    ///
+    /// The contents of the array is indeterminate before initialization and it
+    /// is an error to perform operations that use the previous values. For
+    /// example it would not be legal to use `a += 1.;` on such an array.
+    ///
+    /// This constructor is limited to elements where `A: Copy` (no destructors)
+    /// to avoid users shooting themselves too hard in the foot.
+    ///
+    /// (Also note that the constructors `from_shape_vec` and
+    /// `from_shape_vec_unchecked` allow the user yet more control, in the sense
+    /// that Arrays can be created from arbitrary vectors.)
+    pub unsafe fn uninitialized<Sh>(shape: Sh) -> Self
+    where
+        A: Copy,
+        Sh: ShapeBuilder<Dim = D>,
+    {
+        let shape = shape.into_shape();
+        let size = size_of_shape_checked_unwrap!(&shape.dim);
+        let mut v = Vec::with_capacity(size);
+        v.set_len(size);
+        Self::from_shape_vec_unchecked(shape, v)
+    }
+
+}
+
+impl<S, A, D> ArrayBase<S, D>
+where
+    S: DataOwned<Elem = MaybeUninit<A>>,
+    D: Dimension,
+{
+    /// Create an array with uninitialized elements, shape `shape`.
+    ///
+    /// This method has been renamed to `uninit`
+    #[deprecated(note = "Renamed to `uninit`", since = "0.15.0")]
+    pub fn maybe_uninit<Sh>(shape: Sh) -> Self
+    where
+        Sh: ShapeBuilder<Dim = D>,
+    {
+        unsafe {
+            let shape = shape.into_shape();
+            let size = size_of_shape_checked_unwrap!(&shape.dim);
+            let mut v = Vec::with_capacity(size);
+            v.set_len(size);
+            Self::from_shape_vec_unchecked(shape, v)
+        }
     }
 }

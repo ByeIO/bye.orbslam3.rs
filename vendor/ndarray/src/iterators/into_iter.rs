@@ -15,9 +15,11 @@ use crate::OwnedRepr;
 use super::Baseiter;
 use crate::impl_owned_array::drop_unreachable_raw;
 
+
 /// By-value iterator for an array
 pub struct IntoIter<A, D>
-where D: Dimension
+where
+    D: Dimension,
 {
     array_data: OwnedRepr<A>,
     inner: Baseiter<A, D>,
@@ -29,19 +31,20 @@ where D: Dimension
     has_unreachable_elements: bool,
 }
 
-impl<A, D> IntoIter<A, D>
-where D: Dimension
+impl<A, D> IntoIter<A, D> 
+where
+    D: Dimension,
 {
     /// Create a new by-value iterator that consumes `array`
-    pub(crate) fn new(array: Array<A, D>) -> Self
-    {
+    pub(crate) fn new(mut array: Array<A, D>) -> Self {
         unsafe {
             let array_head_ptr = array.ptr;
+            let ptr = array.as_mut_ptr();
             let mut array_data = array.data;
             let data_len = array_data.release_all_elements();
             debug_assert!(data_len >= array.dim.size());
             let has_unreachable_elements = array.dim.size() != data_len;
-            let inner = Baseiter::new(array_head_ptr, array.dim, array.strides);
+            let inner = Baseiter::new(ptr, array.dim, array.strides);
 
             IntoIter {
                 array_data,
@@ -54,45 +57,39 @@ where D: Dimension
     }
 }
 
-impl<A, D: Dimension> Iterator for IntoIter<A, D>
-{
+impl<A, D: Dimension> Iterator for IntoIter<A, D> {
     type Item = A;
 
     #[inline]
-    fn next(&mut self) -> Option<A>
-    {
-        self.inner.next().map(|p| unsafe { p.as_ptr().read() })
+    fn next(&mut self) -> Option<A> {
+        self.inner.next().map(|p| unsafe { p.read() })
     }
 
-    fn size_hint(&self) -> (usize, Option<usize>)
-    {
+    fn size_hint(&self) -> (usize, Option<usize>) {
         self.inner.size_hint()
     }
 }
 
-impl<A, D: Dimension> ExactSizeIterator for IntoIter<A, D>
-{
-    fn len(&self) -> usize
-    {
-        self.inner.len()
-    }
+impl<A, D: Dimension> ExactSizeIterator for IntoIter<A, D> {
+    fn len(&self) -> usize { self.inner.len() }
 }
 
 impl<A, D> Drop for IntoIter<A, D>
-where D: Dimension
+where
+    D: Dimension
 {
-    fn drop(&mut self)
-    {
+    fn drop(&mut self) {
         if !self.has_unreachable_elements || mem::size_of::<A>() == 0 || !mem::needs_drop::<A>() {
             return;
         }
 
         // iterate til the end
-        while let Some(_) = self.next() {}
+        while let Some(_) = self.next() { }
 
         unsafe {
-            let data_ptr = self.array_data.as_nonnull_mut();
-            let view = RawArrayViewMut::new(self.array_head_ptr, self.inner.dim.clone(), self.inner.strides.clone());
+            let data_ptr = self.array_data.as_ptr_mut();
+            let view = RawArrayViewMut::new(self.array_head_ptr, self.inner.dim.clone(),
+                                            self.inner.strides.clone());
             debug_assert!(self.inner.dim.size() < self.data_len, "data_len {} and dim size {}",
                           self.data_len, self.inner.dim.size());
             drop_unreachable_raw(view, data_ptr, self.data_len);
@@ -101,13 +98,13 @@ where D: Dimension
 }
 
 impl<A, D> IntoIterator for Array<A, D>
-where D: Dimension
+where
+    D: Dimension
 {
     type Item = A;
     type IntoIter = IntoIter<A, D>;
 
-    fn into_iter(self) -> Self::IntoIter
-    {
+    fn into_iter(self) -> Self::IntoIter {
         IntoIter::new(self)
     }
 }
@@ -120,8 +117,7 @@ where
     type Item = A;
     type IntoIter = IntoIter<A, D>;
 
-    fn into_iter(self) -> Self::IntoIter
-    {
+    fn into_iter(self) -> Self::IntoIter {
         IntoIter::new(self.into_owned())
     }
 }
@@ -134,8 +130,7 @@ where
     type Item = A;
     type IntoIter = IntoIter<A, D>;
 
-    fn into_iter(self) -> Self::IntoIter
-    {
+    fn into_iter(self) -> Self::IntoIter {
         IntoIter::new(self.into_owned())
     }
 }

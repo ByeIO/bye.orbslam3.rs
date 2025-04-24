@@ -1,0 +1,635 @@
+// Flatbuffers schema for serialized RTen models.
+//
+// See https://google.github.io/flatbuffers/flatbuffers_guide_writing_schema.html.
+//
+// Operator names and attributes align with the corresponding ONNX operators.
+// See https://onnx.ai/onnx/operators/index.html.
+
+file_identifier "RTEN";
+file_extension "rten";
+
+// Type for an operator node
+enum OperatorType: ubyte {
+  Add,
+  ArgMin,
+  ArgMax,
+  AveragePool,
+  BatchNormalization,
+  Cast,
+  Clip,
+  Concat,
+  ConstantOfShape,
+  Conv,
+  ConvTranspose,
+  Cos,
+  CumSum,
+  Div,
+  Equal,
+  Erf,
+  Expand,
+  Flatten,
+  Gather,
+  Gemm,
+  GlobalAveragePool,
+  Greater,
+  GRU,
+  Identity,
+  LeakyRelu,
+  Less,
+  LessOrEqual,
+  Log,
+  LogSoftmax,
+  LSTM,
+  MatMul,
+  MaxPool,
+  Mod,
+  Mul,
+  Pad,
+  Pow,
+  Range,
+  ReduceMean,
+  ReduceL2,
+  Relu,
+  Reshape,
+  Resize,
+  Shape,
+  Sigmoid,
+  Sin,
+  Slice,
+  Split,
+  Sqrt,
+  Squeeze,
+  Softmax,
+  Sub,
+  Tanh,
+  Transpose,
+  Unsqueeze,
+  Where,
+
+  // New operators. These are appended here to preserve binary compatibility
+  // of existing model files.
+  ReduceProd,
+  ReduceSum,
+  ReduceMin,
+  ReduceMax,
+  NonZero,
+  ScatterElements,
+  Tile,
+  Not,
+  Abs,
+  Max,
+  Mean,
+  Min,
+  Sum,
+  OneHot,
+  Round,
+  Floor,
+  Ceil,
+  Reciprocal,
+  TopK,
+  Neg,
+  Exp,
+  GreaterOrEqual,
+  Size,
+  Tan,
+  Acos,
+  Asin,
+  Atan,
+  InstanceNormalization,
+  HardSigmoid,
+  HardSwish,
+  And,
+  Or,
+  Xor,
+  Trilu,
+  ScatterND,
+  NonMaxSuppression,
+  Sign,
+  GatherElements,
+  LayerNormalization,
+  ReduceSumSquare,
+  RandomUniform,
+  Elu,
+  RandomUniformLike,
+  RandomNormal,
+  RandomNormalLike,
+  Softplus,
+  GatherND,
+  Gelu,
+  Einsum,
+  If,
+  DequantizeLinear,
+  QuantizeLinear,
+  DynamicQuantizeLinear,
+  MatMulInteger,
+  DepthToSpace,
+  ConvInteger,
+}
+
+enum RNNDirection: ubyte {
+  Forward,
+  Reverse,
+  Bidirectional
+}
+
+// Values for `auto_pad` field. In ONNX the default for `auto_pad` is "NOTSET".
+// In this schema the default is `Same` for some operators for backwards
+// compatibility. The converter will however set it to `Fixed` if the `auto_pad`
+// attribute is missing in the ONNX model, preserving ONNX semantics.
+enum AutoPad: ubyte {
+  // nb. ONNX defines `SAME_UPPER` and `SAME_LOWER`. This corresponds to
+  // `SAME_UPPER` and TensorFlow / Keras's "same".
+  Same,
+  NotSet
+}
+
+enum DataType: ubyte {
+  Int32,
+  Float,
+  Int8,
+  UInt8,
+}
+
+// Coordinate transform modes for Resize operator.
+enum CoordTransformMode: ubyte {
+  HalfPixel,
+  Asymmetric,
+  AlignCorners
+}
+
+// Rounding modes supported by Resize operator when `ResizeMode` is `Nearest`.
+enum NearestMode: ubyte {
+  Floor,
+  Ceil,
+  RoundPreferFloor,
+  RoundPreferCeil,
+}
+
+enum ResizeMode: ubyte {
+  Nearest,
+  Linear
+}
+
+// Operator-specific configuration
+union OperatorAttrs {
+  ArgMaxAttrs, // Also used for ArgMin
+  AveragePoolAttrs,
+  BatchNormalizationAttrs, // Also used for InstanceNormalization
+  CastAttrs,
+  ConcatAttrs,
+  ConstantOfShapeAttrs,
+  ConvAttrs, // Also used for ConvInteger
+  ConvTransposeAttrs,
+  FlattenAttrs,
+  GatherAttrs, // Also used for GatherElements
+  GemmAttrs,
+  GRUAttrs,
+  LeakyReluAttrs,
+  LSTMAttrs,
+  MaxPoolAttrs,
+  ReduceMeanAttrs, // Also used for Reduce* ops
+  ReshapeAttrs,
+  ResizeAttrs,
+  SplitAttrs,
+  SoftmaxAttrs, // Also used for LogSoftmax
+  TransposeAttrs,
+
+  // New operator attrs. These are appended here to preserve binary compatibility
+  // of existing model files.
+  ModAttrs,
+  ScatterElementsAttrs,
+  OneHotAttrs,
+  TopKAttrs,
+  HardSigmoidAttrs,
+  TriluAttrs,
+  ScatterNDAttrs,
+  NonMaxSuppressionAttrs,
+  LayerNormalizationAttrs,
+  RandomUniformAttrs,
+  EluAttrs,
+  RandomUniformLikeAttrs,
+  RandomNormalAttrs,
+  RandomNormalLikeAttrs,
+  GatherNDAttrs,
+  GeluAttrs,
+  EinsumAttrs,
+  IfAttrs,
+  PadAttrs,
+  DequantizeLinearAttrs,
+  QuantizeLinearAttrs,
+  DepthToSpaceAttrs,
+}
+
+table ArgMaxAttrs {
+  axis:int;
+  keep_dims:bool;
+}
+
+table AveragePoolAttrs {
+  kernel_size:[uint] (required);
+  auto_pad:AutoPad;
+
+  // Padding for spatial axes as [top, left, bottom, right]
+  pads:[uint];
+
+  strides:[uint];
+
+  count_include_pad:bool;
+}
+
+table BatchNormalizationAttrs {
+  epsilon:float;
+}
+
+table CastAttrs {
+  to:DataType;
+}
+
+table ConcatAttrs {
+  axis:int;
+}
+
+enum DepthToSpaceMode: ubyte {
+  // Depth-column-row
+  DCR,
+  // Column-row-depth
+  CRD,
+}
+
+table DepthToSpaceAttrs {
+  mode:DepthToSpaceMode;
+  block_size:uint;
+}
+
+union Scalar {
+  IntScalar,
+  FloatScalar
+}
+
+table IntScalar {
+  value:int32;
+}
+
+table FloatScalar {
+  value:float32;
+}
+
+table ConstantOfShapeAttrs {
+  value:Scalar (required);
+}
+
+table ConvAttrs {
+  auto_pad:AutoPad;
+
+  // Padding for spatial axes as [left, right] or [top, left, bottom, right]
+  pads:[uint];
+
+  groups:uint;
+  strides:[uint];
+  dilations:[uint];
+}
+
+table ConvTransposeAttrs {
+  strides:[uint];
+
+  // Defaults to `NotSet` for backwards compatibility.
+  auto_pad:AutoPad = NotSet;
+
+  // Padding for spatial axes as [left, right] or [top, left, bottom, right]
+  pads:[uint];
+}
+
+table DequantizeLinearAttrs {
+  axis:int;
+}
+
+table EinsumAttrs {
+  equation:string;
+}
+
+table EluAttrs {
+  alpha:float;
+}
+
+table FlattenAttrs {
+  axis:int;
+}
+
+table LayerNormalizationAttrs {
+  axis:int;
+  epsilon:float;
+}
+
+table GatherAttrs {
+  axis:int;
+}
+
+table GatherNDAttrs {
+  batch_dims:int;
+}
+
+// Reserved for supporting `approximate` attr in future.
+table GeluAttrs {}
+
+table GemmAttrs {
+  alpha:float;
+  beta:float;
+  transpose_a:bool;
+  transpose_b:bool;
+}
+
+table GRUAttrs {
+  direction:RNNDirection;
+  hidden_size:uint;
+  linear_before_reset:bool;
+}
+
+table HardSigmoidAttrs {
+  alpha:float;
+  beta:float;
+}
+
+table IfAttrs {
+  then_branch:Graph;
+  else_branch:Graph;
+}
+
+table LeakyReluAttrs {
+  alpha:float;
+}
+
+table LSTMAttrs {
+  direction:RNNDirection;
+  hidden_size:uint;
+}
+
+table MaxPoolAttrs {
+  kernel_size:[uint] (required);
+  auto_pad:AutoPad;
+
+  // Padding for spatial axes as [top, left, bottom, right]
+  pads:[uint];
+
+  strides:[uint];
+}
+
+table ModAttrs {
+  fmod:bool;
+}
+
+enum NMSBoxOrder: ubyte {
+  TopLeftBottomRight,
+  CenterWidthHeight,
+}
+
+table NonMaxSuppressionAttrs {
+  box_order:NMSBoxOrder;
+}
+
+table OneHotAttrs {
+  axis:int;
+}
+
+enum PadMode: ubyte {
+  Constant,
+  Reflect,
+}
+
+table PadAttrs {
+  mode:PadMode;
+}
+
+table QuantizeLinearAttrs {
+  axis:int;
+  output_dtype:DataType = null;
+}
+
+table RandomNormalAttrs {
+  mean:float;
+  scale:float;
+  seed:float = null;
+  shape:[uint];
+}
+
+table RandomNormalLikeAttrs {
+  mean:float;
+  scale:float;
+  seed:float = null;
+}
+
+table RandomUniformAttrs {
+  shape:[uint];
+  high:float;
+  low:float;
+  seed:float = null;
+}
+
+table RandomUniformLikeAttrs {
+  high:float;
+  low:float;
+  seed:float = null;
+}
+
+table ReduceMeanAttrs {
+  axes:[int];
+  keep_dims:bool;
+}
+
+table ReshapeAttrs {
+  allow_zero:bool;
+}
+
+table ResizeAttrs {
+  mode:ResizeMode;
+  coord_mode:CoordTransformMode;
+  nearest_mode:NearestMode;
+}
+
+enum ScatterReduction: ubyte {
+  None,
+  Add,
+  Mul,
+  Min,
+  Max,
+}
+
+table ScatterElementsAttrs {
+  axis:int;
+  reduction:ScatterReduction;
+}
+
+table ScatterNDAttrs {
+  reduction:ScatterReduction;
+}
+
+table SoftmaxAttrs {
+  axis:int;
+}
+
+table SplitAttrs {
+  axis:int;
+}
+
+table TopKAttrs {
+  axis:int;
+  largest:bool;
+  sorted:bool;
+}
+
+table TransposeAttrs {
+  perm:[uint];
+}
+
+table TriluAttrs {
+  upper:bool;
+}
+
+// Node in the dataflow graph
+union NodeKind {
+  OperatorNode,
+  ConstantNode,
+  ValueNode
+}
+
+// Graph node that computes an output tensor given one or more inputs and
+// operator configuration.
+table OperatorNode {
+  type:OperatorType;
+  attrs:OperatorAttrs;
+
+  // Indexes of input nodes. Negative values indicate missing optional inputs.
+  inputs:[int];
+
+  // Indexes of output nodes. Negative values indicate unused outputs.
+  outputs:[int];
+}
+
+// Data for constants stored inline in a model.
+union ConstantData {
+  FloatData,
+  Int32Data,
+  Int8Data,
+  UInt8Data,
+}
+
+table FloatData {
+  data: [float32] (required);
+}
+
+table Int8Data {
+  data: [byte] (required);
+}
+
+table Int32Data {
+  data: [int32] (required);
+}
+
+table UInt8Data {
+  data: [ubyte] (required);
+}
+
+enum ConstantDataType: ushort {
+  Int32, // Signed 32-bit int
+  Float32, // IEEE-754 32-bit float
+  Int8,
+  UInt8,
+}
+
+// Graph node for a constant tensor value, whose data is part of the model.
+table ConstantNode {
+  shape:[uint] (required);
+
+  // Tensor data embedded within the model file.
+  data:ConstantData;
+
+  // Data type. This is null in older models.
+  dtype:ConstantDataType = null;
+
+  // Offset of tensor data from the start of the tensor data segment in the
+  // model file. Null if the tensor data is stored inline.
+  data_offset:uint64 = null;
+}
+
+// Dimension of a ValueNode's shape. This can be either a fixed value or a
+// symbolic name.
+//
+// This is logically a union, but uses a table due to
+// https://github.com/google/flatbuffers/issues/5024.
+table Dim {
+  value:uint;
+  name:string;
+}
+
+// Graph node for a dynamic tensor value, such as a model input or operator
+// output.
+table ValueNode {
+  // Expected shape of the tensor at runtime.
+  shape:[Dim];
+  // Expected data type of the tensor at runtime.
+  dtype:DataType = null;
+}
+
+table Node {
+  // Identifier for external referencing and debugging
+  name:string;
+  data:NodeKind;
+}
+
+// Graph describing a sequence of operations in a model.
+//
+// This is analagous to the body of a function or closure in a programming
+// language.
+table Graph {
+  // Nodes are sorted in topological order. This means that if a node references
+  // other nodes (eg. an operator node referencing inputs), the referents must
+  // come earlier in the list.
+  nodes:[Node];
+
+  // IDs of input nodes
+  inputs:[uint];
+
+  // IDs of output nodes
+  outputs:[uint];
+
+  // IDs of nodes which capture their values from the enclosing scope when
+  // this graph is run as a subgraph.
+  captures:[uint];
+}
+
+table Metadata {
+  // SHA-256 hash of the ONNX model that was used as the source for this RTen
+  // model.
+  onnx_hash:string;
+
+  // A short description of what this model does.
+  description:string;
+
+  // Identifier for the license used in this model.
+  //
+  // This should be an SPDX (https://spdx.org/licenses/) identifier for openly
+  // licensed models.
+  license:string;
+
+  // Commit ID for the code that produced this model.
+  commit:string;
+
+  // URL of repository where the model's code is hosted (eg. GitHub).
+  code_repository:string;
+
+  // URL of repository where the model is hosted (eg. Hugging Face).
+  model_repository:string;
+
+  // Identifier for the training run that produced this model.
+  run_id:string;
+
+  // URL of logs etc. for the training run that produced this model.
+  run_url:string;
+}
+
+table Model {
+  schema_version:int;
+  graph:Graph (required);
+  metadata:Metadata;
+}
+
+root_type Model;

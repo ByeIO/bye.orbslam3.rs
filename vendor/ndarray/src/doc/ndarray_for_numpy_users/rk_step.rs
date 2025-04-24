@@ -169,7 +169,6 @@
 //! ```
 //!
 //! [`.scaled_add()`]: crate::ArrayBase::scaled_add
-//! [`azip!()`]: crate::azip!
 //!
 //! ### SciPy license
 //!

@@ -1,7 +1,6 @@
-use std::marker::PhantomData;
-
 use crate::imp_prelude::*;
-use crate::Baseiter;
+use crate::ElementsBase;
+use crate::ElementsBaseMut;
 use crate::IntoDimension;
 use crate::{Layout, NdProducer};
 
@@ -10,7 +9,6 @@ impl_ndproducer! {
     [Clone => 'a, A, D: Clone ]
     ExactChunks {
         base,
-        life,
         chunk,
         inner_strides,
     }
@@ -25,28 +23,28 @@ impl_ndproducer! {
     }
 }
 
+type BaseProducerRef<'a, A, D> = ArrayView<'a, A, D>;
+type BaseProducerMut<'a, A, D> = ArrayViewMut<'a, A, D>;
+
 /// Exact chunks producer and iterable.
 ///
 /// See [`.exact_chunks()`](ArrayBase::exact_chunks) for more
 /// information.
 //#[derive(Debug)]
-pub struct ExactChunks<'a, A, D>
-{
-    base: RawArrayView<A, D>,
-    life: PhantomData<&'a A>,
+pub struct ExactChunks<'a, A, D> {
+    base: BaseProducerRef<'a, A, D>,
     chunk: D,
     inner_strides: D,
 }
 
-impl<'a, A, D: Dimension> ExactChunks<'a, A, D>
-{
+impl<'a, A, D: Dimension> ExactChunks<'a, A, D> {
     /// Creates a new exact chunks producer.
     ///
     /// **Panics** if any chunk dimension is zero
-    pub(crate) fn new<E>(a: ArrayView<'a, A, D>, chunk: E) -> Self
-    where E: IntoDimension<Dim = D>
+    pub(crate) fn new<E>(mut a: ArrayView<'a, A, D>, chunk: E) -> Self
+    where
+        E: IntoDimension<Dim = D>,
     {
-        let mut a = a.into_raw_view();
         let chunk = chunk.into_dimension();
         ndassert!(
             a.ndim() == chunk.ndim(),
@@ -61,12 +59,11 @@ impl<'a, A, D: Dimension> ExactChunks<'a, A, D>
         for i in 0..a.ndim() {
             a.dim[i] /= chunk[i];
         }
-        let inner_strides = a.strides.clone();
+        let inner_strides = a.raw_strides();
         a.strides *= &chunk;
 
         ExactChunks {
             base: a,
-            life: PhantomData,
             chunk,
             inner_strides,
         }
@@ -80,11 +77,9 @@ where
 {
     type Item = <Self::IntoIter as Iterator>::Item;
     type IntoIter = ExactChunksIter<'a, A, D>;
-    fn into_iter(self) -> Self::IntoIter
-    {
+    fn into_iter(self) -> Self::IntoIter {
         ExactChunksIter {
-            iter: self.base.into_base_iter(),
-            life: self.life,
+            iter: self.base.into_elements_base(),
             chunk: self.chunk,
             inner_strides: self.inner_strides,
         }
@@ -95,10 +90,8 @@ where
 ///
 /// See [`.exact_chunks()`](ArrayBase::exact_chunks) for more
 /// information.
-pub struct ExactChunksIter<'a, A, D>
-{
-    iter: Baseiter<A, D>,
-    life: PhantomData<&'a A>,
+pub struct ExactChunksIter<'a, A, D> {
+    iter: ElementsBase<'a, A, D>,
     chunk: D,
     inner_strides: D,
 }
@@ -108,7 +101,6 @@ impl_ndproducer! {
     [Clone => ]
     ExactChunksMut {
         base,
-        life,
         chunk,
         inner_strides,
     }
@@ -129,23 +121,20 @@ impl_ndproducer! {
 /// See [`.exact_chunks_mut()`](ArrayBase::exact_chunks_mut)
 /// for more information.
 //#[derive(Debug)]
-pub struct ExactChunksMut<'a, A, D>
-{
-    base: RawArrayViewMut<A, D>,
-    life: PhantomData<&'a mut A>,
+pub struct ExactChunksMut<'a, A, D> {
+    base: BaseProducerMut<'a, A, D>,
     chunk: D,
     inner_strides: D,
 }
 
-impl<'a, A, D: Dimension> ExactChunksMut<'a, A, D>
-{
+impl<'a, A, D: Dimension> ExactChunksMut<'a, A, D> {
     /// Creates a new exact chunks producer.
     ///
     /// **Panics** if any chunk dimension is zero
-    pub(crate) fn new<E>(a: ArrayViewMut<'a, A, D>, chunk: E) -> Self
-    where E: IntoDimension<Dim = D>
+    pub(crate) fn new<E>(mut a: ArrayViewMut<'a, A, D>, chunk: E) -> Self
+    where
+        E: IntoDimension<Dim = D>,
     {
-        let mut a = a.into_raw_view_mut();
         let chunk = chunk.into_dimension();
         ndassert!(
             a.ndim() == chunk.ndim(),
@@ -160,12 +149,11 @@ impl<'a, A, D: Dimension> ExactChunksMut<'a, A, D>
         for i in 0..a.ndim() {
             a.dim[i] /= chunk[i];
         }
-        let inner_strides = a.strides.clone();
+        let inner_strides = a.raw_strides();
         a.strides *= &chunk;
 
         ExactChunksMut {
             base: a,
-            life: PhantomData,
             chunk,
             inner_strides,
         }
@@ -179,11 +167,9 @@ where
 {
     type Item = <Self::IntoIter as Iterator>::Item;
     type IntoIter = ExactChunksIterMut<'a, A, D>;
-    fn into_iter(self) -> Self::IntoIter
-    {
+    fn into_iter(self) -> Self::IntoIter {
         ExactChunksIterMut {
-            iter: self.base.into_base_iter(),
-            life: self.life,
+            iter: self.base.into_elements_base(),
             chunk: self.chunk,
             inner_strides: self.inner_strides,
         }
@@ -195,17 +181,16 @@ impl_iterator! {
     [Clone => 'a, A, D: Clone]
     ExactChunksIter {
         iter,
-        life,
         chunk,
         inner_strides,
     }
     ExactChunksIter<'a, A, D> {
         type Item = ArrayView<'a, A, D>;
 
-        fn item(&mut self, ptr) {
+        fn item(&mut self, elt) {
             unsafe {
-                ArrayView::new(
-                    ptr,
+                ArrayView::new_(
+                    elt,
                     self.chunk.clone(),
                     self.inner_strides.clone())
             }
@@ -224,10 +209,10 @@ impl_iterator! {
     ExactChunksIterMut<'a, A, D> {
         type Item = ArrayViewMut<'a, A, D>;
 
-        fn item(&mut self, ptr) {
+        fn item(&mut self, elt) {
             unsafe {
-                ArrayViewMut::new(
-                    ptr,
+                ArrayViewMut::new_(
+                    elt,
                     self.chunk.clone(),
                     self.inner_strides.clone())
             }
@@ -239,16 +224,8 @@ impl_iterator! {
 ///
 /// See [`.exact_chunks_mut()`](ArrayBase::exact_chunks_mut)
 /// for more information.
-pub struct ExactChunksIterMut<'a, A, D>
-{
-    iter: Baseiter<A, D>,
-    life: PhantomData<&'a mut A>,
+pub struct ExactChunksIterMut<'a, A, D> {
+    iter: ElementsBaseMut<'a, A, D>,
     chunk: D,
     inner_strides: D,
 }
-
-send_sync_read_only!(ExactChunks);
-send_sync_read_only!(ExactChunksIter);
-
-send_sync_read_write!(ExactChunksMut);
-send_sync_read_write!(ExactChunksIterMut);

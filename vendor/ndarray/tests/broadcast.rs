@@ -2,22 +2,15 @@ use ndarray::prelude::*;
 
 #[test]
 #[cfg(feature = "std")]
-fn broadcast_1()
-{
+fn broadcast_1() {
     let a_dim = Dim([2, 4, 2, 2]);
     let b_dim = Dim([2, 1, 2, 1]);
-    let a = ArcArray::linspace(0., 1., a_dim.size())
-        .into_shape_with_order(a_dim)
-        .unwrap();
-    let b = ArcArray::linspace(0., 1., b_dim.size())
-        .into_shape_with_order(b_dim)
-        .unwrap();
+    let a = ArcArray::linspace(0., 1., a_dim.size()).reshape(a_dim);
+    let b = ArcArray::linspace(0., 1., b_dim.size()).reshape(b_dim);
     assert!(b.broadcast(a.dim()).is_some());
 
     let c_dim = Dim([2, 1]);
-    let c = ArcArray::linspace(0., 1., c_dim.size())
-        .into_shape_with_order(c_dim)
-        .unwrap();
+    let c = ArcArray::linspace(0., 1., c_dim.size()).reshape(c_dim);
     assert!(c.broadcast(1).is_none());
     assert!(c.broadcast(()).is_none());
     assert!(c.broadcast((2, 1)).is_some());
@@ -35,16 +28,11 @@ fn broadcast_1()
 
 #[test]
 #[cfg(feature = "std")]
-fn test_add()
-{
+fn test_add() {
     let a_dim = Dim([2, 4, 2, 2]);
     let b_dim = Dim([2, 1, 2, 1]);
-    let mut a = ArcArray::linspace(0.0, 1., a_dim.size())
-        .into_shape_with_order(a_dim)
-        .unwrap();
-    let b = ArcArray::linspace(0.0, 1., b_dim.size())
-        .into_shape_with_order(b_dim)
-        .unwrap();
+    let mut a = ArcArray::linspace(0.0, 1., a_dim.size()).reshape(a_dim);
+    let b = ArcArray::linspace(0.0, 1., b_dim.size()).reshape(b_dim);
     a += &b;
     let t = ArcArray::from_elem((), 1.0f32);
     a += &t;
@@ -53,19 +41,15 @@ fn test_add()
 #[test]
 #[should_panic]
 #[cfg(feature = "std")]
-fn test_add_incompat()
-{
+fn test_add_incompat() {
     let a_dim = Dim([2, 4, 2, 2]);
-    let mut a = ArcArray::linspace(0.0, 1., a_dim.size())
-        .into_shape_with_order(a_dim)
-        .unwrap();
+    let mut a = ArcArray::linspace(0.0, 1., a_dim.size()).reshape(a_dim);
     let incompat = ArcArray::from_elem(3, 1.0f32);
     a += &incompat;
 }
 
 #[test]
-fn test_broadcast()
-{
+fn test_broadcast() {
     let (_, n, k) = (16, 16, 16);
     let x1 = 1.;
     // b0 broadcast 1 -> n, k
@@ -85,8 +69,7 @@ fn test_broadcast()
 }
 
 #[test]
-fn test_broadcast_1d()
-{
+fn test_broadcast_1d() {
     let n = 16;
     let x1 = 1.;
     // b0 broadcast 1 -> n
