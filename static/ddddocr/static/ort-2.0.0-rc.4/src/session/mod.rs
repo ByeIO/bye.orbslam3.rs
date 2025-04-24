@@ -1,5 +1,7 @@
 //! Contains the [`Session`] and [`SessionBuilder`] types for managing ONNX Runtime sessions and performing inference.
 
+#![allow(elided_named_lifetimes)]
+
 use std::{any::Any, ffi::CString, marker::PhantomData, ops::Deref, os::raw::c_char, ptr::NonNull, sync::Arc};
 
 use crate::{

@@ -1,0 +1,18 @@
+[workspace]
+resolver = "2"
+members = [
+    "easytier",
+    "easytier-gui/src-tauri",
+    "easytier-rpc-build",
+    "easytier-web",
+    "easytier-contrib/easytier-ffi",
+]
+default-members = ["easytier", "easytier-web"]
+
+[profile.dev]
+panic = "unwind"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1

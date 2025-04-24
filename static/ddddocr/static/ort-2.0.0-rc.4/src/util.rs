@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 #[cfg(not(target_family = "windows"))]
 use std::os::raw::c_char;
 #[cfg(unix)]

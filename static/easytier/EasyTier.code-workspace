@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "gui",
+			"path": "easytier-gui"
+		},
+		{
+			"name": "core",
+			"path": "easytier"
+		},
+		{
+			"name": "vpnservice",
+			"path": "tauri-plugin-vpnservice"
+		},
+		{
+			"name": "rpc-build",
+			"path": "easytier-rpc-build"
+		}
+	],
+	"settings": {
+		"i18n-ally.sourceLanguage": "cn",
+		"i18n-ally.keystyle": "nested",
+		"i18n-ally.sortKeys": true,
+		// Disable the default formatter
+		"prettier.enable": false,
+	}
+}
