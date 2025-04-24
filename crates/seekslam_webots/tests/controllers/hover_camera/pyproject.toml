@@ -1,0 +1,13 @@
+[project]
+name = "hover-camera"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "control>=0.10.1",
+    "numpy>=2.2.5",
+    "opencv-python>=4.11.0.86",
+    "pytest>=8.3.5",
+    "scipy>=1.15.2",
+]

@@ -1,0 +1,57 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/gctronic/e-puck/protos/E-puck.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/gctronic/e-puck/protos/E-puckGroundSensors.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0944
+  position 0.5026175778423025 -0.08838129050215622 4.811827625052927
+}
+Background {
+  skyColor [
+    0.4 0.7 1
+  ]
+}
+RectangleArena {
+  floorSize 2.2 1.8
+  floorTileSize 2.2 1.8
+  floorAppearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "C:/Users/LEGION/Downloads/floor_texture_lab2.png"
+      ]
+      repeatS FALSE
+      repeatT FALSE
+      filtering 1
+    }
+    roughness 1
+    metalness 0
+  }
+  wallThickness 0.025
+  wallHeight 0.05
+}
+DEF Light SpotLight {
+  attenuation 0 0 2
+  beamWidth 0.3
+  cutOffAngle 0.4
+  direction -0.7 -0.7 -0.5
+  intensity 10
+  location 1.2 1 0.2
+}
+DEF Controller E-puck {
+  translation 0.50359 -0.0885821 -0.00114301
+  rotation 0.0005562179449657322 -0.0010709829539846676 0.9999992718082897 0.9580203885638222
+  controller "controller_name"
+  groundSensorsSlot [
+    E-puckGroundSensors {
+    }
+  ]
+}
+Robot {
+  name "Supervisor"
+  controller "supervisor_lab2"
+  supervisor TRUE
+}

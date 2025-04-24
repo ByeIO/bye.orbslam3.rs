@@ -1,0 +1,30 @@
+[project]
+name = "mission1"
+version = "0.0.1"
+description = "测试pid悬停"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # 异步处理
+    "asyncio>=3.4.3",
+    # 控制算法
+    "control>=0.10.1",
+    # gradio客户端
+    "gradio-client>=1.8.0",
+    # 线性代数
+    "numpy>=2.2.5",
+    # ollama客户端
+    "ollama>=0.4.8",
+    # 图像处理
+    "opencv-python>=4.11.0.86",
+    # 图像处理
+    "pillow>=11.2.1",
+    # 单元测试
+    "pytest>=8.3.5",
+    # 科学计算
+    "scipy>=1.15.2",
+    # webots接口
+    "webots>=0.0.1",
+    # pid算法封装
+    "simple-pid>=2.0.1",
+]

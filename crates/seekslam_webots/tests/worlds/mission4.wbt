@@ -1,0 +1,1580 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Window.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/PaintedWood.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Door.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/DoorLever.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/lights/protos/CeilingLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/lights/protos/FloorLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/fridge/protos/Fridge.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/CabinetHandle.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/oven/protos/Oven.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/components/protos/Worktop.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/components/protos/Sink.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/kitchen/components/protos/HotPlate.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/drinks/protos/Can.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/chairs/protos/Chair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/fruits/protos/FruitBowl.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/fruits/protos/Orange.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/fruits/protos/Apple.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Desk.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/chairs/protos/WoodenChair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/school_furniture/protos/Book.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/living_room_furniture/protos/Armchair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/living_room_furniture/protos/Sofa.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/living_room_furniture/protos/Carpet.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/plants/protos/BunchOfSunFlowers.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/gctronic/e-puck/protos/E-puck.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/gctronic/e-puck/protos/E-puckGroundSensors.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/plants/protos/PottedTree.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/paintings/protos/PortraitPainting.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/paintings/protos/LandscapePainting.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/television/protos/Television.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/irobot/create/protos/Create.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/create_wall/protos/CreateWall.proto"
+IMPORTABLE EXTERNPROTO "../protos/Mavic2V.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/GlossyPaint.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/MattePaint.proto"
+
+WorldInfo {
+  info [
+    "Sample of how the indoor objects can be placed"
+  ]
+  gravity 10
+  basicTimeStep 16
+}
+Viewpoint {
+  orientation 0.351009789520795 -0.586994042028818 -0.7295410353662345 4.199085294929628
+  position 0.8484172242452404 -5.17905536198043 8.365025240777356
+  exposure 0.5
+}
+TexturedBackground {
+  texture "empty_office"
+  skybox FALSE
+  skyColor [
+    0.2 0.2 0.2
+  ]
+}
+DEF FLOOR Solid {
+  translation -4.95 -3.3 0
+  children [
+    Shape {
+      appearance Parquetry {
+        textureTransform TextureTransform {
+          scale 6 9
+        }
+      }
+      geometry DEF FLOOR_PLANE Plane {
+        size 9.9 6.6
+      }
+    }
+  ]
+  name "floor"
+  boundingObject USE FLOOR_PLANE
+  locked TRUE
+}
+DEF ROOF Solid {
+  translation -4.95 -3.3 2.3999
+  rotation 1 0 0 3.14159
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+        baseColorMap ImageTexture {
+          url [
+            "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/default/worlds/textures/roughcast.jpg"
+          ]
+        }
+        roughness 0.5
+        metalness 0
+        textureTransform TextureTransform {
+          scale 8 8
+        }
+      }
+      geometry USE FLOOR_PLANE
+    }
+  ]
+  name "roof"
+  boundingObject USE FLOOR_PLANE
+  locked TRUE
+}
+Wall {
+  translation 0 -0.65 0
+  name "wall 1"
+  size 0.3 1 2.4
+}
+Window {
+  translation 0 -1.65 0
+  name "window 1"
+  size 0.3 1 2.4
+  frameAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+}
+Wall {
+  translation 0 -4.3 0
+  name "wall 2"
+  size 0.3 4.3 2.4
+}
+Wall {
+  translation -9.9 -2.3 0
+  name "wall 3"
+  size 0.3 4.3 2.4
+}
+Wall {
+  translation -9.9 -5.95 0
+  name "wall 4"
+  size 0.3 1 2.4
+}
+Door {
+  translation -9.9 -4.95 0
+  name "door 1"
+  size 0.3 1 2.4
+  canBeOpen FALSE
+  frameAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+  doorHandle DoorLever {
+    hasStaticParent TRUE
+  }
+}
+Wall {
+  translation -3.8 0 0
+  rotation 0 0 1 1.5708
+  name "wall 5"
+  size 0.3 7.9 2.4
+}
+PortraitPainting {
+  translation -9.73 -2.47 1.5999
+  name "portrait painting(1)"
+}
+DEF A PortraitPainting {
+  translation -9.73 -1.32 1.5999
+  name "A"
+  textureUrl [
+    "../../controllers/A.png"
+  ]
+}
+Wall {
+  translation -9.4 0 0
+  rotation 0 0 1 1.5708
+  name "wall 6"
+  size 0.3 1.3 2.4
+}
+Window {
+  translation -8.25 0 0
+  rotation 0 0 1 1.5708
+  name "window 2"
+  size 0.3 1 2.4
+  frameAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+}
+Wall {
+  translation -9.4 -6.6 0
+  rotation 0 0 1 1.5708
+  name "wall 7"
+  size 0.3 1.3 2.4
+}
+Door {
+  translation -8.25 -6.6 0
+  rotation 0 0 1 1.5708
+  name "door 2"
+  size 0.3 1 2.4
+  canBeOpen FALSE
+  frameAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+  doorHandle DoorLever {
+    rotation -0.0012868889344011497 0.9999991719580925 0 0
+    hasStaticParent TRUE
+  }
+}
+Wall {
+  translation -3.8 -6.6 0
+  rotation 0 0 1 1.5708
+  name "wall 8"
+  size 0.3 7.9 2.4
+}
+Wall {
+  translation -3.3 -1.8 0
+  name "wall 9"
+  size 0.3 3.3 2.4
+}
+CeilingLight {
+  translation -1.3341 -2.4706 3.29
+  name "ceiling light 1"
+  pointLightIntensity 5
+}
+CeilingLight {
+  translation -7.1011 -2.4432 2.4
+  name "ceiling light 2"
+  pointLightIntensity 8
+}
+FloorLight {
+  translation -4.0043 -0.7456 0
+  pointLightIntensity 2
+}
+Fridge {
+  translation -0.52 -0.5 0
+  rotation 0 0 1 -1.5707953071795862
+  mainColor 0.6666666666666666 0 0
+}
+Cabinet {
+  translation -1.31 -0.15 0
+  rotation 0 0 -1 1.5708
+  name "cabinet 1"
+  depth 0.68
+  outerThickness 0.02
+  rowsHeights [
+    0.22, 0.21, 0.21
+  ]
+  columnsWidths [
+    0.42, 0.42
+  ]
+  layout [
+    "Drawer (1, 1, 1, 1, 1.5)"
+    "Drawer (1, 2, 1, 1, 1.5)"
+    "Drawer (1, 3, 1, 1, 1.5)"
+    "Shelf  (1, 2, 2, 0)"
+    "Shelf  (1, 3, 2, 0)"
+    "Shelf (1, 1, 0, 3)"
+  ]
+  handle CabinetHandle {
+    handleLength 0.09
+    handleRadius 0.008
+  }
+  primaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+  secondaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+}
+Cabinet {
+  translation -1.31 -0.15 1.12
+  rotation 0 0 1 -1.5707953071795862
+  name "cabinet 2"
+  outerThickness 0.02
+  rowsHeights [
+    0.22, 0.21, 0.21
+  ]
+  columnsWidths [
+    0.42, 0.42
+  ]
+  layout [
+    "RightSidedDoor (1, 1, 1, 3, 1.5)"
+    "LeftSidedDoor (2, 1, 1, 3, 1.5)"
+    "Shelf  (1, 2, 2, 0)"
+    "Shelf  (1, 3, 2, 0)"
+    "Shelf (1, 1, 0, 3)"
+  ]
+  handle CabinetHandle {
+    translation 0 -0.2 0
+    handleLength 0.09
+    handleRadius 0.008
+  }
+  primaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+  secondaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+}
+Cabinet {
+  translation -2.19 -0.15 0
+  rotation 0 0 1 -1.5707953071795862
+  name "cabinet 3"
+  depth 0.68
+  outerThickness 0.02
+  rowsHeights [
+    0.22, 0.21, 0.21
+  ]
+  columnsWidths [
+    0.42, 0.42
+  ]
+  layout [
+    "LeftSidedDoor (2, 1, 1, 3, 1.5)"
+    "Shelf  (1, 2, 2, 0)"
+    "Shelf  (1, 3, 2, 0)"
+    "Shelf (1, 1, 0, 3)"
+  ]
+  handle CabinetHandle {
+    translation 0 0.2 0
+    handleLength 0.09
+    handleRadius 0.008
+  }
+  primaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+  secondaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+}
+Oven {
+  translation -2.85 -0.58 0
+  rotation 0 0 1 -1.5707953071795862
+}
+Worktop {
+  translation -1.31 -0.5 0.71
+  rotation 1 0 0 1.5708
+  name "worktop 1"
+  size 0.88 0.06 0.7
+}
+Worktop {
+  translation -1.97 -0.807 0.71
+  rotation 1 0 0 1.5708
+  name "worktop 2"
+  size 0.44 0.06 0.086
+}
+Worktop {
+  translation -1.97 -0.272 0.71
+  rotation 1 0 0 1.5708
+  name "worktop 3"
+  size 0.44 0.06 0.244
+}
+Worktop {
+  translation -2.63 -0.5 0.71
+  rotation 1 0 0 1.5708
+  name "worktop 4"
+  size 0.88 0.06 0.7
+}
+Sink {
+  translation -1.97 -0.48 0.715
+  rotation 0 0 1 -1.5707953071795862
+}
+HotPlate {
+  translation -2.85 -0.5 0.71
+  rotation 0 0 1 -1.5707953071795862
+}
+Can {
+  translation -0.5663 -0.6328 0.8410656649999996
+  rotation -0.2853672588185416 0.9579428799745111 0.03018221828379715 3.996383119922141e-16
+  name "can 1"
+}
+Table {
+  translation -1.0743 -4.9444 0
+  rotation 0 0 1 1.5708
+  name "table(1)"
+}
+Chair {
+  translation -1.4606 -5.4128 -0.002244527999999857
+  rotation 5.498141305976931e-19 -7.126775932888727e-18 1 1.5708000000000004
+  name "chair 1"
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  physics Physics {
+    centerOfMass [
+      0 0 0.45
+    ]
+  }
+}
+Chair {
+  translation -0.6425 -4.4443 -0.00224452800000019
+  rotation 1.1558066169639076e-17 5.731615979688048e-18 -0.9999999999999999 1.5707953071795862
+  name "chair 2"
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  physics Physics {
+    centerOfMass [
+      0 0 0.45
+    ]
+  }
+}
+Chair {
+  translation -1.3943 -4.4875 -0.00224452800000019
+  rotation -1.1581255372796077e-17 -1.3315890295746311e-17 -0.9999999999999999 1.5707953071795862
+  name "chair 3"
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  physics Physics {
+    centerOfMass [
+      0 0 0.45
+    ]
+  }
+}
+Chair {
+  translation -0.7069 -5.3809 -0.002244527999999857
+  rotation 6.978833995007263e-18 -1.804309505594438e-18 1 1.5708000000000004
+  name "chair 4"
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  physics Physics {
+    centerOfMass [
+      0 0 0.45
+    ]
+  }
+}
+FruitBowl {
+  translation -0.7155000195898054 -4.880599991995645 0.7397841800000011
+  rotation 0.00012663344718997826 -4.0855307684944445e-05 0.9999999911474069 0.9446150066981508
+  color 0.6666666666666666 0 0
+}
+Orange {
+  translation -0.7836765480630251 -4.9019582141472515 0.7996652506991201
+  rotation 0.9710632288900873 -0.23851090319220083 0.012196497693945495 0.6690777700779402
+}
+Orange {
+  translation -0.7250710514776908 -4.820931118302397 0.7996737552910319
+  rotation 0.36637801457060026 -0.36901701388282143 0.8541625102428171 1.340080090640371
+  name "orange 2"
+}
+Apple {
+  translation -0.7026493920129521 -4.960563655341083 0.799656669194141
+  rotation -0.09377198010965815 0.08814618632505472 0.991683954484826 1.7488109716771676
+}
+Apple {
+  translation -0.6440435269853084 -4.879536023763725 0.7996652312842445
+  rotation -0.5571458312175342 -0.4935230667047499 0.6678499123210708 0.5078138089905465
+  name "apple 2"
+}
+Desk {
+  translation -5.125 -0.5126 0
+  rotation 0 0 1 1.5708
+}
+WoodenChair {
+  translation -5.149999999928558 -0.9000000307053525 -0.000827215515471269
+  rotation -3.070976953346663e-05 3.056720159707162e-05 0.9999999990612782 1.5708000009467946
+  physics Physics {
+    centerOfMass [
+      0 0 0.45
+    ]
+  }
+}
+Book {
+  translation -4.697599376838196 -0.5922002817008831 0.71988227997447
+  rotation 0.6215345944188686 0.4768867163211611 0.621509298190295 -2.2515380803378413
+  name "book(1)"
+}
+Table {
+  translation -7.163 -2.5554 0.0199
+  size 0.8 1.2 0.53
+}
+Armchair {
+  translation -5.8922 -3.8267 0
+  rotation 0 0 1 2.30591
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+}
+Sofa {
+  translation -7.0533 -0.8042 0
+  rotation 2.3464099999870814e-06 -2.3464099999870814e-06 0.9999999999944944 -1.5707953071795862
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+}
+Sofa {
+  translation -8.9573 -2.4973 0
+  name "sofa 2"
+  color 0.13333333333333333 0.13333333333333333 0.13333333333333333
+}
+Carpet {
+  translation -7.1422 -2.5507 -0.0151
+  rotation 0 0 1 -1.5707953071795862
+  color 0.13725490196078433 0.13725490196078433 0.13725490196078433
+}
+BunchOfSunFlowers {
+  translation -9.0598 -3.9144 0
+}
+Book {
+  translation -4.691697765071835 -0.5961009994968276 0.7398522019121715
+  rotation 0.6786317432697014 0.28105842777143875 0.6785758006334832 -2.593507796021401
+}
+Can {
+  translation -7.22632370911037 -2.74191322009484 0.6109792108216863
+  rotation 0.00032502978715318715 -0.0001429458674935586 -0.9999999369610563 1.2949102388638718
+  name "can 2"
+}
+Can {
+  translation -7.35 -2.7233 0.6109656650000003
+  rotation -0.01544947414573441 0.9887663453269451 0.1486688538242514 1.0976535058139534e-16
+  name "can 3"
+}
+Can {
+  translation -7.2069 -2.8744 0.6109656650000003
+  rotation 4.2550498175909794e-16 2.614351176398858e-16 1 1.32183
+  name "can 4"
+}
+E-puck {
+  translation -7.468379259125883 -2.2607551549261764 0.5498680199216982
+  rotation -0.0008496037315093172 -0.0004422416761837693 0.9999995412977944 -2.171336702392746
+  groundSensorsSlot [
+    E-puckGroundSensors {
+    }
+  ]
+}
+Cabinet {
+  translation -3.4681 -6.4326 0
+  rotation 0 0 -1 -1.5707953071795862
+  name "cabinet 4"
+  depth 0.4
+  outerThickness 0.02
+  rowsHeights [
+    0.52, 0.44, 0.44, 0.44, 0.44
+  ]
+  columnsWidths [
+    0.96
+  ]
+  layout [
+    "Shelf  (1, 2, 1, 0)"
+    "Shelf  (1, 3, 1, 0)"
+    "Shelf  (1, 4, 1, 0)"
+    "Shelf  (1, 5, 1, 0)"
+  ]
+  primaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+  secondaryAppearance PaintedWood {
+    colorOverride 0.13333333333333333 0.13333333333333333 0.13333333333333333
+  }
+}
+Book {
+  translation -3.0223246459783795 -6.1508999858822095 1.529249675872103
+  rotation 0.12392440045414052 3.239370200353771e-07 0.9922916622505586 -3.141587454786459
+  name "book 2"
+}
+Book {
+  translation -3.0447176943148437 -6.15759998893835 1.5289759814666197
+  rotation 0.13226348599370807 -4.81380500460182e-09 0.9912145934522919 -3.141584003488177
+  name "book 3"
+}
+Book {
+  translation -3.0668248632283603 -6.164199947453888 1.528774352247393
+  rotation 0.13878178780491887 4.6486667413430106e-07 0.9903229853807567 3.141592211576001
+  name "book 4"
+}
+Book {
+  translation -3.091213262628797 -6.158199894373149 1.528163725538592
+  rotation 0.15516896326156995 1.0105605954055028e-06 0.9878879454873961 3.141588060369507
+  name "book 5"
+}
+Book {
+  translation -3.1139106159309287 -6.162299863306946 1.5277946641260096
+  rotation 0.1626028444639221 7.630259694510528e-07 0.9866916007404033 3.141590822622458
+  name "book 6"
+}
+PottedTree {
+  translation -3.237 -4.8805 0
+}
+PortraitPainting {
+  translation -9.73 -2.47 1.5999
+}
+LandscapePainting {
+  translation -0.1845 -4.9252 1.6286
+  rotation 0 0 1 3.14159
+}
+Television {
+  translation -3.4329 -2.1547 1.5596
+  rotation 0 0 1 3.14159
+}
+Create {
+  translation -7.956545527334004 -5.376040158213385 0.04460280478877077
+  rotation 0.0003470715079869763 0.0003342188228819942 0.9999998839195666 -1.6086390027857975
+}
+CreateWall {
+  translation -3.2349968504035362 -3.5311999999999526 -3.923999966269631e-05
+  rotation -1.8366044242662418e-06 1.836602551748206e-06 -0.9999999999966268 1.5707953072293523
+}
+DEF PAD Solid {
+  translation -1.41 -2.03 0
+  rotation 0 0 1 -0.261795307179586
+  children [
+    DEF MY_ROBOT4 Robot {
+      children [
+        Gyro {
+        }
+        GPS {
+        }
+        InertialUnit {
+        }
+        Camera {
+          rotation 0 0 1 -2
+          width 100
+          height 75
+        }
+      ]
+      boundingObject Box {
+        size 0.1 0.1 0.1
+      }
+      physics Physics {
+      }
+      controller "mission4_supervisor"
+      supervisor TRUE
+    }
+    Pose {
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/manhole/protos/textures/manhole_base_color.jpg"
+              ]
+            }
+            roughnessMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/manhole/protos/textures/manhole_roughness.jpg"
+              ]
+            }
+            metalnessMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/manhole/protos/textures/manhole_metalness.jpg"
+              ]
+            }
+            normalMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/manhole/protos/textures/manhole_normal.jpg"
+              ]
+            }
+            occlusionMap ImageTexture {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/manhole/protos/textures/manhole_occlusion.jpg"
+              ]
+            }
+          }
+          geometry DEF MANHOLE_BOX Box {
+            size 0.2 0.2 0.1
+          }
+        }
+      ]
+    }
+  ]
+  name "manhole"
+  model "manhole"
+  boundingObject USE MANHOLE_BOX
+}
+DEF B PortraitPainting {
+  translation -5.02 -0.23 1.5899
+  rotation 0 0 1 -1.5707953071795862
+  name "B"
+  textureUrl [
+    "../../controllers/B.png"
+  ]
+}
+DEF C PortraitPainting {
+  translation -9.73 -3.93 1.5999
+  name "C"
+  textureUrl [
+    "../../controllers/C.png"
+  ]
+}
+DEF MY_ROBOT3 Robot {
+  translation -1.16 -1.68 0.83
+  children [
+    Skin {
+      appearance [
+        Appearance {
+          material Material {
+            specularColor 1 0.666667 0.498039
+          }
+          texture ImageTexture {
+            url [
+              "屏幕截图 2025-02-23 223747.png"
+            ]
+          }
+          textureTransform TextureTransform {
+          }
+        }
+      ]
+    }
+    InertialUnit {
+    }
+    Gyro {
+    }
+    GPS {
+    }
+    CadShape {
+      url [
+        "xpeng.obj"
+      ]
+    }
+    Camera {
+      translation -0.05 0 0
+    }
+  ]
+  model "DJI Mavic 2 PRO"
+  description "xpeng"
+  boundingObject Box {
+    size 0.5 0.5 0.25
+  }
+  recognitionColors [
+    1 0.333333 0
+  ]
+  controller "<none>"
+  supervisor TRUE
+}
+DEF MY_ROBOT Robot {
+  translation -1.425 -2.07794 0.095
+  rotation 0 0 1 -2.094395307179586
+  children [
+    DEF BODY_SLOT Group {
+    }
+    Shape {
+      appearance DEF GREY_PLASTIC PBRAppearance {
+        baseColor 0.5 0.5 0.5
+        roughness 0.8
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/body.obj"
+        ]
+      }
+    }
+    Shape {
+      appearance DEF METAL_APPEARANCE PBRAppearance {
+        roughness 0.5
+      }
+      geometry Mesh {
+        url [
+          "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/body_metal_parts.obj"
+        ]
+      }
+    }
+    Shape {
+      appearance DEF GLASS PBRAppearance {
+        baseColor 0.523146 0.8 0.627785
+        transparency 0.9
+        roughness 0.5
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/body_lenses.obj"
+        ]
+      }
+    }
+    DEF COMPASS Compass {
+    }
+    DEF GPS GPS {
+    }
+    DEF GYRO Gyro {
+    }
+    DEF INERTIAL_UNIT InertialUnit {
+    }
+    DEF REAR_LEFT_HP_HELIX Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust -0.177179 0.127453 -0.0320282
+      thrustConstants -0.00026 0
+      torqueConstants 5.2e-06 0
+      fastHelixThreshold 50
+      device RotationalMotor {
+        name "rear left propeller"
+        maxVelocity 576
+        maxTorque 30
+      }
+      fastHelix Solid {
+        translation -0.177179 0.127453 -0.0320282
+        children [
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_plates.obj"
+              ]
+            }
+          }
+          Pose {
+            translation 0 0 0.02
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.5 0.5 0.5
+                  baseColorMap ImageTexture {
+                    url [
+                      "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/default/protos/textures/fast_helix.png"
+                    ]
+                  }
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.001
+                  radius 0.12
+                  side FALSE
+                }
+              }
+            ]
+          }
+        ]
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.12
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+      slowHelix Solid {
+        translation -0.177179 0.127453 -0.0320282
+        children [
+          Shape {
+            appearance USE GREY_PLASTIC
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_plates.obj"
+              ]
+            }
+          }
+        ]
+        name "rear left propeller"
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.013
+                }
+              ]
+            }
+            Pose {
+              translation 0 0 0.023
+              rotation 0 0 1 0.7854
+              children [
+                Box {
+                  size 0.23 0.018 0.005
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+    }
+    DEF REAR_RIGHT_HP_HELIX Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust -0.177179 -0.127453 -0.0320282
+      thrustConstants 0.00026 0
+      torqueConstants 5.2e-06 0
+      fastHelixThreshold 50
+      device RotationalMotor {
+        name "rear right propeller"
+        maxVelocity 576
+        maxTorque 30
+      }
+      fastHelix Solid {
+        translation -0.177179 -0.127453 -0.0320282
+        children [
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_plates.obj"
+              ]
+            }
+          }
+          Pose {
+            translation 0 0 0.02
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.5 0.5 0.5
+                  baseColorMap ImageTexture {
+                    url [
+                      "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/default/protos/textures/fast_helix.png"
+                    ]
+                  }
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.001
+                  radius 0.12
+                  side FALSE
+                }
+              }
+            ]
+          }
+        ]
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.12
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+      slowHelix Solid {
+        translation -0.177179 -0.127453 -0.0320282
+        children [
+          Shape {
+            appearance MattePaint {
+              baseColor 0.5 0.5 0.5
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_plates.obj"
+              ]
+            }
+          }
+        ]
+        name "rear right propeller"
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.013
+                }
+              ]
+            }
+            Pose {
+              translation 0 0 0.023
+              rotation 0 0 1 -0.7854
+              children [
+                Box {
+                  size 0.23 0.018 0.005
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+    }
+    DEF FRONT_RIGHT_HP_HELIX Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust 0.0548537 -0.151294 -0.00280468
+      thrustConstants -0.00026 0
+      torqueConstants 5.2e-06 0
+      fastHelixThreshold 50
+      device RotationalMotor {
+        name "front right propeller"
+        maxVelocity 576
+        maxTorque 30
+      }
+      fastHelix Solid {
+        translation 0.0548537 -0.151294 -0.00280468
+        children [
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_plates.obj"
+              ]
+            }
+          }
+          Pose {
+            translation 0 0 0.02
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.5 0.5 0.5
+                  baseColorMap ImageTexture {
+                    url [
+                      "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/default/protos/textures/fast_helix.png"
+                    ]
+                  }
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.001
+                  radius 0.12
+                  side FALSE
+                }
+              }
+            ]
+          }
+        ]
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.12
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+      slowHelix Solid {
+        translation 0.0548537 -0.151294 -0.00280468
+        children [
+          Shape {
+            appearance MattePaint {
+              baseColor 0.5 0.5 0.5
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_a_plates.obj"
+              ]
+            }
+          }
+        ]
+        name "front right propeller"
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.013
+                }
+              ]
+            }
+            Pose {
+              translation 0 0 0.023
+              rotation 0 0 1 0.7854
+              children [
+                Box {
+                  size 0.23 0.018 0.005
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+    }
+    DEF CAMERA_YAW HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 1
+        anchor 0.0412774 -0.00469654 -0.00405862
+      }
+      device [
+        RotationalMotor {
+          name "camera yaw"
+          minPosition -1.7
+          maxPosition 1.7
+        }
+        PositionSensor {
+          name "camera yaw sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.0412774 -0.00469654 -0.00405862
+        children [
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/camera_yaw.obj"
+              ]
+            }
+          }
+          DEF CAMERA_PITCH HingeJoint {
+            jointParameters HingeJointParameters {
+              axis 0 1 0
+              anchor 0.000625212 -0.00530346 -0.0207448
+            }
+            device [
+              RotationalMotor {
+                name "camera pitch"
+                minPosition -0.5
+                maxPosition 1.7
+              }
+              PositionSensor {
+                name "camera pitch sensor"
+              }
+            ]
+            endPoint Solid {
+              translation 0.000625212 -0.00530346 -0.0207448
+              rotation 0 1 0 0
+              children [
+                Shape {
+                  appearance USE METAL_APPEARANCE
+                  geometry Mesh {
+                    url [
+                      "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/camera_pitch.obj"
+                    ]
+                  }
+                }
+                DEF CAMERA_ROLL HingeJoint {
+                  jointParameters HingeJointParameters {
+                    anchor 0.00754686 0.0160388 -0.00586401
+                  }
+                  device [
+                    RotationalMotor {
+                      name "camera roll"
+                      minPosition -0.5
+                      maxPosition 0.5
+                    }
+                    PositionSensor {
+                      name "camera roll sensor"
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0.00754686 0.0160388 -0.00586401
+                    rotation 1 0 0 0
+                    children [
+                      Shape {
+                        appearance USE METAL_APPEARANCE
+                        geometry Mesh {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/camera_chassis.obj"
+                          ]
+                        }
+                      }
+                      Shape {
+                        appearance USE GLASS
+                        geometry Mesh {
+                          url [
+                            "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/camera_lens.obj"
+                          ]
+                        }
+                      }
+                      DEF CAMERA_SLOT Pose {
+                        children [
+                          Camera {
+                            width 400
+                            height 240
+                          }
+                        ]
+                      }
+                    ]
+                    name "camera roll"
+                    boundingObject Pose {
+                      translation -0.00915058 -1.86265e-08 -0.000983764
+                      children [
+                        Box {
+                          size 0.0236511 0.0205141 0.0225186
+                        }
+                      ]
+                    }
+                    physics Physics {
+                      density -1
+                      mass 0.0333
+                    }
+                  }
+                }
+              ]
+              name "camera pitch"
+              boundingObject Pose {
+                translation -0.00248347 0.00776876 0.00183829
+                children [
+                  Box {
+                    size 0.0239878 0.0349393 0.0314891
+                  }
+                ]
+              }
+              physics Physics {
+                density -1
+                mass 0.0333
+              }
+            }
+          }
+        ]
+        name "camera yaw"
+        boundingObject Pose {
+          translation -1.86265e-09 -0.00304481 -0.0140589
+          children [
+            Box {
+              size 0.0208626 0.0260333 0.0307844
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.0333
+        }
+      }
+    }
+    DEF LED_RIGHT LED {
+      children [
+        Pose {
+          translation 0.0617 -0.1654 -0.0074
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 0.2
+                metalness 0.5
+                emissiveIntensity 50
+              }
+              geometry Mesh {
+                url [
+                  "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/front_led.obj"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+      name "front right led"
+      boundingObject Pose {
+        translation 0.060348 -0.163659 -0.00760072
+        children [
+          Box {
+            size 0.0152149 0.0106945 0.00694674
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.0035
+      }
+    }
+    DEF LED_LEFT LED {
+      children [
+        Pose {
+          translation 0.0617 0.1654 -0.0074
+          rotation 0 0 1 2.1944
+          children [
+            Shape {
+              appearance PBRAppearance {
+                roughness 0.2
+                metalness 0.5
+                emissiveIntensity 50
+              }
+              geometry Mesh {
+                url [
+                  "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/front_led.obj"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+      name "front left led"
+      boundingObject Pose {
+        translation 0.060348 0.163919 -0.00760069
+        children [
+          Box {
+            size 0.0152149 0.0106945 0.0069468
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.0035
+      }
+    }
+    DEF FRONT_LEFT_HP_HELIX Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust 0.0548537 0.151294 -0.00280468
+      thrustConstants 0.00026 0
+      torqueConstants 5.2e-06 0
+      fastHelixThreshold 50
+      device RotationalMotor {
+        name "front left propeller"
+        maxVelocity 576
+        maxTorque 30
+      }
+      fastHelix Solid {
+        translation 0.0548537 0.151294 -0.00280468
+        children [
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_plates.obj"
+              ]
+            }
+          }
+          Pose {
+            translation 0 0 0.02
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.5 0.5 0.5
+                  baseColorMap ImageTexture {
+                    url [
+                      "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/default/protos/textures/fast_helix.png"
+                    ]
+                  }
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.001
+                  radius 0.12
+                  side FALSE
+                }
+              }
+            ]
+          }
+        ]
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.12
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+      slowHelix Solid {
+        translation 0.0548537 0.151294 -0.00280468
+        children [
+          Shape {
+            appearance MattePaint {
+              baseColor 0.5 0.5 0.5
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance USE METAL_APPEARANCE
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_joint.obj"
+              ]
+            }
+          }
+          Shape {
+            appearance GlossyPaint {
+              baseColor 0.1 0.1 0.1
+            }
+            geometry Mesh {
+              url [
+                "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/dji/mavic/protos/Mavic2Pro/meshes/helix_b_plates.obj"
+              ]
+            }
+          }
+        ]
+        name "front left propeller"
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.015
+              children [
+                Cylinder {
+                  height 0.025
+                  radius 0.013
+                }
+              ]
+            }
+            Pose {
+              translation 0 0 0.023
+              rotation 0 0 1 -0.7854
+              children [
+                Box {
+                  size 0.23 0.018 0.005
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.1
+        }
+      }
+    }
+  ]
+  name "Mavic 2 PRO"
+  model "DJI Mavic 2 PRO"
+  boundingObject Group {
+    children [
+      Pose {
+        translation -0.03 0 0.002
+        children [
+          Box {
+            size 0.21 0.085 0.027
+          }
+        ]
+      }
+      Pose {
+        translation -0.06 0 -0.03
+        children [
+          Box {
+            size 0.15 0.06 0.053
+          }
+        ]
+      }
+      Pose {
+        translation 0.03 0.09 -0.001
+        rotation 0 0 1 -0.3926996938995747
+        children [
+          Box {
+            size 0.01 0.15 0.025
+          }
+        ]
+      }
+      Pose {
+        translation 0.03 -0.09 -0.001
+        rotation 0 0 1 0.3927
+        children [
+          Box {
+            size 0.01 0.15 0.025
+          }
+        ]
+      }
+      Pose {
+        translation -0.138 0.08 -0.032
+        rotation 0 0 1 0.68
+        children [
+          Box {
+            size 0.01 0.12 0.018
+          }
+        ]
+      }
+      Pose {
+        translation -0.138 -0.08 -0.032
+        rotation 0 0 1 -0.68
+        children [
+          Box {
+            size 0.01 0.12 0.018
+          }
+        ]
+      }
+      Pose {
+        translation 0.06 0.15 -0.039
+        rotation 1 0 0 -0.29
+        children [
+          Box {
+            size 0.01 0.014 0.06
+          }
+        ]
+      }
+      Pose {
+        translation 0.06 -0.15 -0.039
+        rotation 1 0 0 0.29
+        children [
+          Box {
+            size 0.01 0.014 0.06
+          }
+        ]
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 1
+    centerOfMass [
+      -0.088 0 -0.04
+    ]
+  }
+  controller "<none>"
+  supervisor TRUE
+}
